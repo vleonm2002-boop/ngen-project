@@ -1,0 +1,1438 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Ngen — Music for Mind's Peace</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#e8b84b">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ── RESET ── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+/* ── TOKENS ── */
+:root{
+  --bg:#1a2b3c;
+  --text:#e8b84b;
+  --dw:#ffffff;
+  --dg:#ffcc00;
+  --rest-bg:#5290c9;
+  --rest-text:#ffffff;
+  --surf:rgba(255,255,255,0.06);
+  --surf2:rgba(255,255,255,0.10);
+  --brd:rgba(232,184,75,0.2);
+  --muted:rgba(232,184,75,0.5);
+  --r:16px;--rs:8px;
+  --tab:68px;
+}
+
+/* ── BASE ── */
+html,body{height:100%;font-family:'Inter',system-ui,sans-serif;background:#0d1a26;color:var(--text);-webkit-font-smoothing:antialiased;overflow:hidden}
+
+/* ── PHONE CONTAINER ── */
+#app{
+  position:relative;
+  width:min(390px,100vw);
+  height:min(844px,100dvh);
+  margin:0 auto;
+  background:var(--bg);
+  border-radius:clamp(0px,calc((100vw - 390px)*9999),24px);
+  overflow:hidden;
+  display:flex;flex-direction:column;
+  box-shadow:0 40px 120px rgba(0,0,0,.6);
+}
+@media(min-height:880px){
+  body{display:flex;align-items:center;justify-content:center;min-height:100vh}
+}
+
+/* ── PAGES ── */
+.page{display:none;flex-direction:column;flex:1;overflow-y:auto;overflow-x:hidden;scrollbar-width:none}
+.page::-webkit-scrollbar{display:none}
+.page.active{display:flex}
+
+/* ── TAB BAR ── */
+.tab-bar{display:flex;height:var(--tab);background:rgba(10,20,32,.96);border-top:1px solid var(--brd);flex-shrink:0;backdrop-filter:blur(20px)}
+.tab-bar.hidden{display:none}
+.tab-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;color:var(--muted);transition:color .2s;font-size:10px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;border:none;background:none;-webkit-tap-highlight-color:transparent}
+.tab-item.active{color:var(--text)}
+.tab-item svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+/* ── TYPOGRAPHY ── */
+h1,h2,h3,.font-title{font-family:'Cormorant Garamond',Georgia,serif}
+
+/* ── BUTTONS ── */
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:15px 28px;border-radius:var(--r);border:none;font-family:'Inter',sans-serif;font-size:15px;font-weight:600;cursor:pointer;transition:all .18s;-webkit-tap-highlight-color:transparent;letter-spacing:.02em;width:100%}
+.btn-primary{background:var(--text);color:var(--bg)}
+.btn-primary:active{transform:scale(.97);opacity:.9}
+.btn-primary:disabled{opacity:.35;cursor:not-allowed;transform:none}
+.btn-secondary{background:transparent;color:var(--text);border:1px solid var(--brd)}
+.btn-secondary:active{background:var(--surf)}
+
+/* ── CARDS ── */
+.card{background:var(--surf);border:1px solid var(--brd);border-radius:var(--r);padding:16px}
+
+/* ── BADGE ── */
+.badge{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:100px;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase}
+.badge-gold{background:rgba(255,204,0,.12);color:var(--dg);border:1px solid rgba(255,204,0,.25)}
+.badge-white{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3)}
+
+/* ── PILL SELECTOR ── */
+.pill-group{display:flex;gap:8px;flex-wrap:wrap}
+.pill{padding:8px 16px;border-radius:100px;border:1px solid var(--brd);background:transparent;color:var(--muted);font-size:13px;font-weight:500;cursor:pointer;transition:all .18s;-webkit-tap-highlight-color:transparent;font-family:'Inter',sans-serif}
+.pill.selected{background:var(--text);color:var(--bg);border-color:var(--text)}
+
+/* ── SLIDERS ── */
+.slider-group{display:flex;flex-direction:column;gap:16px}
+.slider-item{display:flex;flex-direction:column;gap:8px}
+.slider-label{display:flex;justify-content:space-between;font-size:13px}
+.slider-label span:last-child{color:var(--muted);font-weight:600;min-width:28px;text-align:right}
+input[type=range]{width:100%;height:4px;-webkit-appearance:none;appearance:none;background:var(--brd);border-radius:4px;outline:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--text);box-shadow:0 0 10px rgba(232,184,75,.5);cursor:pointer}
+input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:var(--text);border:none;box-shadow:0 0 10px rgba(232,184,75,.5)}
+
+/* ── LIFE OPTIONS ── */
+.life-options{display:flex;gap:8px}
+.life-opt{flex:1;padding:12px 6px;border-radius:var(--rs);border:1px solid var(--brd);background:transparent;color:var(--muted);font-size:11px;font-weight:500;cursor:pointer;text-align:center;transition:all .18s;display:flex;flex-direction:column;align-items:center;gap:4px;font-family:'Inter',sans-serif}
+.life-opt .em{font-size:20px}
+.life-opt.selected{border-color:var(--text);color:var(--text);background:rgba(232,184,75,.08)}
+
+/* ── CIRCULAR TIMER ── */
+.timer-wrap{position:relative;display:flex;align-items:center;justify-content:center}
+.timer-svg{transform:rotate(-90deg)}
+.t-bg{fill:none;stroke:rgba(255,255,255,.07)}
+.t-arc{fill:none;stroke:var(--text);stroke-linecap:round}
+.t-arc.rest-arc{stroke:#fff}
+.timer-txt{position:absolute;text-align:center}
+.timer-time{font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:400;line-height:1}
+.timer-lbl{font-size:12px;color:var(--muted);margin-top:4px;letter-spacing:.05em}
+
+/* ── PHASE BAR ── */
+.phase-bar{display:flex;align-items:center;gap:4px}
+.ph{padding:4px 10px;border-radius:100px;font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);border:1px solid transparent}
+.ph.active{color:var(--dg);border-color:rgba(255,204,0,.3);background:rgba(255,204,0,.08)}
+.ph-sep{color:var(--muted);font-size:11px}
+
+/* ── AUDIO CONTROLS ── */
+.audio-ctrls{display:flex;align-items:center;justify-content:center;gap:12px}
+.cbtn{background:var(--surf);border:1px solid var(--brd);color:var(--text);border-radius:50%;width:44px;height:44px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px;transition:all .18s;-webkit-tap-highlight-color:transparent;flex-shrink:0}
+.cbtn.main{width:58px;height:58px;background:var(--text);color:var(--bg);font-size:22px;border-color:var(--text)}
+.cbtn:active{transform:scale(.9)}
+
+/* ── BREATHING ORB ── */
+.orb-wrap{display:flex;flex-direction:column;align-items:center;gap:20px}
+.orb{width:150px;height:150px;border-radius:50%;background:radial-gradient(circle at 35% 35%,rgba(255,255,255,.35),rgba(60,120,200,.55));box-shadow:0 0 70px rgba(82,144,201,.5),0 0 25px rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;color:#fff;letter-spacing:.06em;will-change:transform}
+.breath-hint{text-align:center;color:rgba(255,255,255,.65);font-size:13px;line-height:2}
+
+/* ── LIKERT ── */
+.lk-group{display:flex;flex-direction:column;gap:22px}
+.lk-item{display:flex;flex-direction:column;gap:10px}
+.lk-q{font-size:13.5px;line-height:1.55}
+.lk-scale{display:flex;gap:5px;justify-content:space-between}
+.lk-btn{flex:1;aspect-ratio:1;max-width:40px;border-radius:var(--rs);border:1px solid var(--brd);background:transparent;color:var(--muted);font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;-webkit-tap-highlight-color:transparent;font-family:'Inter',sans-serif}
+.lk-btn.sel{background:var(--text);color:var(--bg);border-color:var(--text)}
+.lk-labels{display:flex;justify-content:space-between;font-size:10px;color:var(--muted)}
+
+/* ── TRACK CARDS ── */
+.track-card{display:flex;align-items:center;gap:14px;padding:16px;border-radius:var(--r);border:1px solid var(--brd);background:var(--surf);cursor:pointer;transition:all .2s;-webkit-tap-highlight-color:transparent}
+.track-card.selected{border-color:var(--text);background:rgba(232,184,75,.07)}
+.track-icon{width:46px;height:46px;border-radius:12px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.track-info{flex:1;min-width:0}
+.track-name{font-size:14px;font-weight:600}
+.track-desc{font-size:11px;color:var(--muted);margin-top:2px}
+.track-prev{width:34px;height:34px;border-radius:50%;border:1px solid var(--brd);background:transparent;color:var(--text);font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .18s;flex-shrink:0;-webkit-tap-highlight-color:transparent}
+.track-prev:active{transform:scale(.9)}
+
+/* ── STAT CARDS ── */
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stat-card{background:var(--surf);border:1px solid var(--brd);border-radius:var(--r);padding:16px}
+.stat-lbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
+.stat-val{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:600;line-height:1}
+.stat-unit{font-size:12px;color:var(--muted)}
+
+/* ── HOME METRICS ── */
+.metrics-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--brd);border-radius:var(--r);overflow:hidden}
+.metric-cell{background:var(--bg);padding:14px 6px;text-align:center}
+.metric-val{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;line-height:1}
+.metric-lbl{font-size:10px;color:var(--muted);margin-top:4px;letter-spacing:.03em}
+
+/* ── SESSION LIST ── */
+.sess-item{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--brd)}
+.sess-item:last-child{border-bottom:none}
+.sess-dot{width:7px;height:7px;border-radius:50%;background:var(--text);flex-shrink:0}
+.sess-info{flex:1;min-width:0}
+.sess-date{font-size:11px;color:var(--muted)}
+.sess-meta{font-size:13px;font-weight:500;margin-top:2px}
+.sess-score{font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--text)}
+
+/* ── LOADING ── */
+.wave{display:flex;align-items:flex-end;gap:5px;height:48px;justify-content:center}
+.wbar{width:4px;border-radius:4px;background:var(--text);animation:wv 1.2s ease-in-out infinite}
+.wbar:nth-child(2){animation-delay:.15s}
+.wbar:nth-child(3){animation-delay:.30s}
+.wbar:nth-child(4){animation-delay:.45s}
+.wbar:nth-child(5){animation-delay:.60s}
+@keyframes wv{0%,100%{height:8px;opacity:.4}50%{height:40px;opacity:1}}
+.progress-bar{height:3px;background:var(--brd);border-radius:3px;overflow:hidden}
+.progress-fill{height:100%;background:var(--text);border-radius:3px;transition:width .3s;width:0}
+
+/* ── CHARTS ── */
+.chart-section{display:flex;flex-direction:column;gap:4px}
+.chart-title{font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+canvas.chart{width:100%;border-radius:var(--rs);display:block;background:rgba(255,255,255,.03)}
+
+/* ── EMPTY STATE ── */
+.empty{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:48px 0;color:var(--muted);text-align:center}
+.empty-icon{font-size:38px;opacity:.5}
+.empty-txt{font-size:13px;line-height:1.65;max-width:230px}
+
+/* ── TOAST ── */
+#toast{position:absolute;bottom:calc(var(--tab) + 12px);left:50%;transform:translateX(-50%);background:var(--bg);border:1px solid var(--brd);color:var(--text);padding:9px 20px;border-radius:100px;font-size:13px;white-space:nowrap;pointer-events:none;z-index:200;opacity:0;transition:opacity .2s}
+#toast.show{opacity:1}
+
+/* ── UTILS ── */
+.px{padding-left:20px;padding-right:20px}
+.pt-safe{padding-top:max(40px,env(safe-area-inset-top))}
+.pb-safe{padding-bottom:max(16px,env(safe-area-inset-bottom))}
+.flex{display:flex}.col{flex-direction:column}.items-c{align-items:center}.just-b{justify-content:space-between}.just-c{justify-content:center}
+.gap-1{gap:6px}.gap-2{gap:10px}.gap-3{gap:16px}.gap-4{gap:20px}
+.mb-2{margin-bottom:8px}.mb-3{margin-bottom:12px}.mb-4{margin-bottom:16px}.mb-5{margin-bottom:20px}.mb-6{margin-bottom:24px}.mb-8{margin-bottom:32px}
+.mt-a{margin-top:auto}
+.w-full{width:100%}
+.text-c{text-align:center}
+.text-sm{font-size:13px}
+.text-xs{font-size:11px}
+.text-muted{color:var(--muted)}
+.label-caps{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+
+@media(prefers-reduced-motion:reduce){.orb{transition:none!important}.wbar{animation:none;height:20px}}
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- ══════════════════════════════════════════════
+     PAGE 1 — HOME
+══════════════════════════════════════════════ -->
+<div class="page" id="page-1">
+<div class="px pt-safe pb-safe flex col" style="flex:1;gap:0;padding-top:44px;padding-bottom:16px">
+
+  <!-- Logo -->
+  <div class="text-c mb-8">
+    <div style="font-size:28px;margin-bottom:4px">♩</div>
+    <h1 style="font-size:50px;font-weight:400;letter-spacing:.02em;line-height:1">Ngen</h1>
+    <p class="text-xs text-muted" style="margin-top:6px;letter-spacing:.12em;text-transform:uppercase">Music for Mind's Peace</p>
+  </div>
+
+  <!-- Metrics -->
+  <div class="metrics-grid mb-5" id="home-metrics">
+    <div class="metric-cell">
+      <div class="metric-val" id="m-focus">0m</div>
+      <div class="metric-lbl">Tiempo Foco</div>
+    </div>
+    <div class="metric-cell">
+      <div class="metric-val" id="m-rest">0m</div>
+      <div class="metric-lbl">Recuperando</div>
+    </div>
+    <div class="metric-cell">
+      <div class="metric-val" id="m-burnout">--</div>
+      <div class="metric-lbl">Burnout</div>
+    </div>
+  </div>
+
+  <!-- CTAs -->
+  <button class="btn btn-primary mb-3" onclick="goSetup()">Iniciar Sesión</button>
+  <button class="btn btn-secondary mb-5" onclick="goSetup()">Actualizar mi gusto musical</button>
+
+  <!-- Recent sessions -->
+  <p class="label-caps mb-3">Sesiones recientes</p>
+  <div id="home-sessions"></div>
+
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     PAGE 2 — SETUP
+══════════════════════════════════════════════ -->
+<div class="page" id="page-2">
+<div class="px pt-safe pb-safe flex col" style="flex:1;padding-top:36px;padding-bottom:20px">
+
+  <div class="flex items-c mb-5" style="gap:10px">
+    <button onclick="navigateTo('page-1')" class="cbtn" style="width:36px;height:36px;font-size:18px">←</button>
+    <h2 style="font-size:26px;font-weight:400">¿Cómo te sientes?</h2>
+  </div>
+
+  <p class="label-caps mb-3">Estado emocional</p>
+  <div class="slider-group mb-5" id="setup-sliders">
+    <div class="slider-item">
+      <div class="slider-label"><span>Tristeza</span><span id="sv-tristeza">50</span></div>
+      <input type="range" min="0" max="100" value="50" id="sl-tristeza" oninput="onSlider('before','tristeza',this.value)">
+    </div>
+    <div class="slider-item">
+      <div class="slider-label"><span>Enojo</span><span id="sv-enojo">50</span></div>
+      <input type="range" min="0" max="100" value="50" id="sl-enojo" oninput="onSlider('before','enojo',this.value)">
+    </div>
+    <div class="slider-item">
+      <div class="slider-label"><span>Soledad</span><span id="sv-soledad">50</span></div>
+      <input type="range" min="0" max="100" value="50" id="sl-soledad" oninput="onSlider('before','soledad',this.value)">
+    </div>
+    <div class="slider-item">
+      <div class="slider-label"><span>Estrés</span><span id="sv-estres">50</span></div>
+      <input type="range" min="0" max="100" value="50" id="sl-estres" oninput="onSlider('before','estres',this.value)">
+    </div>
+  </div>
+
+  <p class="label-caps mb-3">¿Cómo evalúas tu vida hoy?</p>
+  <div class="life-options mb-5" id="life-before-opts">
+    <button class="life-opt" data-v="floreciendo" onclick="selectLife('before',this)"><span class="em">🌱</span><span>Floreciendo</span></button>
+    <button class="life-opt" data-v="luchando" onclick="selectLife('before',this)"><span class="em">⚖️</span><span>Luchando</span></button>
+    <button class="life-opt" data-v="sufriendo" onclick="selectLife('before',this)"><span class="em">🌧️</span><span>Sufriendo</span></button>
+  </div>
+
+  <p class="label-caps mb-3">Intervalo de sesión</p>
+  <div class="pill-group mb-4" id="interval-group">
+    <button class="pill selected" data-f="25" data-r="5" onclick="selectInterval(this)">25 / 5 min</button>
+    <button class="pill" data-f="40" data-r="10" onclick="selectInterval(this)">40 / 10 min</button>
+    <button class="pill" data-f="50" data-r="15" onclick="selectInterval(this)">50 / 15 min</button>
+  </div>
+
+  <p class="label-caps mb-3">Duración total</p>
+  <div class="pill-group mb-4" id="hours-group">
+    <button class="pill selected" data-h="1" onclick="selectHours(this)">1 hora</button>
+    <button class="pill" data-h="2" onclick="selectHours(this)">2 horas</button>
+    <button class="pill" data-h="3" onclick="selectHours(this)">3 horas</button>
+    <button class="pill" data-h="4" onclick="selectHours(this)">4 horas</button>
+  </div>
+
+  <div class="card mb-5 text-c">
+    <p class="text-sm text-muted" id="sess-summary">2 ciclos · 50 min foco · 10 min descanso</p>
+  </div>
+
+  <div class="mt-a">
+    <button class="btn btn-primary" onclick="startLoading()">Continuar →</button>
+  </div>
+
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     PAGE 9 — LOADING
+══════════════════════════════════════════════ -->
+<div class="page" id="page-9">
+<div class="px flex col items-c just-c text-c" style="flex:1;gap:28px">
+
+  <div class="wave">
+    <div class="wbar"></div><div class="wbar"></div><div class="wbar"></div>
+    <div class="wbar"></div><div class="wbar"></div>
+  </div>
+
+  <div>
+    <h2 style="font-size:26px;font-weight:400;margin-bottom:8px">Preparando tu sesión</h2>
+    <p class="text-sm text-muted" id="load-tip">Iniciando motor de audio…</p>
+  </div>
+
+  <div class="w-full" style="max-width:220px">
+    <div class="progress-bar"><div class="progress-fill" id="load-prog"></div></div>
+  </div>
+
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     PAGE 3 — TRACK SELECTION
+══════════════════════════════════════════════ -->
+<div class="page" id="page-3">
+<div class="px pt-safe flex col" style="flex:1;padding-top:36px;padding-bottom:20px">
+
+  <h2 style="font-size:28px;font-weight:400;margin-bottom:6px">Elige tu Sync</h2>
+  <p class="text-sm text-muted mb-5">El track que inicia cada ciclo de foco</p>
+
+  <div class="flex col gap-3 mb-a">
+    <div class="track-card" id="tc-Sync_1" data-t="Sync_1" onclick="selectTrack(this)">
+      <div class="track-icon">🌊</div>
+      <div class="track-info"><div class="track-name">Sync 1 — Sereno</div><div class="track-desc">Ondas suaves · 60 BPM</div></div>
+      <button class="track-prev" id="tp-Sync_1" onclick="previewTrack(event,'Sync_1')" aria-label="Preview Sync 1">▶</button>
+    </div>
+    <div class="track-card" id="tc-Sync_2" data-t="Sync_2" onclick="selectTrack(this)">
+      <div class="track-icon">🔮</div>
+      <div class="track-info"><div class="track-name">Sync 2 — Profundo</div><div class="track-desc">Frecuencias bajas · 40 BPM</div></div>
+      <button class="track-prev" id="tp-Sync_2" onclick="previewTrack(event,'Sync_2')" aria-label="Preview Sync 2">▶</button>
+    </div>
+    <div class="track-card" id="tc-Sync_3" data-t="Sync_3" onclick="selectTrack(this)">
+      <div class="track-icon">✨</div>
+      <div class="track-info"><div class="track-name">Sync 3 — Luminoso</div><div class="track-desc">Cristalino · 80 BPM</div></div>
+      <button class="track-prev" id="tp-Sync_3" onclick="previewTrack(event,'Sync_3')" aria-label="Preview Sync 3">▶</button>
+    </div>
+  </div>
+
+  <div style="padding-top:20px">
+    <button class="btn btn-primary" id="btn-confirm-sync" disabled onclick="startSyncMode()">Confirmar y comenzar Sync →</button>
+  </div>
+
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     PAGE 4 — SYNC MODE
+══════════════════════════════════════════════ -->
+<div class="page" id="page-4">
+<div class="px flex col items-c" style="flex:1;padding-top:44px;padding-bottom:32px;gap:24px">
+
+  <span class="badge badge-gold">● Sync Mode</span>
+
+  <div class="timer-wrap">
+    <svg class="timer-svg" width="230" height="230" viewBox="0 0 230 230" role="timer" aria-label="Countdown">
+      <circle class="t-bg" cx="115" cy="115" r="100" stroke-width="8"/>
+      <circle class="t-arc" cx="115" cy="115" r="100" stroke-width="8"
+        stroke-dasharray="628.3" stroke-dashoffset="0" id="sync-arc"/>
+    </svg>
+    <div class="timer-txt">
+      <div class="timer-time" id="sync-time">3:00</div>
+      <div class="timer-lbl">Sincronizando</div>
+    </div>
+  </div>
+
+  <p class="text-sm text-muted text-c" style="max-width:210px;line-height:1.7">
+    Cierra los ojos.<br>Deja que la música te ancle al presente.
+  </p>
+
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     PAGE 5 — FLOW STATE
+══════════════════════════════════════════════ -->
+<div class="page" id="page-5">
+<div class="px flex col items-c" style="flex:1;padding-top:36px;padding-bottom:24px;gap:18px">
+
+  <div class="flex items-c just-b w-full">
+    <span class="badge badge-gold">● Flow State</span>
+    <span class="text-sm text-muted" id="flow-cycle-lbl">Ciclo 1 de 4</span>
+  </div>
+
+  <div class="timer-wrap">
+    <svg class="timer-svg" width="230" height="230" viewBox="0 0 230 230" role="timer">
+      <circle class="t-bg" cx="115" cy="115" r="100" stroke-width="8"/>
+      <circle class="t-arc" cx="115" cy="115" r="100" stroke-width="8"
+        stroke-dasharray="628.3" stroke-dashoffset="0" id="flow-arc"/>
+    </svg>
+    <div class="timer-txt">
+      <div class="timer-time" id="flow-time">25:00</div>
+      <div class="timer-lbl" id="flow-lbl">Enfocado</div>
+    </div>
+  </div>
+
+  <div class="phase-bar">
+    <span class="ph" id="ph-sync">Sync</span>
+    <span class="ph-sep">›</span>
+    <span class="ph active" id="ph-focus">Focus</span>
+    <span class="ph-sep">›</span>
+    <span class="ph" id="ph-trans">Transición</span>
+    <span class="ph-sep">›</span>
+    <span class="ph" id="ph-rest">Rest</span>
+  </div>
+
+  <div class="audio-ctrls">
+    <button class="cbtn" onclick="T.reset()" aria-label="Reiniciar">↺</button>
+    <button class="cbtn" onclick="T.skip(-15)" aria-label="−15s">⏮</button>
+    <button class="cbtn main" id="flow-pp" onclick="toggleFlowPause()" aria-label="Play/Pause">⏸</button>
+    <button class="cbtn" onclick="T.skip(15)" aria-label="+15s">⏭</button>
+    <button class="cbtn" onclick="T.skip(T.duration)" aria-label="Siguiente ciclo">⏩</button>
+  </div>
+
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     PAGE 6 — RECOVERY
+══════════════════════════════════════════════ -->
+<div class="page" id="page-6">
+<div class="px flex col items-c" style="flex:1;padding-top:36px;padding-bottom:24px;gap:22px;transition:background .8s">
+
+  <div class="flex items-c just-b w-full">
+    <span class="badge badge-white">● Deep Rest</span>
+    <span id="rest-cycle-lbl" style="font-size:13px;color:rgba(255,255,255,.6)">Ciclo 1 de 4</span>
+  </div>
+
+  <div class="timer-wrap">
+    <svg class="timer-svg" width="190" height="190" viewBox="0 0 190 190">
+      <circle class="t-bg" cx="95" cy="95" r="80" stroke-width="6"/>
+      <circle class="t-arc rest-arc" cx="95" cy="95" r="80" stroke-width="6"
+        stroke-dasharray="502.7" stroke-dashoffset="0" id="rest-arc"/>
+    </svg>
+    <div class="timer-txt">
+      <div class="timer-time" id="rest-time" style="font-size:42px;color:#fff">5:00</div>
+    </div>
+  </div>
+
+  <div class="orb-wrap">
+    <div class="orb" id="breath-orb">Inhala</div>
+    <div class="breath-hint">
+      <strong style="color:#fff">4</strong> seg inhala &nbsp;·&nbsp;
+      <strong style="color:#fff">7</strong> seg sostén &nbsp;·&nbsp;
+      <strong style="color:#fff">8</strong> seg exhala
+    </div>
+  </div>
+
+  <div class="card mt-a w-full" style="background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.2)">
+    <p class="text-sm text-c" style="color:rgba(255,255,255,.55)">✦ Próximamente — Contenido de bienestar</p>
+  </div>
+
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     PAGE 7 — FEEDBACK
+══════════════════════════════════════════════ -->
+<div class="page" id="page-7">
+<div class="px pt-safe flex col" style="flex:1;padding-top:36px;padding-bottom:24px">
+
+  <h2 style="font-size:28px;font-weight:400;margin-bottom:4px">¿Cómo fue?</h2>
+  <p class="text-sm text-muted mb-5">Cuéntanos sobre tu experiencia</p>
+
+  <!-- PFS -->
+  <div class="card mb-4">
+    <p class="label-caps mb-4">Estado de Flow — PFS (1–7)</p>
+    <div class="lk-group" id="pfs-form"></div>
+  </div>
+
+  <!-- GFPS (condicional) -->
+  <div class="card mb-4" id="gfps-section" style="display:none">
+    <p class="label-caps mb-1">Predisposición al Flow — GFPS (1–5)</p>
+    <p class="text-xs text-muted mb-4">Evaluación periódica (una vez al mes)</p>
+    <div class="lk-group" id="gfps-form"></div>
+  </div>
+
+  <!-- Re-test emocional -->
+  <div class="card mb-4">
+    <p class="label-caps mb-4">¿Cómo te sientes ahora?</p>
+    <div class="slider-group">
+      <div class="slider-item">
+        <div class="slider-label"><span>Tristeza</span><span id="sv2-tristeza">50</span></div>
+        <input type="range" min="0" max="100" value="50" id="sl2-tristeza" oninput="onSlider('after','tristeza',this.value)">
+      </div>
+      <div class="slider-item">
+        <div class="slider-label"><span>Enojo</span><span id="sv2-enojo">50</span></div>
+        <input type="range" min="0" max="100" value="50" id="sl2-enojo" oninput="onSlider('after','enojo',this.value)">
+      </div>
+      <div class="slider-item">
+        <div class="slider-label"><span>Soledad</span><span id="sv2-soledad">50</span></div>
+        <input type="range" min="0" max="100" value="50" id="sl2-soledad" oninput="onSlider('after','soledad',this.value)">
+      </div>
+      <div class="slider-item">
+        <div class="slider-label"><span>Estrés</span><span id="sv2-estres">50</span></div>
+        <input type="range" min="0" max="100" value="50" id="sl2-estres" oninput="onSlider('after','estres',this.value)">
+      </div>
+    </div>
+  </div>
+
+  <!-- Life re-eval -->
+  <div class="card mb-5">
+    <p class="label-caps mb-3">¿Cómo evalúas tu vida ahora?</p>
+    <div class="life-options" id="life-after-opts">
+      <button class="life-opt" data-v="floreciendo" onclick="selectLife('after',this)"><span class="em">🌱</span><span>Floreciendo</span></button>
+      <button class="life-opt" data-v="luchando" onclick="selectLife('after',this)"><span class="em">⚖️</span><span>Luchando</span></button>
+      <button class="life-opt" data-v="sufriendo" onclick="selectLife('after',this)"><span class="em">🌧️</span><span>Sufriendo</span></button>
+    </div>
+  </div>
+
+  <button class="btn btn-primary" onclick="showResults()">Ver resultados →</button>
+
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     PAGE 8 — SESSION END
+══════════════════════════════════════════════ -->
+<div class="page" id="page-8">
+<div class="px pt-safe pb-safe flex col" style="flex:1;padding-top:48px;padding-bottom:24px">
+
+  <div class="text-c mb-5">
+    <p class="label-caps mb-2">✦ Completado</p>
+    <h1 style="font-size:46px;font-weight:400;line-height:1">Felicitaciones</h1>
+    <p class="text-sm text-muted mt-2" id="end-cycles-lbl"></p>
+  </div>
+
+  <div class="stat-grid mb-4">
+    <div class="stat-card">
+      <div class="stat-lbl">Tiempo Foco</div>
+      <div><span class="stat-val" id="end-focus">0</span><span class="stat-unit"> min</span></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-lbl">Tiempo Descanso</div>
+      <div><span class="stat-val" id="end-rest">0</span><span class="stat-unit"> min</span></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-lbl">Score Flow (PFS)</div>
+      <div><span class="stat-val" id="end-pfs">--</span><span class="stat-unit"> /7</span></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-lbl">Burnout Evitado</div>
+      <div><span class="stat-val" id="end-burnout">--</span></div>
+    </div>
+  </div>
+
+  <div class="card mb-4" id="end-gfps-card" style="display:none">
+    <div class="stat-lbl">Predisposición al Flow (GFPS)</div>
+    <div><span class="stat-val" id="end-gfps">--</span><span class="stat-unit"> /5</span></div>
+  </div>
+
+  <div class="card mb-5">
+    <div class="stat-lbl mb-2">Evaluación de vida</div>
+    <p style="font-size:15px;line-height:1.6" id="end-life-delta"></p>
+  </div>
+
+  <div class="mt-a">
+    <button class="btn btn-primary" onclick="finishSession()">Volver al inicio</button>
+  </div>
+
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     PAGE 10 — STATISTICS
+══════════════════════════════════════════════ -->
+<div class="page" id="page-10">
+<div class="px pt-safe pb-safe flex col" style="flex:1;padding-top:36px;padding-bottom:16px">
+
+  <h2 style="font-size:28px;font-weight:400;margin-bottom:14px">Estadísticas</h2>
+
+  <div class="pill-group mb-5" id="period-group">
+    <button class="pill selected" data-d="7" onclick="selectPeriod(this)">1S</button>
+    <button class="pill" data-d="30" onclick="selectPeriod(this)">1M</button>
+    <button class="pill" data-d="90" onclick="selectPeriod(this)">3M</button>
+    <button class="pill" data-d="180" onclick="selectPeriod(this)">6M</button>
+    <button class="pill" data-d="365" onclick="selectPeriod(this)">1Y</button>
+    <button class="pill" data-d="0" onclick="selectPeriod(this)">Todo</button>
+  </div>
+
+  <div id="stats-body" class="flex col gap-4"></div>
+
+</div>
+</div>
+
+<!-- TAB BAR -->
+<nav class="tab-bar" id="tab-bar">
+  <button class="tab-item active" id="tab-home" onclick="navigateTo('page-1')">
+    <svg viewBox="0 0 24 24"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H5a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg>
+    <span>Inicio</span>
+  </button>
+  <button class="tab-item" id="tab-stats" onclick="navigateTo('page-10')">
+    <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+    <span>Stats</span>
+  </button>
+  <button class="tab-item" onclick="toast('Comunidad — Próximamente 🌟')">
+    <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+    <span>Comunidad</span>
+  </button>
+</nav>
+
+<!-- Toast -->
+<div id="toast"></div>
+
+</div><!-- #app -->
+
+<script>
+'use strict';
+// ════════════════════════════════════════════════════════════
+// CONSTANTS
+// ════════════════════════════════════════════════════════════
+const C100 = 2 * Math.PI * 100; // 628.3  — r=100 (pages 4 & 5)
+const C80  = 2 * Math.PI * 80;  // 502.7  — r=80  (page 6)
+
+const TIPS = [
+  'La música a 60 BPM sincroniza tu ritmo cardíaco con el estado de calma.',
+  'El silencio entre notas es tan importante como las notas mismas.',
+  'El estado de flow ocurre cuando el reto iguala exactamente tus habilidades.',
+  'Los beats binaurales estimulan ondas alpha (8–12 Hz), el rango del foco relajado.',
+  'Respirar profundo activa el sistema nervioso parasimpático en segundos.',
+  '25 minutos de foco sostenido coincide con el ciclo natural de atención humana.',
+  'La recuperación activa mejora el rendimiento cognitivo más que el reposo pasivo.',
+  'La música en modo menor puede inducir introspección productiva, no tristeza.',
+];
+
+const PFS_ITEMS = [
+  'Estuve completamente absorbido/a en la tarea.',
+  'Mi atención estaba totalmente centrada en lo que hacía.',
+  'Me perdí por completo en la actividad.',
+  'Mis acciones fluyeron sin esfuerzo.',
+  'Sentí que tenía el control total de lo que hacía.',
+  'La tarea se sintió inusualmente fluida y sin fricción.',
+  'La experiencia fue intrínsecamente gratificante.',
+  'Me sentí en un estado óptimo de activación.',
+  'Disfruté profundamente el proceso, independientemente del resultado.',
+];
+
+const GFPS_ITEMS = [
+  { q:'Disfruto de tareas desafiantes que requieren mucha concentración.', rev:false },
+  { q:'Cuando me enfoco en una tarea, tiendo a olvidar mi entorno.',      rev:false },
+  { q:'Generalmente experimento un buen flujo cuando hago algo.',          rev:false },
+  { q:'Tengo varios ámbitos de interés distintos.',                        rev:false },
+  { q:'Me cuesta dejar o abandonar un proyecto en el que estoy trabajando.',rev:false},
+  { q:'Me estreso ante tareas difíciles o desafiantes.',                   rev:true  },
+  { q:'Me resulta difícil mantener la concentración durante mucho tiempo.', rev:true  },
+  { q:'Me canso rápidamente de las cosas que hago.',                       rev:true  },
+  { q:'Generalmente estoy satisfecho/a con los resultados de mis esfuerzos.',rev:false},
+  { q:'Con frecuencia olvido tomarme un descanso cuando me concentro.',     rev:false },
+  { q:'Me aburro con facilidad.',                                           rev:true  },
+  { q:'Mis tareas diarias me resultan agotadoras en lugar de estimulantes.',rev:true  },
+  { q:'Desarrollo interés en la mayoría de las cosas que hago en la vida.', rev:false },
+];
+
+// ════════════════════════════════════════════════════════════
+// APP STATE
+// ════════════════════════════════════════════════════════════
+const S = {
+  // setup
+  emotBefore:  { tristeza:50, enojo:50, soledad:50, estres:50 },
+  lifeBefore:  'luchando',
+  focusMin:    25,
+  restMin:     5,
+  totalHours:  1,
+  totalCycles: 2,
+  // session
+  currentCycle:    1,
+  track:           null,
+  focusAccum:      0,
+  restAccum:       0,
+  // feedback
+  pfsAns:  new Array(9).fill(0),
+  gfpsAns: new Array(13).fill(0),
+  gfpsApplied: false,
+  emotAfter:  { tristeza:50, enojo:50, soledad:50, estres:50 },
+  lifeAfter:  'luchando',
+  // stats ui
+  statsDays: 7,
+  // computed result (temp)
+  _result: null,
+};
+
+// ════════════════════════════════════════════════════════════
+// STORAGE
+// ════════════════════════════════════════════════════════════
+const Store = {
+  KEY: 'ngen_history',
+  all()  { try { return JSON.parse(localStorage.getItem(this.KEY)||'[]'); } catch { return []; } },
+  save(s){ const a=this.all(); a.push(s); localStorage.setItem(this.KEY,JSON.stringify(a)); },
+  lastGfps() {
+    const withG = this.all().filter(x=>x.gfpsApplied);
+    return withG.length ? new Date(withG[withG.length-1].date) : null;
+  },
+  needsGfps() {
+    const d = this.lastGfps();
+    return !d || (Date.now()-d.getTime())/86400000 >= 30;
+  },
+};
+
+// ════════════════════════════════════════════════════════════
+// ROUTER
+// ════════════════════════════════════════════════════════════
+const SESSION_PAGES = new Set(['page-3','page-4','page-5','page-6','page-9']);
+const TAB_MAP = { 'page-1':'tab-home', 'page-10':'tab-stats' };
+
+function navigateTo(id) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+
+  const tb = document.getElementById('tab-bar');
+  tb.classList.toggle('hidden', SESSION_PAGES.has(id));
+
+  document.querySelectorAll('.tab-item').forEach(t=>t.classList.remove('active'));
+  if (TAB_MAP[id]) document.getElementById(TAB_MAP[id]).classList.add('active');
+
+  if (id==='page-1')  renderHome();
+  if (id==='page-10') renderStats();
+}
+
+// ════════════════════════════════════════════════════════════
+// AUDIO ENGINE
+// ════════════════════════════════════════════════════════════
+const AE = {
+  ctx: null, bufs: {},
+  mainSrc: null, mainGain: null,
+  cueSrc:  null,
+  prevSrc: null, prevTO: null,
+
+  async init() {
+    if (!this.ctx) this.ctx = new (window.AudioContext||window.webkitAudioContext)();
+    await this.ctx.resume();
+  },
+
+  async loadAll(onProg) {
+    const names = ['Sync_1','Sync_2','Sync_3','Flow_State','Recovery','cue_to_Flow_state','cue_to_recovery'];
+    let n = 0;
+    await Promise.all(names.map(async name => {
+      try {
+        const res = await fetch(`${name}.wav`);
+        if (!res.ok) throw 0;
+        const ab = await res.arrayBuffer();
+        this.bufs[name] = await this.ctx.decodeAudioData(ab);
+      } catch {
+        this.bufs[name] = this._synth(name);
+      }
+      onProg(++n / names.length);
+    }));
+  },
+
+  _synth(name) {
+    const sr = this.ctx.sampleRate;
+    const ch = 2;
+    let dur = 30;
+    let gen;
+
+    if (name.startsWith('Sync')) {
+      gen = (i,c) => {
+        const t=i/sr, am=0.65+0.35*Math.sin(2*Math.PI*0.8*t);
+        const freq = name==='Sync_1'?174 : name==='Sync_2'?130 : 220;
+        return Math.sin(2*Math.PI*freq*t)*am*0.28;
+      };
+    } else if (name==='Flow_State') {
+      gen = (i,c) => {
+        const t=i/sr, f=c===0?200:210;
+        return Math.sin(2*Math.PI*f*t)*0.22;
+      };
+    } else if (name==='Recovery') {
+      gen = (i) => {
+        const t=i/sr, trem=0.5+0.5*Math.sin(2*Math.PI*0.1*t);
+        return Math.sin(2*Math.PI*432*t)*trem*0.22;
+      };
+    } else {
+      dur = 4;
+      gen = (i) => {
+        const t=i/sr, env=t<0.15?t/0.15:t>3.5?(4-t)/0.5:1;
+        return Math.sin(2*Math.PI*528*t)*env*0.18;
+      };
+    }
+
+    const buf = this.ctx.createBuffer(ch, sr*dur, sr);
+    for (let c=0;c<ch;c++) {
+      const d=buf.getChannelData(c);
+      for (let i=0;i<d.length;i++) d[i]=gen(i,c);
+    }
+    return buf;
+  },
+
+  playLoop(name) {
+    this._stopMain();
+    const g = this.ctx.createGain(); g.gain.value=0; g.connect(this.ctx.destination);
+    const s = this.ctx.createBufferSource(); s.buffer=this.bufs[name]; s.loop=true; s.connect(g); s.start();
+    this.mainSrc=s; this.mainGain=g;
+    g.gain.linearRampToValueAtTime(0.75, this.ctx.currentTime+2);
+  },
+
+  playCue(name, onEnd) {
+    try { this.cueSrc&&this.cueSrc.stop(); } catch {}
+    const g=this.ctx.createGain(); g.gain.value=0; g.connect(this.ctx.destination);
+    const s=this.ctx.createBufferSource(); s.buffer=this.bufs[name]; s.connect(g); s.start();
+    s.onended=onEnd||null;
+    g.gain.linearRampToValueAtTime(0.6, this.ctx.currentTime+0.8);
+    this.cueSrc=s;
+  },
+
+  fadeOutMain(sec) {
+    if (!this.mainGain) return;
+    const t=this.ctx.currentTime;
+    this.mainGain.gain.setValueAtTime(this.mainGain.gain.value, t);
+    this.mainGain.gain.linearRampToValueAtTime(0, t+sec);
+    setTimeout(()=>this._stopMain(), (sec+0.1)*1000);
+  },
+
+  stopAll() { this._stopMain(); try{this.cueSrc&&this.cueSrc.stop();}catch{} },
+
+  _stopMain() {
+    try{this.mainSrc&&this.mainSrc.stop();}catch{}
+    this.mainSrc=null; this.mainGain=null;
+  },
+
+  async preview(name, btnId) {
+    await this.init();
+    clearTimeout(this.prevTO);
+    try{this.prevSrc&&this.prevSrc.stop();}catch{}
+    document.querySelectorAll('.track-prev').forEach(b=>{b.textContent='▶';});
+
+    const btn = document.getElementById(btnId);
+    if (!btn) return;
+    btn.textContent='⏹';
+
+    const g=this.ctx.createGain(); g.gain.value=0.6; g.connect(this.ctx.destination);
+    const s=this.ctx.createBufferSource(); s.buffer=this.bufs[name]; s.connect(g); s.start();
+    this.prevSrc=s;
+    s.onended=()=>{ btn.textContent='▶'; };
+    this.prevTO=setTimeout(()=>{ try{s.stop();}catch{} btn.textContent='▶'; }, 10000);
+  },
+};
+
+// ════════════════════════════════════════════════════════════
+// TIMER ENGINE
+// ════════════════════════════════════════════════════════════
+const T = {
+  duration:0, elapsed:0, lastTs:null,
+  rafId:null, running:false, paused:false,
+  cueFired:false,
+  onTick:null, onDone:null,
+
+  start(dur, onTick, onDone) {
+    if (this.rafId) cancelAnimationFrame(this.rafId);
+    this.duration=dur; this.elapsed=0; this.lastTs=performance.now();
+    this.running=true; this.paused=false; this.cueFired=false;
+    this.onTick=onTick; this.onDone=onDone;
+    this._loop();
+  },
+
+  _loop() {
+    if (!this.running) return;
+    const now=performance.now();
+    if (!this.paused) this.elapsed+=Math.min((now-this.lastTs)/1000, 0.5);
+    this.lastTs=now;
+    const rem=Math.max(0, this.duration-this.elapsed);
+    this.onTick&&this.onTick(rem);
+    if (rem<=0) { this.running=false; this.onDone&&this.onDone(); return; }
+    this.rafId=requestAnimationFrame(()=>this._loop());
+  },
+
+  pause()  { this.paused=true; },
+  resume() { this.paused=false; this.lastTs=performance.now(); },
+  reset()  { this.elapsed=0; this.cueFired=false; this.lastTs=performance.now(); },
+  skip(s)  { this.elapsed=Math.max(0,Math.min(this.duration-0.5, this.elapsed+s)); this.lastTs=performance.now(); },
+  stop()   { this.running=false; if(this.rafId) cancelAnimationFrame(this.rafId); },
+  get rem(){ return Math.max(0,this.duration-this.elapsed); },
+};
+
+// ════════════════════════════════════════════════════════════
+// BREATHING ANIMATION
+// ════════════════════════════════════════════════════════════
+let breathRaf=null, breathT0=null;
+
+function startBreath() {
+  breathT0=performance.now();
+  function tick() {
+    const t=(performance.now()-breathT0)/1000;
+    const cycle=19, ph=t%cycle;
+    const orb=document.getElementById('breath-orb');
+    if (!orb) return;
+    let scale, txt;
+    if (ph<4)        { scale=0.62+0.38*(ph/4);       txt='Inhala'; }
+    else if (ph<11)  { scale=1;                        txt='Sostén'; }
+    else             { scale=1-0.38*((ph-11)/8);       txt='Exhala'; }
+    orb.style.transform=`scale(${scale.toFixed(3)})`;
+    orb.textContent=txt;
+    breathRaf=requestAnimationFrame(tick);
+  }
+  breathRaf=requestAnimationFrame(tick);
+}
+
+function stopBreath() {
+  if (breathRaf) cancelAnimationFrame(breathRaf);
+  breathRaf=null;
+}
+
+// ════════════════════════════════════════════════════════════
+// HELPERS
+// ════════════════════════════════════════════════════════════
+function fmt(s)  { const m=Math.floor(s/60); return `${m}:${String(Math.floor(s%60)).padStart(2,'0')}`; }
+function arc(id, circ, prog) { const el=document.getElementById(id); if(el) el.setAttribute('stroke-dashoffset', circ*(1-Math.max(0,Math.min(1,prog)))); }
+function mean(a) { return a.length ? a.reduce((s,v)=>s+v,0)/a.length : 0; }
+function lifeN(v){ return {floreciendo:0,luchando:0.5,sufriendo:1}[v]??0.5; }
+function burnout(estres,life){ return (estres/100)*0.6 + lifeN(life)*0.4; }
+
+function toast(msg) {
+  const el=document.getElementById('toast');
+  el.textContent=msg; el.classList.add('show');
+  setTimeout(()=>el.classList.remove('show'),2200);
+}
+
+// ════════════════════════════════════════════════════════════
+// PAGE 1 — HOME
+// ════════════════════════════════════════════════════════════
+function renderHome() {
+  const all=Store.all();
+  const tf=all.reduce((s,x)=>s+(x.focusMinutes||0),0);
+  const tr=all.reduce((s,x)=>s+(x.recoveryMinutes||0),0);
+  const bi=all.length ? mean(all.map(x=>x.burnoutIndex||0)) : null;
+
+  document.getElementById('m-focus').textContent   = tf>=60?`${Math.floor(tf/60)}h`:`${tf}m`;
+  document.getElementById('m-rest').textContent    = tr>=60?`${Math.floor(tr/60)}h`:`${tr}m`;
+  document.getElementById('m-burnout').textContent = bi!==null?`${Math.round(bi*100)}%`:'--';
+
+  const box=document.getElementById('home-sessions');
+  if (!all.length) {
+    box.innerHTML=`<div class="empty"><div class="empty-icon">🎵</div><p class="empty-txt">Aún no tienes sesiones. ¡Inicia tu primera experiencia Ngen!</p></div>`;
+    return;
+  }
+  box.innerHTML=all.slice(-5).reverse().map(s=>{
+    const d=new Date(s.date);
+    const ds=d.toLocaleDateString('es',{day:'numeric',month:'short'});
+    return `<div class="sess-item">
+      <div class="sess-dot"></div>
+      <div class="sess-info">
+        <div class="sess-date">${ds} · ${s.track||'Sync'} · ${s.focusMinutes||0} min foco</div>
+        <div class="sess-meta">Flow <strong>${s.pfsAvg?s.pfsAvg.toFixed(1):'--'}</strong>/7 · ${s.cyclesCompleted} ciclo${s.cyclesCompleted>1?'s':''}</div>
+      </div>
+      <div class="sess-score">${s.pfsAvg?s.pfsAvg.toFixed(1):'--'}</div>
+    </div>`;
+  }).join('');
+}
+
+function goSetup() {
+  // reset setup UI
+  ['tristeza','enojo','soledad','estres'].forEach(k=>{
+    document.getElementById(`sl-${k}`).value=50;
+    document.getElementById(`sv-${k}`).textContent=50;
+    S.emotBefore[k]=50;
+  });
+  document.querySelectorAll('#life-before-opts .life-opt').forEach(b=>b.classList.remove('selected'));
+  S.lifeBefore='luchando';
+  document.querySelectorAll('#interval-group .pill').forEach((b,i)=>b.classList.toggle('selected',i===0));
+  S.focusMin=25; S.restMin=5;
+  document.querySelectorAll('#hours-group .pill').forEach((b,i)=>b.classList.toggle('selected',i===0));
+  S.totalHours=1;
+  updateSummary();
+  navigateTo('page-2');
+}
+
+// ════════════════════════════════════════════════════════════
+// PAGE 2 — SETUP
+// ════════════════════════════════════════════════════════════
+function onSlider(ctx, key, val) {
+  val=+val;
+  if (ctx==='before') { S.emotBefore[key]=val; document.getElementById(`sv-${key}`).textContent=val; }
+  else                { S.emotAfter[key]=val;  document.getElementById(`sv2-${key}`).textContent=val; }
+}
+
+function selectLife(ctx, btn) {
+  const group = ctx==='before'?'#life-before-opts':' #life-after-opts';
+  document.querySelectorAll(group+' .life-opt').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+  if (ctx==='before') S.lifeBefore=btn.dataset.v;
+  else                S.lifeAfter=btn.dataset.v;
+}
+
+function selectInterval(btn) {
+  document.querySelectorAll('#interval-group .pill').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+  S.focusMin=+btn.dataset.f; S.restMin=+btn.dataset.r;
+  updateSummary();
+}
+
+function selectHours(btn) {
+  document.querySelectorAll('#hours-group .pill').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+  S.totalHours=+btn.dataset.h;
+  updateSummary();
+}
+
+function updateSummary() {
+  const cycles=Math.max(1,Math.floor(S.totalHours*60/(S.focusMin+S.restMin)));
+  S.totalCycles=cycles;
+  document.getElementById('sess-summary').textContent=
+    `${cycles} ciclo${cycles>1?'s':''} · ${cycles*S.focusMin} min foco · ${cycles*S.restMin} min descanso`;
+}
+
+// ════════════════════════════════════════════════════════════
+// PAGE 9 — LOADING
+// ════════════════════════════════════════════════════════════
+let tipTO=null;
+
+async function startLoading() {
+  navigateTo('page-9');
+  document.getElementById('load-prog').style.width='0';
+
+  await AE.init();
+
+  let ti=0;
+  document.getElementById('load-tip').textContent=TIPS[0];
+  tipTO=setInterval(()=>{ ti=(ti+1)%TIPS.length; document.getElementById('load-tip').textContent=TIPS[ti]; },2000);
+
+  await AE.loadAll(p=>{ document.getElementById('load-prog').style.width=`${Math.round(p*100)}%`; });
+
+  clearInterval(tipTO);
+
+  S.currentCycle=1; S.focusAccum=0; S.restAccum=0;
+  S.pfsAns=new Array(9).fill(0);
+  S.gfpsAns=new Array(13).fill(0);
+  S.gfpsApplied=Store.needsGfps();
+
+  setTimeout(()=>{ initTrackSelect(); navigateTo('page-3'); }, 500);
+}
+
+// ════════════════════════════════════════════════════════════
+// PAGE 3 — TRACK SELECTION
+// ════════════════════════════════════════════════════════════
+function initTrackSelect() {
+  S.track=null;
+  document.querySelectorAll('.track-card').forEach(c=>c.classList.remove('selected'));
+  document.getElementById('btn-confirm-sync').disabled=true;
+}
+
+function selectTrack(card) {
+  document.querySelectorAll('.track-card').forEach(c=>c.classList.remove('selected'));
+  card.classList.add('selected');
+  S.track=card.dataset.t;
+  document.getElementById('btn-confirm-sync').disabled=false;
+}
+
+function previewTrack(e, name) {
+  e.stopPropagation();
+  AE.preview(name, `tp-${name}`);
+}
+
+// ════════════════════════════════════════════════════════════
+// PAGE 4 — SYNC MODE
+// ════════════════════════════════════════════════════════════
+function startSyncMode() {
+  try{AE.prevSrc&&AE.prevSrc.stop();}catch{}
+  AE.stopAll();
+  AE.playLoop(S.track);
+  navigateTo('page-4');
+
+  const dur=180;
+  arc('sync-arc',C100,1);
+
+  T.start(dur, rem=>{
+    document.getElementById('sync-time').textContent=fmt(rem);
+    arc('sync-arc',C100,rem/dur);
+    if (rem<=60 && !T.cueFired) {
+      T.cueFired=true;
+      AE.fadeOutMain(5);
+      AE.playCue('cue_to_Flow_state');
+    }
+  }, ()=>startFlowState());
+}
+
+// ════════════════════════════════════════════════════════════
+// PAGE 5 — FLOW STATE
+// ════════════════════════════════════════════════════════════
+let flowPaused=false;
+
+function startFlowState() {
+  AE.stopAll();
+  AE.playLoop('Flow_State');
+  navigateTo('page-5');
+
+  const dur=S.focusMin*60;
+  document.getElementById('flow-cycle-lbl').textContent=`Ciclo ${S.currentCycle} de ${S.totalCycles}`;
+  document.getElementById('flow-time').textContent=fmt(dur);
+  document.getElementById('flow-lbl').textContent='Enfocado';
+
+  ['ph-sync','ph-focus','ph-trans','ph-rest'].forEach(id=>document.getElementById(id).classList.remove('active'));
+  document.getElementById('ph-focus').classList.add('active');
+
+  flowPaused=false;
+  document.getElementById('flow-pp').textContent='⏸';
+  arc('flow-arc',C100,1);
+
+  T.start(dur, rem=>{
+    document.getElementById('flow-time').textContent=fmt(rem);
+    arc('flow-arc',C100,rem/dur);
+    if (rem<=60 && !T.cueFired) {
+      T.cueFired=true;
+      document.getElementById('ph-trans').classList.add('active');
+      document.getElementById('flow-lbl').textContent='Transición';
+      AE.fadeOutMain(4);
+      AE.playCue('cue_to_recovery');
+    }
+  }, ()=>{
+    S.focusAccum+=S.focusMin;
+    startRecovery();
+  });
+}
+
+function toggleFlowPause() {
+  flowPaused=!flowPaused;
+  if (flowPaused) { T.pause(); document.getElementById('flow-pp').textContent='▶'; }
+  else            { T.resume(); document.getElementById('flow-pp').textContent='⏸'; }
+}
+
+// ════════════════════════════════════════════════════════════
+// PAGE 6 — RECOVERY
+// ════════════════════════════════════════════════════════════
+function startRecovery() {
+  AE.stopAll();
+  AE.playLoop('Recovery');
+  navigateTo('page-6');
+
+  document.getElementById('page-6').style.background='var(--rest-bg)';
+  document.getElementById('rest-cycle-lbl').textContent=`Ciclo ${S.currentCycle} de ${S.totalCycles}`;
+
+  const dur=S.restMin*60;
+  document.getElementById('rest-time').textContent=fmt(dur);
+  arc('rest-arc',C80,1);
+
+  startBreath();
+
+  T.start(dur, rem=>{
+    document.getElementById('rest-time').textContent=fmt(rem);
+    arc('rest-arc',C80,rem/dur);
+    if (rem<=60 && !T.cueFired) {
+      T.cueFired=true;
+      if (S.currentCycle<S.totalCycles) {
+        AE.fadeOutMain(4);
+        AE.playCue('cue_to_Flow_state');
+      } else {
+        AE.fadeOutMain(10);
+      }
+    }
+  }, ()=>{
+    stopBreath();
+    S.restAccum+=S.restMin;
+    document.getElementById('page-6').style.background='';
+    if (S.currentCycle<S.totalCycles) {
+      S.currentCycle++;
+      startSyncMode();
+    } else {
+      AE.stopAll();
+      navigateTo('page-7');
+      initFeedback();
+    }
+  });
+}
+
+// ════════════════════════════════════════════════════════════
+// PAGE 7 — FEEDBACK
+// ════════════════════════════════════════════════════════════
+function initFeedback() {
+  // Reset after-emotions
+  ['tristeza','enojo','soledad','estres'].forEach(k=>{
+    S.emotAfter[k]=S.emotBefore[k];
+    const sl=document.getElementById(`sl2-${k}`);
+    const sv=document.getElementById(`sv2-${k}`);
+    if (sl) sl.value=S.emotBefore[k];
+    if (sv) sv.textContent=S.emotBefore[k];
+  });
+  S.lifeAfter=S.lifeBefore;
+  document.querySelectorAll('#life-after-opts .life-opt').forEach(b=>b.classList.remove('selected'));
+
+  buildLikert('pfs-form', PFS_ITEMS.map(q=>({q,rev:false})), 7, 'pfs');
+
+  const gs=document.getElementById('gfps-section');
+  if (S.gfpsApplied) {
+    gs.style.display='block';
+    buildLikert('gfps-form', GFPS_ITEMS, 5, 'gfps');
+  } else {
+    gs.style.display='none';
+  }
+}
+
+function buildLikert(containerId, items, max, prefix) {
+  const c=document.getElementById(containerId);
+  c.innerHTML='';
+  items.forEach((item,i)=>{
+    const btns=Array.from({length:max},(_,j)=>j+1).map(v=>
+      `<button class="lk-btn" data-p="${prefix}" data-i="${i}" data-v="${v}" onclick="setLikert(this)">${v}</button>`
+    ).join('');
+    const d=document.createElement('div');
+    d.className='lk-item';
+    d.innerHTML=`<p class="lk-q">${i+1}. ${item.q}</p>
+      <div class="lk-scale">${btns}</div>
+      <div class="lk-labels"><span>En desacuerdo</span><span>De acuerdo</span></div>`;
+    c.appendChild(d);
+  });
+}
+
+function setLikert(btn) {
+  const {p,i,v}=btn.dataset;
+  btn.closest('.lk-scale').querySelectorAll('.lk-btn').forEach(b=>b.classList.remove('sel'));
+  btn.classList.add('sel');
+  if (p==='pfs')  S.pfsAns[+i]=+v;
+  if (p==='gfps') S.gfpsAns[+i]=+v;
+}
+
+// ════════════════════════════════════════════════════════════
+// PAGE 8 — SESSION END
+// ════════════════════════════════════════════════════════════
+function showResults() {
+  const pfsVals=S.pfsAns.filter(v=>v>0);
+  const pfsAvg=pfsVals.length?mean(pfsVals):0;
+
+  let gfpsAvg=0;
+  if (S.gfpsApplied) {
+    const scored=S.gfpsAns.map((v,i)=>{
+      if (v===0) return 3;
+      return GFPS_ITEMS[i].rev?(6-v):v;
+    });
+    gfpsAvg=mean(scored);
+  }
+
+  const bBefore=burnout(S.emotBefore.estres, S.lifeBefore);
+  const bAfter =burnout(S.emotAfter.estres,  S.lifeAfter);
+  const bSaved =Math.max(0, bBefore-bAfter);
+
+  S._result={pfsAvg,gfpsAvg,burnoutAfter:bAfter,burnoutEvitado:bSaved};
+
+  document.getElementById('end-cycles-lbl').textContent=`${S.currentCycle} ciclo${S.currentCycle>1?'s':''} completados`;
+  document.getElementById('end-focus').textContent=S.focusAccum;
+  document.getElementById('end-rest').textContent=S.restAccum;
+  document.getElementById('end-pfs').textContent=pfsAvg>0?pfsAvg.toFixed(1):'--';
+  document.getElementById('end-burnout').textContent=`${Math.round(bSaved*100)}%`;
+
+  if (S.gfpsApplied && gfpsAvg>0) {
+    document.getElementById('end-gfps-card').style.display='block';
+    document.getElementById('end-gfps').textContent=gfpsAvg.toFixed(1);
+  } else {
+    document.getElementById('end-gfps-card').style.display='none';
+  }
+
+  const lab={floreciendo:'Floreciendo 🌱',luchando:'Luchando ⚖️',sufriendo:'Sufriendo 🌧️'};
+  const sc ={floreciendo:2,luchando:1,sufriendo:0};
+  const delta=(sc[S.lifeAfter]||1)-(sc[S.lifeBefore]||1);
+  let lifeTxt;
+  if (delta>0)       lifeTxt=`${lab[S.lifeBefore]} → ${lab[S.lifeAfter]} ✨`;
+  else if (delta===0) lifeTxt=`Te mantuviste estable: ${lab[S.lifeBefore]}`;
+  else               lifeTxt=`${lab[S.lifeBefore]} → ${lab[S.lifeAfter]}\nLa constancia también es valentía 💙`;
+  document.getElementById('end-life-delta').textContent=lifeTxt;
+
+  navigateTo('page-8');
+}
+
+function finishSession() {
+  const r=S._result||{};
+  Store.save({
+    id: Date.now().toString(),
+    date: new Date().toISOString(),
+    track: S.track,
+    interval: S.focusMin,
+    restInterval: S.restMin,
+    totalHours: S.totalHours,
+    cyclesCompleted: S.currentCycle,
+    emotionsBefore: {...S.emotBefore},
+    emotionsAfter:  {...S.emotAfter},
+    lifeBefore: S.lifeBefore,
+    lifeAfter:  S.lifeAfter,
+    pfs:  [...S.pfsAns],
+    pfsAvg: r.pfsAvg||0,
+    gfps: [...S.gfpsAns],
+    gfpsAvg: r.gfpsAvg||0,
+    gfpsApplied: S.gfpsApplied,
+    focusMinutes: S.focusAccum,
+    recoveryMinutes: S.restAccum,
+    burnoutIndex: r.burnoutAfter||0,
+  });
+  navigateTo('page-1');
+}
+
+// ════════════════════════════════════════════════════════════
+// PAGE 10 — STATISTICS
+// ════════════════════════════════════════════════════════════
+function selectPeriod(btn) {
+  document.querySelectorAll('#period-group .pill').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+  S.statsDays=+btn.dataset.d;
+  renderStats();
+}
+
+function renderStats() {
+  const all=Store.all();
+  const days=S.statsDays;
+  const data=days===0?all:all.filter(s=>(Date.now()-new Date(s.date).getTime())/86400000<=days);
+  const box=document.getElementById('stats-body');
+
+  if (!data.length) {
+    box.innerHTML=`<div class="empty"><div class="empty-icon">📊</div><p class="empty-txt">Completa tu primera sesión para ver estadísticas aquí.</p></div>`;
+    return;
+  }
+
+  const charts=[
+    {title:'Tiempo Foco (min)', get:(s)=>s.focusMinutes||0,    color:'#e8b84b'},
+    {title:'Índice Burnout (%)',get:(s)=>Math.round((s.burnoutIndex||0)*100), color:'#f87171'},
+    {title:'Estrés',            get:(s)=>s.emotionsBefore?.estres??0,         color:'#a78bfa'},
+    {title:'Bienestar',         get:(s)=>({floreciendo:100,luchando:50,sufriendo:0})[s.lifeAfter]??50, color:'#34d399'},
+  ];
+
+  box.innerHTML='';
+  charts.forEach(cfg=>{
+    const vals=data.map(cfg.get);
+    const lbls=data.map(s=>{const d=new Date(s.date);return `${d.getDate()}/${d.getMonth()+1}`;});
+    const sec=document.createElement('div');
+    sec.className='chart-section';
+    const title=document.createElement('p');
+    title.className='chart-title';
+    title.textContent=cfg.title;
+    const cv=document.createElement('canvas');
+    cv.className='chart'; cv.height=110;
+    sec.appendChild(title); sec.appendChild(cv);
+    box.appendChild(sec);
+    drawChart(cv,vals,lbls,cfg.color);
+  });
+}
+
+function drawChart(cv, vals, lbls, color) {
+  const dpr=window.devicePixelRatio||1;
+  const W=350, H=110;
+  cv.style.width=W+'px'; cv.style.height=H+'px';
+  cv.width=W*dpr; cv.height=H*dpr;
+  const ctx=cv.getContext('2d');
+  ctx.scale(dpr,dpr);
+
+  const pad={t:8,r:8,b:22,l:32};
+  const cw=W-pad.l-pad.r, ch=H-pad.t-pad.b;
+  const mn=0, mx=Math.max(...vals,1);
+  const rng=mx-mn||1;
+
+  // bg
+  ctx.fillStyle='rgba(255,255,255,.03)';
+  ctx.beginPath(); ctx.roundRect(0,0,W,H,6); ctx.fill();
+
+  // grid
+  ctx.strokeStyle='rgba(255,255,255,.06)'; ctx.lineWidth=1;
+  [0,.5,1].forEach(f=>{
+    const y=pad.t+ch*(1-f);
+    ctx.beginPath(); ctx.moveTo(pad.l,y); ctx.lineTo(pad.l+cw,y); ctx.stroke();
+    ctx.fillStyle='rgba(255,255,255,.28)'; ctx.font=`9px Inter,sans-serif`; ctx.textAlign='right';
+    ctx.fillText(Math.round(mn+rng*f), pad.l-3, y+3);
+  });
+
+  if (!vals.length) return;
+
+  const pts=vals.map((v,i)=>({
+    x:pad.l+(vals.length<2?cw/2:(i/(vals.length-1))*cw),
+    y:pad.t+ch*(1-(v-mn)/rng),
+  }));
+
+  // area
+  const gr=ctx.createLinearGradient(0,pad.t,0,pad.t+ch);
+  gr.addColorStop(0,color+'44'); gr.addColorStop(1,color+'00');
+  ctx.beginPath(); ctx.moveTo(pts[0].x,pad.t+ch);
+  pts.forEach(p=>ctx.lineTo(p.x,p.y));
+  ctx.lineTo(pts[pts.length-1].x,pad.t+ch); ctx.closePath();
+  ctx.fillStyle=gr; ctx.fill();
+
+  // line
+  if (pts.length>1) {
+    ctx.beginPath(); ctx.moveTo(pts[0].x,pts[0].y);
+    for (let i=1;i<pts.length;i++) {
+      const mx=(pts[i-1].x+pts[i].x)/2;
+      ctx.bezierCurveTo(mx,pts[i-1].y,mx,pts[i].y,pts[i].x,pts[i].y);
+    }
+    ctx.strokeStyle=color; ctx.lineWidth=2; ctx.stroke();
+  }
+
+  // dots + x labels
+  const step=Math.max(1,Math.ceil(lbls.length/5));
+  pts.forEach((p,i)=>{
+    ctx.beginPath(); ctx.arc(p.x,p.y,3,0,Math.PI*2);
+    ctx.fillStyle=color; ctx.fill();
+    if (i%step===0||i===pts.length-1) {
+      ctx.fillStyle='rgba(255,255,255,.28)'; ctx.font='9px Inter,sans-serif'; ctx.textAlign='center';
+      ctx.fillText(lbls[i],p.x,H-5);
+    }
+  });
+}
+
+// ════════════════════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded',()=>{
+  updateSummary();
+  navigateTo('page-1');
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js').catch(()=>{});
+  }
+});
+</script>
+</body>
+</html>
