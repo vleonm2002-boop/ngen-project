@@ -1,0 +1,33 @@
+name: Process Feedback Issue
+
+on:
+  issues:
+    types: [labeled]
+
+jobs:
+  process:
+    if: github.event.label.name == 'feedback'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: anthropics/claude-code-action@beta
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          prompt: |
+            Eres un agente que implementa cambios en la app Ngen (index.html, single-file PWA).
+
+            Issue #${{ github.event.issue.number }}: "${{ github.event.issue.title }}"
+            Descripción: ${{ github.event.issue.body }}
+
+            Pasos:
+            1. Lee index.html y entiende el cambio solicitado.
+            2. Implementa el cambio mínimo necesario (no refactorices nada más).
+            3. Haz commit con el mensaje: feedback(#${{ github.event.issue.number }}): <descripción breve en español>
+            4. Comenta en el issue: "✅ Implementado y desplegado en https://ngen-project.vercel.app"
+            5. Cierra el issue.
