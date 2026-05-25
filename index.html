@@ -961,7 +961,7 @@ function renderHome() {
 
   const box=document.getElementById('home-sessions');
   if (!all.length) {
-    box.innerHTML=`<div class="empty"><div class="empty-icon">🎵</div><p class="empty-txt">Aún no tienes sesiones. ¡Inicia tu primera experiencia Ngen!</p></div>`;
+    box.innerHTML=`<div class="empty"><div class="empty-icon" style="color:var(--text);opacity:1">♩</div><p class="empty-txt">Aún no tienes sesiones. ¡Inicia tu primera experiencia Ngen!</p></div>`;
     return;
   }
   box.innerHTML=all.slice(-5).reverse().map(s=>{
