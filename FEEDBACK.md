@@ -6,7 +6,7 @@ Agrega una línea con `- [ ]` para solicitar un cambio. El agente la implementar
 ---
 
 ## Pendiente
-
+- [ ]Agregar skip button en pantallas de la sesión
 <!-- Escribe aquí. Un ítem por línea. Sé específico: pantalla, qué cambiar, cómo debe quedar. -->
 <!-- Ejemplo: - [ ] En la pantalla Home, cambiar el texto del botón a "Iniciar sesión de foco" -->
 
