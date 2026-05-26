@@ -15,7 +15,8 @@ log "Revisando FEEDBACK.md..."
 cd "$PROJECT" || exit 1
 
 # Pull para obtener cambios de Benjamin
-git pull --quiet origin main >> "$LOG" 2>&1
+PULL_OUT=$(git pull origin main 2>&1)
+log "git pull: $PULL_OUT"
 
 # Buscar primer ítem pendiente (- [ ] texto  o  - [ ]texto)
 ITEM=$(grep -m1 '^\- \[ \]' "$FEEDBACK_FILE" 2>/dev/null | sed 's/^- \[ \] *//')
