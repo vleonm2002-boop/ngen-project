@@ -763,6 +763,51 @@ const Store = {
 };
 
 // ════════════════════════════════════════════════════════════
+// USER IDENTITY
+// ════════════════════════════════════════════════════════════
+function getUserId() {
+  const KEY = 'ngen_user_id';
+  let id = localStorage.getItem(KEY);
+  if (!id) {
+    id = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+      const r = Math.random()*16|0;
+      return (c==='x'?r:(r&0x3|0x8)).toString(16);
+    });
+    localStorage.setItem(KEY, id);
+  }
+  return id;
+}
+
+// ════════════════════════════════════════════════════════════
+// FLOW RESULTS TABLE  (ngen_flow_results)
+// Schema: user_id, session_number, date, global_flow_score,
+//         absorption_score, effortless_control_score, intrinsic_reward_score
+// ════════════════════════════════════════════════════════════
+const FlowResults = {
+  KEY: 'ngen_flow_results',
+  all()  { try { return JSON.parse(localStorage.getItem(this.KEY)||'[]'); } catch { return []; } },
+  save(record) {
+    const rows = this.all();
+    rows.push(record);
+    localStorage.setItem(this.KEY, JSON.stringify(rows));
+  },
+  insert({ global_flow_score=null, absorption_score=null,
+           effortless_control_score=null, intrinsic_reward_score=null } = {}) {
+    const rows = this.all();
+    const session_number = rows.length + 1;
+    this.save({
+      user_id:                getUserId(),
+      session_number,
+      date:                   new Date().toISOString(),
+      global_flow_score:      global_flow_score      !== undefined ? global_flow_score      : null,
+      absorption_score:       absorption_score       !== undefined ? absorption_score       : null,
+      effortless_control_score: effortless_control_score !== undefined ? effortless_control_score : null,
+      intrinsic_reward_score: intrinsic_reward_score !== undefined ? intrinsic_reward_score : null,
+    });
+  },
+};
+
+// ════════════════════════════════════════════════════════════
 // ROUTER
 // ════════════════════════════════════════════════════════════
 const SESSION_PAGES = new Set(['page-3','page-4','page-5','page-6','page-9']);
@@ -1398,6 +1443,13 @@ function finishSession() {
     focusMinutes: S.focusAccum,
     recoveryMinutes: S.restAccum,
     burnoutIndex: r.burnoutAfter||0,
+  });
+  // Save flow scores to dedicated table (ngen_flow_results)
+  FlowResults.insert({
+    global_flow_score:        r.globalFlowScore        != null ? r.globalFlowScore        : null,
+    absorption_score:         r.absorptionScore        != null ? r.absorptionScore        : null,
+    effortless_control_score: r.effortlessControlScore != null ? r.effortlessControlScore : null,
+    intrinsic_reward_score:   r.intrinsicRewardScore   != null ? r.intrinsicRewardScore   : null,
   });
   navigateTo('page-1');
 }

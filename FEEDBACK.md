@@ -40,7 +40,7 @@ Agrega una línea con `- [ ] ` para solicitar un cambio. El agente la implementa
   - Promediar ítems 7, 8 y 9 → Puntuación de Intrinsic Reward
   - Promediar los 9 ítems → Global Flow Score
 
-- [ ] Crear nueva tabla en la base de datos para almacenar los resultados por sesión. Si no existe base de datos crear una:
+- [x] Crear nueva tabla en la base de datos para almacenar los resultados por sesión. Si no existe base de datos crear una:
 
   | Columna | Tipo de dato |
   |---|---|
