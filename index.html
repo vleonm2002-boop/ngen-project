@@ -501,12 +501,6 @@ canvas.chart{width:100%;border-radius:var(--rs);display:block;background:rgba(25
   <h2 style="font-size:28px;font-weight:400;margin-bottom:4px">¿Cómo fue?</h2>
   <p class="text-sm text-muted mb-5">Cuéntanos sobre tu experiencia</p>
 
-  <!-- PFS -->
-  <div class="card mb-4">
-    <p class="label-caps mb-4">Estado de Flow — PFS (1–7)</p>
-    <div class="lk-group" id="pfs-form"></div>
-  </div>
-
   <!-- GFPS (condicional) -->
   <div class="card mb-4" id="gfps-section" style="display:none">
     <p class="label-caps mb-1">Predisposición al Flow — GFPS (1–5)</p>
@@ -622,6 +616,38 @@ canvas.chart{width:100%;border-radius:var(--rs);display:block;background:rgba(25
 </div>
 </div>
 
+<!-- ══════════════════════════════════════════════
+     PAGE 11 — FLOW SURVEY (PFS)
+══════════════════════════════════════════════ -->
+<div class="page" id="page-11">
+<div class="px pt-safe pb-safe flex col" style="flex:1;padding-top:36px;padding-bottom:24px">
+
+  <div class="flex items-c just-b w-full mb-3">
+    <h2 style="font-size:26px;font-weight:400">¿Cómo fue tu flow?</h2>
+    <button onclick="skipFlowSurvey()" style="background:transparent;border:none;color:var(--muted);font-size:13px;cursor:pointer;font-family:'Inter',sans-serif;padding:6px 0;-webkit-tap-highlight-color:transparent">Omitir</button>
+  </div>
+  <p class="text-sm text-muted mb-5" style="line-height:1.6">1 = Completamente en desacuerdo &nbsp;·&nbsp; 7 = Completamente de acuerdo</p>
+
+  <div class="lk-group mb-5" id="pfs11-form"></div>
+
+  <div class="mt-a">
+    <button class="btn btn-primary" onclick="submitFlowSurvey()">Continuar →</button>
+  </div>
+
+</div>
+</div>
+
+<!-- Skip Flow Modal -->
+<div id="skip-modal" style="display:none;position:absolute;inset:0;background:rgba(0,0,0,.62);z-index:300;align-items:center;justify-content:center;padding:28px">
+  <div style="background:var(--bg);border:1px solid var(--brd);border-radius:var(--r);padding:24px;width:100%;max-width:320px">
+    <p class="text-sm" style="line-height:1.75;margin-bottom:20px">Si saltas esta opción no podremos evaluar tu progreso, ni podremos personalizar tu experiencia para tu beneficio. ¿Deseas omitir de todas formas?</p>
+    <div class="flex gap-2">
+      <button class="btn btn-secondary" style="flex:1;padding:12px 8px;font-size:14px" onclick="confirmSkipFlow()">Omitir</button>
+      <button class="btn btn-primary"   style="flex:1;padding:12px 8px;font-size:14px" onclick="cancelSkipFlow()">Responder</button>
+    </div>
+  </div>
+</div>
+
 <!-- TAB BAR -->
 <nav class="tab-bar" id="tab-bar">
   <button class="tab-item active" id="tab-home" onclick="navigateTo('page-1')">
@@ -663,15 +689,15 @@ const TIPS = [
 ];
 
 const PFS_ITEMS = [
-  'Estuve completamente absorbido/a en la tarea.',
-  'Mi atención estaba totalmente centrada en lo que hacía.',
-  'Me perdí por completo en la actividad.',
-  'Mis acciones fluyeron sin esfuerzo.',
-  'Sentí que tenía el control total de lo que hacía.',
-  'La tarea se sintió inusualmente fluida y sin fricción.',
-  'La experiencia fue intrínsecamente gratificante.',
-  'Me sentí en un estado óptimo de activación.',
-  'Disfruté profundamente el proceso, independientemente del resultado.',
+  'Estuve absorto(a) en la tarea',
+  'Estaba muy enfocado(a) en la tarea',
+  'Toda mi atención estaba en la tarea',
+  'Sentí que podía controlar fácilmente lo que hacía',
+  'Mis acciones fluían sin esfuerzo',
+  'Había una sensación de fluidez en mis acciones',
+  'La experiencia me pareció gratificante',
+  'La experiencia se sintió satisfactoria',
+  'Me gustaría volver a tener esa experiencia',
 ];
 
 const GFPS_ITEMS = [
@@ -707,6 +733,7 @@ const S = {
   focusAccum:      0,
   restAccum:       0,
   // feedback
+  pfsSkipped: false,
   pfsAns:  new Array(9).fill(0),
   gfpsAns: new Array(13).fill(0),
   gfpsApplied: false,
@@ -1059,7 +1086,7 @@ async function startLoading() {
   clearInterval(tipTO);
 
   S.currentCycle=1; S.focusAccum=0; S.restAccum=0;
-  S.pfsAns=new Array(9).fill(0);
+  S.pfsSkipped=false; S.pfsAns=new Array(9).fill(0);
   S.gfpsAns=new Array(13).fill(0);
   S.gfpsApplied=Store.needsGfps();
 
@@ -1192,8 +1219,10 @@ function startRecovery() {
       startSyncMode();
     } else {
       AE.stopAll();
-      navigateTo('page-7');
-      initFeedback();
+      S.pfsSkipped=false;
+      S.pfsAns=new Array(9).fill(0);
+      navigateTo('page-11');
+      initFlowSurvey();
     }
   });
 }
@@ -1212,8 +1241,6 @@ function initFeedback() {
   });
   S.lifeAfter=S.lifeBefore;
   document.querySelectorAll('#life-after-opts .life-opt').forEach(b=>b.classList.remove('selected'));
-
-  buildLikert('pfs-form', PFS_ITEMS.map(q=>({q,rev:false})), 7, 'pfs');
 
   const gs=document.getElementById('gfps-section');
   if (S.gfpsApplied) {
@@ -1249,11 +1276,51 @@ function setLikert(btn) {
 }
 
 // ════════════════════════════════════════════════════════════
+// PAGE 11 — FLOW SURVEY
+// ════════════════════════════════════════════════════════════
+function initFlowSurvey() {
+  const c=document.getElementById('pfs11-form');
+  c.innerHTML='';
+  PFS_ITEMS.forEach((q,i)=>{
+    const btns=[1,2,3,4,5,6,7].map(v=>
+      `<button class="lk-btn" data-p="pfs" data-i="${i}" data-v="${v}" onclick="setLikert(this)">${v}</button>`
+    ).join('');
+    const d=document.createElement('div');
+    d.className='lk-item';
+    d.innerHTML=`<p class="lk-q">${q}</p>
+      <div class="lk-scale">${btns}</div>
+      <div class="lk-labels"><span>Completamente en desacuerdo</span><span>Completamente de acuerdo</span></div>`;
+    c.appendChild(d);
+  });
+}
+
+function skipFlowSurvey() {
+  const m=document.getElementById('skip-modal');
+  m.style.display='flex';
+}
+
+function confirmSkipFlow() {
+  document.getElementById('skip-modal').style.display='none';
+  S.pfsSkipped=true;
+  navigateTo('page-7');
+  initFeedback();
+}
+
+function cancelSkipFlow() {
+  document.getElementById('skip-modal').style.display='none';
+}
+
+function submitFlowSurvey() {
+  navigateTo('page-7');
+  initFeedback();
+}
+
+// ════════════════════════════════════════════════════════════
 // PAGE 8 — SESSION END
 // ════════════════════════════════════════════════════════════
 function showResults() {
-  const pfsVals=S.pfsAns.filter(v=>v>0);
-  const pfsAvg=pfsVals.length?mean(pfsVals):0;
+  const pfsVals=S.pfsSkipped?[]:S.pfsAns.filter(v=>v>0);
+  const pfsAvg=S.pfsSkipped?null:(pfsVals.length?mean(pfsVals):0);
 
   let gfpsAvg=0;
   if (S.gfpsApplied) {
@@ -1310,7 +1377,7 @@ function finishSession() {
     lifeBefore: S.lifeBefore,
     lifeAfter:  S.lifeAfter,
     pfs:  [...S.pfsAns],
-    pfsAvg: r.pfsAvg||0,
+    pfsAvg: r.pfsAvg!=null?r.pfsAvg:null,
     gfps: [...S.gfpsAns],
     gfpsAvg: r.gfpsAvg||0,
     gfpsApplied: S.gfpsApplied,

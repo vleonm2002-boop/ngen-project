@@ -9,7 +9,7 @@ Agrega una línea con `- [ ] ` para solicitar un cambio. El agente la implementa
 
 - [x] Agregar skip button en pantalla de la sesión (Focus) para ir a la próxima pantalla del loop.
 
-- [ ] Agregar encuesta Psychological Flow Scale al final de cada sesión (cuando el loop se rompe). Escala Likert de 7 puntos: 1 = completamente en desacuerdo, 7 = completamente de acuerdo.
+- [x] Agregar encuesta Psychological Flow Scale al final de cada sesión (cuando el loop se rompe). Escala Likert de 7 puntos: 1 = completamente en desacuerdo, 7 = completamente de acuerdo.
 
   **Subescalas e ítems:**
   - Absorción (ítems 1–3):
