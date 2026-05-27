@@ -52,7 +52,7 @@ Agrega una línea con `- [ ] ` para solicitar un cambio. El agente la implementa
   | effortless_control_score | FLOAT, nullable |
   | intrinsic_reward_score | FLOAT, nullable |
 
-- [ ] Agregar a la pantalla de estadísticas (Stats) existente — sin reemplazar lo que ya aparece — las siguientes métricas de flow, con selector de rango de tiempo (semana / mes / trimestre / semestre / año / total desde creación de cuenta):
+- [x] Agregar a la pantalla de estadísticas (Stats) existente — sin reemplazar lo que ya aparece — las siguientes métricas de flow, con selector de rango de tiempo (semana / mes / trimestre / semestre / año / total desde creación de cuenta):
   - Global Flow Score
   - Puntuación de Absorción
   - Puntuación de Control sin Esfuerzo
