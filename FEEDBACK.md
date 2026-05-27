@@ -6,7 +6,7 @@ Agrega una línea con `- [ ] ` para solicitar un cambio. El agente lo implementa
 ---
 
 ## Pendiente
-
+- [ ] Cambiar color `--bg` a `#1f3015`
 <!-- Un ítem por línea, con "- [ ] " al inicio. Ejemplo: -->
 <!-- - [ ] En la pantalla Home, cambiar el texto del botón a "Iniciar sesión de foco" -->
 
