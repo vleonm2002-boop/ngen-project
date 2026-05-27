@@ -19,7 +19,8 @@ PULL_OUT=$(git pull origin main 2>&1)
 log "git pull: $PULL_OUT"
 
 # Buscar primer ítem pendiente (- [ ] texto  o  - [ ]texto)
-ITEM=$(grep -m1 '^\- \[ \]' "$FEEDBACK_FILE" 2>/dev/null | sed 's/^- \[ \] *//')
+RAW_LINE=$(grep -m1 '^\- \[ \]' "$FEEDBACK_FILE" 2>/dev/null)
+ITEM=$(echo "$RAW_LINE" | sed 's/^- \[ \] *//')
 
 if [ -z "$ITEM" ]; then
   log "Sin ítems pendientes."
@@ -36,7 +37,9 @@ Solicitud de cambio: \"$ITEM\"
 Pasos exactos:
 1. Lee index.html y comprende qué hay que cambiar.
 2. Implementa SOLO el cambio mínimo solicitado. No toques nada más.
-3. En FEEDBACK.md, reemplaza la línea '- [ ] $ITEM' por '- [x] $ITEM'.
+3. En FEEDBACK.md:
+   a. Elimina la línea que contiene '- [ ]' seguido de '$ITEM' de la sección Pendiente.
+   b. Agrega '- [x] $ITEM' al final de la sección ## Implementado.
 4. Haz: git add index.html FEEDBACK.md
 5. Haz commit con mensaje: feedback: $(echo "$ITEM" | cut -c1-60)
 6. Haz: git push origin main
