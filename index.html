@@ -1322,6 +1322,16 @@ function showResults() {
   const pfsVals=S.pfsSkipped?[]:S.pfsAns.filter(v=>v>0);
   const pfsAvg=S.pfsSkipped?null:(pfsVals.length?mean(pfsVals):0);
 
+  const subMean=idxs=>{
+    if(S.pfsSkipped) return null;
+    const v=idxs.map(i=>S.pfsAns[i]).filter(x=>x>0);
+    return v.length?mean(v):null;
+  };
+  const absorptionScore       =subMean([0,1,2]);
+  const effortlessControlScore=subMean([3,4,5]);
+  const intrinsicRewardScore  =subMean([6,7,8]);
+  const globalFlowScore       =pfsAvg;
+
   let gfpsAvg=0;
   if (S.gfpsApplied) {
     const scored=S.gfpsAns.map((v,i)=>{
@@ -1335,7 +1345,7 @@ function showResults() {
   const bAfter =burnout(S.emotAfter.estres,  S.lifeAfter);
   const bSaved =Math.max(0, bBefore-bAfter);
 
-  S._result={pfsAvg,gfpsAvg,burnoutAfter:bAfter,burnoutEvitado:bSaved};
+  S._result={pfsAvg,globalFlowScore,absorptionScore,effortlessControlScore,intrinsicRewardScore,gfpsAvg,burnoutAfter:bAfter,burnoutEvitado:bSaved};
 
   document.getElementById('end-cycles-lbl').textContent=`${S.currentCycle} ciclo${S.currentCycle>1?'s':''} completados`;
   document.getElementById('end-focus').textContent=S.focusAccum;
@@ -1378,6 +1388,10 @@ function finishSession() {
     lifeAfter:  S.lifeAfter,
     pfs:  [...S.pfsAns],
     pfsAvg: r.pfsAvg!=null?r.pfsAvg:null,
+    globalFlowScore: r.globalFlowScore!=null?r.globalFlowScore:null,
+    absorptionScore: r.absorptionScore!=null?r.absorptionScore:null,
+    effortlessControlScore: r.effortlessControlScore!=null?r.effortlessControlScore:null,
+    intrinsicRewardScore: r.intrinsicRewardScore!=null?r.intrinsicRewardScore:null,
     gfps: [...S.gfpsAns],
     gfpsAvg: r.gfpsAvg||0,
     gfpsApplied: S.gfpsApplied,

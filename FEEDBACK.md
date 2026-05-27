@@ -34,7 +34,7 @@ Agrega una línea con `- [ ] ` para solicitar un cambio. El agente la implementa
   - Si elige *Omitir*: se guarda el registro de la sesión con todos los scores como nulo (null).
   - Si elige *Responder*: cierra el pop-up y vuelve a la encuesta.
 
-- [ ] Calcular y guardar los resultados de la encuesta al completarla:
+- [x] Calcular y guardar los resultados de la encuesta al completarla:
   - Promediar ítems 1, 2 y 3 → Puntuación de Absorción
   - Promediar ítems 4, 5 y 6 → Puntuación de Effortless Control
   - Promediar ítems 7, 8 y 9 → Puntuación de Intrinsic Reward
