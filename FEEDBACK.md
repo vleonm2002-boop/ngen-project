@@ -6,7 +6,6 @@ Agrega una línea con `- [ ] ` para solicitar un cambio. El agente lo implementa
 ---
 
 ## Pendiente
-- [ ] you didn´t change elements in the color #396125 to the color #1f3015
 <!-- Un ítem por línea, con "- [ ] " al inicio. Ejemplo: -->
 <!-- - [ ] En la pantalla Home, cambiar el texto del botón a "Iniciar sesión de foco" -->
 
@@ -23,3 +22,4 @@ Agrega una línea con `- [ ] ` para solicitar un cambio. El agente lo implementa
 - [x] Crear almacenamiento de resultados por sesión (ngen_flow_results en localStorage con user_id UUID)
 - [x] Agregar métricas de flow en pantalla de estadísticas con gráficos por rango de tiempo
 - [x] Cambiar color `--bg` a `#1f3015`
+- [x] you didn´t change elements in the color #396125 to the color #1f3015
