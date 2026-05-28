@@ -636,7 +636,7 @@ canvas.chart{width:100%;border-radius:var(--rs);display:block;background:rgba(25
 </div>
 
 <!-- ══════════════════════════════════════════════
-     PAGE 11 — FLOW SURVEY (PFS)
+     PAGE 11 — FLOW SURVEY (PFS) STEP 1/4
 ══════════════════════════════════════════════ -->
 <div class="page" id="page-11">
 <div class="px pt-safe pb-safe flex col" style="flex:1;padding-top:36px;padding-bottom:24px">
@@ -645,12 +645,57 @@ canvas.chart{width:100%;border-radius:var(--rs);display:block;background:rgba(25
     <h2 style="font-size:26px;font-weight:400">¿Cómo fue tu flow?</h2>
     <button onclick="skipFlowSurvey()" style="background:transparent;border:none;color:var(--muted);font-size:13px;cursor:pointer;font-family:'Inter',sans-serif;padding:6px 0;-webkit-tap-highlight-color:transparent">Omitir</button>
   </div>
-  <p class="text-sm text-muted mb-5" style="line-height:1.6">1 = Completamente en desacuerdo &nbsp;·&nbsp; 7 = Completamente de acuerdo</p>
+  <p class="text-sm text-muted mb-3" style="line-height:1.6">1 = Completamente en desacuerdo &nbsp;·&nbsp; 7 = Completamente de acuerdo</p>
+  <p class="text-xs text-muted mb-4" style="text-align:right">1 / 4</p>
 
-  <div class="lk-group mb-5" id="pfs11-form"></div>
+  <div class="lk-group mb-5" id="pfs-form-1"></div>
 
   <div class="mt-a">
-    <button class="btn btn-primary" onclick="submitFlowSurvey()">Continuar →</button>
+    <button class="btn btn-primary" onclick="goSurveyStep(2)">Siguiente →</button>
+  </div>
+
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     PAGE 11b — FLOW SURVEY (PFS) STEP 2/4
+══════════════════════════════════════════════ -->
+<div class="page" id="page-11b">
+<div class="px pt-safe pb-safe flex col" style="flex:1;padding-top:36px;padding-bottom:24px">
+
+  <div class="flex items-c just-b w-full mb-3">
+    <h2 style="font-size:26px;font-weight:400">¿Cómo fue tu flow?</h2>
+    <button onclick="skipFlowSurvey()" style="background:transparent;border:none;color:var(--muted);font-size:13px;cursor:pointer;font-family:'Inter',sans-serif;padding:6px 0;-webkit-tap-highlight-color:transparent">Omitir</button>
+  </div>
+  <p class="text-sm text-muted mb-3" style="line-height:1.6">1 = Completamente en desacuerdo &nbsp;·&nbsp; 7 = Completamente de acuerdo</p>
+  <p class="text-xs text-muted mb-4" style="text-align:right">2 / 4</p>
+
+  <div class="lk-group mb-5" id="pfs-form-2"></div>
+
+  <div class="mt-a">
+    <button class="btn btn-primary" onclick="goSurveyStep(3)">Siguiente →</button>
+  </div>
+
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     PAGE 11c — FLOW SURVEY (PFS) STEP 3/4
+══════════════════════════════════════════════ -->
+<div class="page" id="page-11c">
+<div class="px pt-safe pb-safe flex col" style="flex:1;padding-top:36px;padding-bottom:24px">
+
+  <div class="flex items-c just-b w-full mb-3">
+    <h2 style="font-size:26px;font-weight:400">¿Cómo fue tu flow?</h2>
+    <button onclick="skipFlowSurvey()" style="background:transparent;border:none;color:var(--muted);font-size:13px;cursor:pointer;font-family:'Inter',sans-serif;padding:6px 0;-webkit-tap-highlight-color:transparent">Omitir</button>
+  </div>
+  <p class="text-sm text-muted mb-3" style="line-height:1.6">1 = Completamente en desacuerdo &nbsp;·&nbsp; 7 = Completamente de acuerdo</p>
+  <p class="text-xs text-muted mb-4" style="text-align:right">3 / 4</p>
+
+  <div class="lk-group mb-5" id="pfs-form-3"></div>
+
+  <div class="mt-a">
+    <button class="btn btn-primary" onclick="submitFlowSurvey()">Siguiente →</button>
   </div>
 
 </div>
@@ -1354,12 +1399,13 @@ function skipPreSurvey() {
 // ════════════════════════════════════════════════════════════
 // PAGE 11 — FLOW SURVEY
 // ════════════════════════════════════════════════════════════
-function initFlowSurvey() {
-  const c=document.getElementById('pfs11-form');
+function renderPfsGroup(containerId, start, end) {
+  const c=document.getElementById(containerId);
   c.innerHTML='';
-  PFS_ITEMS.forEach((q,i)=>{
+  PFS_ITEMS.slice(start,end).forEach((q,idx)=>{
+    const i=start+idx;
     const btns=[1,2,3,4,5,6,7].map(v=>
-      `<button class="lk-btn" data-p="pfs" data-i="${i}" data-v="${v}" onclick="setLikert(this)">${v}</button>`
+      `<button class="lk-btn${S.pfsAns[i]===v?' sel':''}" data-p="pfs" data-i="${i}" data-v="${v}" onclick="setLikert(this)">${v}</button>`
     ).join('');
     const d=document.createElement('div');
     d.className='lk-item';
@@ -1368,6 +1414,15 @@ function initFlowSurvey() {
       <div class="lk-labels"><span>Completamente en desacuerdo</span><span>Completamente de acuerdo</span></div>`;
     c.appendChild(d);
   });
+}
+
+function initFlowSurvey() {
+  renderPfsGroup('pfs-form-1',0,3);
+}
+
+function goSurveyStep(step) {
+  if (step===2) { navigateTo('page-11b'); renderPfsGroup('pfs-form-2',3,6); }
+  else          { navigateTo('page-11c'); renderPfsGroup('pfs-form-3',6,9); }
 }
 
 function skipFlowSurvey() {
