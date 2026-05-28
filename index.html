@@ -807,6 +807,7 @@ const S = {
   statsDays: 7,
   // computed result (temp)
   _result: null,
+  _pfsResult: null,
 };
 
 // ════════════════════════════════════════════════════════════
@@ -1195,7 +1196,7 @@ async function startLoading() {
   clearInterval(tipTO);
 
   S.currentCycle=1; S.focusAccum=0; S.restAccum=0;
-  S.pfsSkipped=false; S.pfsAns=new Array(9).fill(0);
+  S.pfsSkipped=false; S.pfsAns=new Array(9).fill(0); S._pfsResult=null;
   S.gfpsAns=new Array(13).fill(0);
   S.gfpsApplied=Store.needsGfps();
 
@@ -1328,8 +1329,7 @@ function startRecovery() {
       startFlowState();
     } else {
       AE.stopAll();
-      S.pfsSkipped=false;
-      S.pfsAns=new Array(9).fill(0);
+      S.pfsSkipped=false; S.pfsAns=new Array(9).fill(0); S._pfsResult=null;
       navigateTo('page-12');
     }
   });
@@ -1442,6 +1442,21 @@ function cancelSkipFlow() {
 }
 
 function submitFlowSurvey() {
+  const pfsVals = S.pfsAns.filter(v=>v>0);
+  const pfsAvg  = pfsVals.length ? mean(pfsVals) : null;
+  const sub     = idxs => { const v=idxs.map(i=>S.pfsAns[i]).filter(x=>x>0); return v.length?mean(v):null; };
+  S._pfsResult  = {
+    globalFlowScore:        pfsAvg,
+    absorptionScore:        sub([0,1,2]),
+    effortlessControlScore: sub([3,4,5]),
+    intrinsicRewardScore:   sub([6,7,8]),
+  };
+  FlowResults.insert({
+    global_flow_score:        S._pfsResult.globalFlowScore,
+    absorption_score:         S._pfsResult.absorptionScore,
+    effortless_control_score: S._pfsResult.effortlessControlScore,
+    intrinsic_reward_score:   S._pfsResult.intrinsicRewardScore,
+  });
   navigateTo('page-7');
   initFeedback();
 }
@@ -1458,10 +1473,10 @@ function showResults() {
     const v=idxs.map(i=>S.pfsAns[i]).filter(x=>x>0);
     return v.length?mean(v):null;
   };
-  const absorptionScore       =subMean([0,1,2]);
-  const effortlessControlScore=subMean([3,4,5]);
-  const intrinsicRewardScore  =subMean([6,7,8]);
-  const globalFlowScore       =pfsAvg;
+  const absorptionScore       =S._pfsResult ? S._pfsResult.absorptionScore        : subMean([0,1,2]);
+  const effortlessControlScore=S._pfsResult ? S._pfsResult.effortlessControlScore : subMean([3,4,5]);
+  const intrinsicRewardScore  =S._pfsResult ? S._pfsResult.intrinsicRewardScore   : subMean([6,7,8]);
+  const globalFlowScore       =S._pfsResult ? S._pfsResult.globalFlowScore        : pfsAvg;
 
   let gfpsAvg=0;
   if (S.gfpsApplied) {
@@ -1530,13 +1545,15 @@ function finishSession() {
     recoveryMinutes: S.restAccum,
     burnoutIndex: r.burnoutAfter||0,
   });
-  // Save flow scores to dedicated table (ngen_flow_results)
-  FlowResults.insert({
-    global_flow_score:        r.globalFlowScore        != null ? r.globalFlowScore        : null,
-    absorption_score:         r.absorptionScore        != null ? r.absorptionScore        : null,
-    effortless_control_score: r.effortlessControlScore != null ? r.effortlessControlScore : null,
-    intrinsic_reward_score:   r.intrinsicRewardScore   != null ? r.intrinsicRewardScore   : null,
-  });
+  // Save flow scores only if not already saved in submitFlowSurvey
+  if (!S._pfsResult) {
+    FlowResults.insert({
+      global_flow_score:        r.globalFlowScore        != null ? r.globalFlowScore        : null,
+      absorption_score:         r.absorptionScore        != null ? r.absorptionScore        : null,
+      effortless_control_score: r.effortlessControlScore != null ? r.effortlessControlScore : null,
+      intrinsic_reward_score:   r.intrinsicRewardScore   != null ? r.intrinsicRewardScore   : null,
+    });
+  }
   navigateTo('page-1');
 }
 

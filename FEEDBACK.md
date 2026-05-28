@@ -6,7 +6,6 @@ Agrega una línea con `- [ ] ` para solicitar un cambio. El agente lo implementa
 ---
 
 ## Pendiente
-- [ ] Una vez respondida la pregunta se Calcula y guarda scores de la encuesta (Absorción, Control sin Esfuerzo, Recompensa Intrínseca, Global Flow Score)
 - [ ] Los calculos de (Absorción, Control sin Esfuerzo, Recompensa Intrínseca, Global Flow Score) deben ser agregados a las métricas de la página stats
 - [ ] Cambiar el color de fondo de la aplicación de #396125 a #1f3015.
   - Buscar todas las ocurrencias de #396125 en el proyecto y reemplazarlas por #1f3015.
@@ -31,3 +30,4 @@ Agrega una línea con `- [ ] ` para solicitar un cambio. El agente lo implementa
 - [x] La página sync no debe ser parte del loop, solo debe aparecer al inicio de cada sesión
 - [x] Antes de ir a la página de la la encuesta Psychological Flow Scale, debe mostrarse una página que pregunte si desea reportar su experiencia en la sesión para mejoras en la próxima. Un botón de omitir y otro de responder. Omitir te lleva a la página de inicio, responder a la página de la encuesta.
 - [x] La página de la encuesta no debe tener scroll down, se debe dividir en Cuatro paginas, las primeras tres deben tener tres preguntas cada una y la cuarta página debe ser la pregunta ¿Cómo te sientes ahora? y ¿Cómo evalúas tu vida ahora?
+- [x] Una vez respondida la pregunta se Calcula y guarda scores de la encuesta (Absorción, Control sin Esfuerzo, Recompensa Intrínseca, Global Flow Score)
