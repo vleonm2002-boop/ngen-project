@@ -6,9 +6,6 @@ Agrega una línea con `- [ ] ` para solicitar un cambio. El agente lo implementa
 ---
 
 ## Pendiente
-- [ ] Cambiar el color de fondo de la aplicación de #396125 a #1f3015.
-  - Buscar todas las ocurrencias de #396125 en el proyecto y reemplazarlas por #1f3015.
-  - Verificar que el cambio se aplicó correctamente en todos los archivos afectados (estilos globales, temas, variables, etc.).
 <!-- Un ítem por línea, con "- [ ] " al inicio. Ejemplo: -->
 <!-- - [ ] En la pantalla Home, cambiar el texto del botón a "Iniciar sesión de foco" -->
 
@@ -31,3 +28,4 @@ Agrega una línea con `- [ ] ` para solicitar un cambio. El agente lo implementa
 - [x] La página de la encuesta no debe tener scroll down, se debe dividir en Cuatro paginas, las primeras tres deben tener tres preguntas cada una y la cuarta página debe ser la pregunta ¿Cómo te sientes ahora? y ¿Cómo evalúas tu vida ahora?
 - [x] Una vez respondida la pregunta se Calcula y guarda scores de la encuesta (Absorción, Control sin Esfuerzo, Recompensa Intrínseca, Global Flow Score)
 - [x] Los calculos de (Absorción, Control sin Esfuerzo, Recompensa Intrínseca, Global Flow Score) deben ser agregados a las métricas de la página stats
+- [x] Cambiar el color de fondo de la aplicación de #396125 a #1f3015.
