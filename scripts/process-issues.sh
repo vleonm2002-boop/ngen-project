@@ -61,9 +61,10 @@ Pasos:
 4. En FEEDBACK.md:
    a. Elimina la línea que contiene '- [ ]' seguido de '$ITEM'.
    b. Agrega '- [x] $ITEM' al final de la sección ## Implementado.
-5. Haz: git add index.html FEEDBACK.md
-6. Haz commit: feedback: $(echo "$ITEM" | cut -c1-60)
-7. Haz: git push origin main
+5. Ejecuta: python3 /Users/victorleon/Proyectos\ VSCode/ngen-project/scripts/bump-sw.py
+6. Haz: git add index.html FEEDBACK.md sw.js
+7. Haz commit: feedback: $(echo "$ITEM" | cut -c1-60)
+8. Haz: git push origin main
 " >> "$LOG" 2>&1
 
 # Validar sintaxis JS del index.html resultante

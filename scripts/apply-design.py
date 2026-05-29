@@ -65,7 +65,9 @@ def main():
         HTML.write_text(original)
         sys.exit(1)
 
-    run("git add index.html", cwd=PROJECT)
+    import subprocess as _sp
+    _sp.run(["python3", str(PROJECT/"scripts/bump-sw.py")], cwd=PROJECT)
+    run("git add index.html sw.js", cwd=PROJECT)
     run('git commit -m "design: aplicar tokens de design.md"', cwd=PROJECT)
     result = run("git push origin main", cwd=PROJECT)
     if result.returncode == 0:
