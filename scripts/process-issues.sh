@@ -11,11 +11,23 @@ source "$PROJECT/.ngen-secrets"
 
 log() { echo "[$(date '+%Y-%m-%d %H:%M:%S')] $1" >> "$LOG"; }
 
-log "Revisando FEEDBACK.md..."
+log "Revisando cambios..."
 cd "$PROJECT" || exit 1
+
+# Guardar hash de design.md antes del pull
+DESIGN_HASH_BEFORE=$(git rev-parse HEAD:design.md 2>/dev/null)
 
 PULL_OUT=$(git pull origin main 2>&1)
 log "git pull: $PULL_OUT"
+
+# ── DESIGN TOKENS ─────────────────────────────────────────────
+DESIGN_HASH_AFTER=$(git rev-parse HEAD:design.md 2>/dev/null)
+if [ "$DESIGN_HASH_BEFORE" != "$DESIGN_HASH_AFTER" ]; then
+  log "design.md cambió — aplicando tokens..."
+  DESIGN_OUT=$(python3 "$PROJECT/scripts/apply-design.py" 2>&1)
+  log "apply-design: $DESIGN_OUT"
+fi
+# ──────────────────────────────────────────────────────────────
 
 # Buscar primer ítem pendiente (acepta "- [ ] texto" y "- [ ]texto")
 RAW_LINE=$(grep -m1 '^\- \[ \]' "$FEEDBACK_FILE" 2>/dev/null)
