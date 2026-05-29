@@ -349,8 +349,12 @@ canvas.chart{width:100%;border-radius:var(--rs);display:block;background:rgba(25
 <div class="page" id="page-3">
 <div class="px pt-safe flex col" style="flex:1;padding-top:36px;padding-bottom:20px">
 
-  <h2 style="font-size:28px;font-weight:400;margin-bottom:6px">Elige tu Sync</h2>
-  <p class="text-sm text-muted mb-5">El track que inicia cada ciclo de foco</p>
+  <div class="flex items-c just-b w-full mb-5">
+    <button onclick="navigateTo('page-2')" class="cbtn" style="width:36px;height:36px;font-size:18px">←</button>
+    <h2 style="font-size:28px;font-weight:400">Elige tu Sync</h2>
+    <div style="width:36px"></div>
+  </div>
+  <p class="text-sm text-muted mb-4" style="margin-top:-12px">El track que inicia cada ciclo de foco</p>
 
   <div class="flex col gap-3 mb-a">
     <div class="track-card" id="tc-Sync_1" data-t="Sync_1" onclick="selectTrack(this)">
@@ -875,7 +879,7 @@ const FlowResults = {
 // ════════════════════════════════════════════════════════════
 // ROUTER
 // ════════════════════════════════════════════════════════════
-const SESSION_PAGES = new Set(['page-3','page-4','page-5','page-6','page-9']);
+const SESSION_PAGES = new Set(['page-9','page-4','page-5','page-6']);
 const TAB_MAP = { 'page-1':'tab-home', 'page-10':'tab-stats' };
 
 function navigateTo(id) {
