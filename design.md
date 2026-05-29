@@ -12,7 +12,7 @@ Edita los valores de esta tabla. El sistema detecta los cambios y los aplica aut
 |---|---|---|
 | --bg | #1f3015 | Fondo principal de la app |
 | --text | #e8b84b | Color de texto y acentos dorados |
-| --rest-bg | #4a8a5c | Fondo de la pantalla Recovery |
+| --rest-bg | #1f3015 | Fondo de la pantalla Recovery |
 | --rest-text | #ffffff | Texto sobre fondo Recovery |
 | --dw | #ffffff | Blanco puro (texto en Recovery) |
 | --dg | #ffcc00 | Dorado brillante (badges) |
