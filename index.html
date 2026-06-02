@@ -730,6 +730,10 @@ canvas.chart{width:100%;border-radius:var(--rs);display:block;background:rgba(25
     <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
     <span>Comunidad</span>
   </button>
+  <button class="tab-item" id="tab-session" onclick="navigateTo('page-2')">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+    <span>Sesión</span>
+  </button>
 </nav>
 
 <!-- Toast -->
@@ -880,7 +884,7 @@ const FlowResults = {
 // ROUTER
 // ════════════════════════════════════════════════════════════
 const SESSION_PAGES = new Set(['page-9','page-4','page-5','page-6']);
-const TAB_MAP = { 'page-1':'tab-home', 'page-10':'tab-stats' };
+const TAB_MAP = { 'page-1':'tab-home', 'page-10':'tab-stats', 'page-2':'tab-session' };
 
 function navigateTo(id) {
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));

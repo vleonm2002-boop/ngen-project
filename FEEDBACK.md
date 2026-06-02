@@ -8,7 +8,6 @@ Agrega una línea con `- [ ] ` para solicitar un cambio. El agente lo implementa
 ## Pendiente
 <!-- Un ítem por línea, con "- [ ] " al inicio. Ejemplo: -->
 <!-- - [ ] En la pantalla Home, cambiar el texto del botón a "Iniciar sesión de foco" -->
-- [ ] La barra de navegación inferior debe tener 4 botones: Home, Stats, Comunidad, Sesión
 - [ ] Si la sesión está iniciada: Home → Página 1, Stats → Página 8, Comunidad → pop-up "Próximamente" por 3 segundos
 - [ ] Si la sesión no está iniciada: cualquier botón de la barra → navegar a Página 9 (Login)
 - [ ] La barra de navegación inferior debe ocultarse completamente durante una sesión activa (Páginas 3, 4, 5, 6) y reaparecer al llegar a Página 7 o Página 1
@@ -66,3 +65,4 @@ Agrega una línea con `- [ ] ` para solicitar un cambio. El agente lo implementa
 - [x] Una vez respondida la pregunta se Calcula y guarda scores de la encuesta (Absorción, Control sin Esfuerzo, Recompensa Intrínseca, Global Flow Score)
 - [x] Los calculos de (Absorción, Control sin Esfuerzo, Recompensa Intrínseca, Global Flow Score) deben ser agregados a las métricas de la página stats
 - [x] Cambiar el color de fondo de la aplicación de #396125 a #1f3015.
+- [x] La barra de navegación inferior debe tener 4 botones: Home, Stats, Comunidad, Sesión
