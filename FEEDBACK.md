@@ -8,7 +8,6 @@ Agrega una línea con `- [ ] ` para solicitar un cambio. El agente lo implementa
 ## Pendiente
 <!-- Un ítem por línea, con "- [ ] " al inicio. Ejemplo: -->
 <!-- - [ ] En la pantalla Home, cambiar el texto del botón a "Iniciar sesión de foco" -->
-- [ ] Audio: detener todo audio activo al navegar fuera de la sesión (Página 5 en adelante). Manejar archivo no encontrado con error silencioso sin crashear la app
 - [ ] Pop-ups de "Próximamente" deben tener animación fade out al desaparecer automáticamente
 - [ ] El cronómetro debe seguir corriendo si la app va a background (implementar background timer)
 ## Implementado
@@ -66,3 +65,4 @@ Agrega una línea con `- [ ] ` para solicitar un cambio. El agente lo implementa
 - [x] Base de datos — crear tabla usuarios con campos: id (UUID PK), nombre, apellido, email (único), ubicacion, genero, tipo_sesion (enum: gratuita/pago), created_at (timestamp)
 - [x] Base de datos — crear tabla resultados_sesiones con campos: id (UUID PK), user_id (FK → usuarios), global_flow_score, absorption_score, effortless_control_score, intrinsic_reward_score, stress_start_score, anxiety_start_score, saddness_start_score, tiredness_start_score, global_mh_start_score, stress_end_score, anxiety_end_score, saddness_end_score, tiredness_end_score, global_mh_end_score, global_mh_day_score, tiempo_flow_min, tiempo_break_min, date (timestamp)
 - [x] Autenticación: implementar login con correo + Google OAuth, persistir sesión localmente, exponer función isLoggedIn() usada por la barra de navegación y flujos condicionales de Página 1
+- [x] Audio: detener todo audio activo al navegar fuera de la sesión (Página 5 en adelante). Manejar archivo no encontrado con error silencioso sin crashear la app

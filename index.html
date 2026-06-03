@@ -1271,6 +1271,8 @@ function navigateTo(id) {
   document.querySelectorAll('.tab-item').forEach(t=>t.classList.remove('active'));
   if (TAB_MAP[id]) document.getElementById(TAB_MAP[id]).classList.add('active');
 
+  if (!SESSION_PAGES.has(id) && AE.ctx) AE.stopAll();
+
   if (id==='page-1')        renderHome();
   if (id==='page-10')       renderStats();
   if (id==='page-registro') initRegistroPage();
@@ -1345,6 +1347,7 @@ const AE = {
   },
 
   playLoop(name) {
+    if (!this.bufs[name]) return;
     this._stopMain();
     const g = this.ctx.createGain(); g.gain.value=0; g.connect(this.ctx.destination);
     const s = this.ctx.createBufferSource(); s.buffer=this.bufs[name]; s.loop=true; s.connect(g); s.start();
@@ -1353,6 +1356,7 @@ const AE = {
   },
 
   playCue(name, onEnd) {
+    if (!this.bufs[name]) { try{if(onEnd)setTimeout(onEnd,0);}catch{} return; }
     try { this.cueSrc&&this.cueSrc.stop(); } catch {}
     const g=this.ctx.createGain(); g.gain.value=0; g.connect(this.ctx.destination);
     const s=this.ctx.createBufferSource(); s.buffer=this.bufs[name]; s.connect(g); s.start();
