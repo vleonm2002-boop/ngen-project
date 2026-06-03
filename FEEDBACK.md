@@ -20,7 +20,6 @@ Agrega una línea con `- [ ] ` para solicitar un cambio. El agente lo implementa
 - [ ] Página 8 (Stat Report): botones de rango — Este mes, 3 meses, 6 meses, 1 año, Total
 - [ ] Página 8 (Stat Report): por cada rango mostrar promedios de tiempo en flow, tiempo en break, Global Flow Score, Absorption Score, Effortless Control Score, Intrinsic Reward Score, ansiedad, estrés, tristeza y cansancio — leídos desde resultados_sesiones filtrado por user_id y rango de fecha
 - [ ] Página 8 (Stat Report): gráfico de línea mostrando evolución temporal de los valores en el rango seleccionado
-- [ ] Página 9 (Login): campos de correo electrónico y contraseña, botón "Iniciar sesión", link "¿No tienes cuenta? Regístrate" → Página 10
 - [ ] Página 10 (Registro): opción de registro con Google OAuth y con correo + contraseña, flujo con CAPTCHA, aceptación de términos y condiciones, al confirmar crear registro en tabla usuarios y navegar a Página 1
 - [ ] Base de datos — crear tabla usuarios con campos: id (UUID PK), nombre, apellido, email (único), ubicacion, genero, tipo_sesion (enum: gratuita/pago), created_at (timestamp)
 - [ ] Base de datos — crear tabla resultados_sesiones con campos: id (UUID PK), user_id (FK → usuarios), global_flow_score, absorption_score, effortless_control_score, intrinsic_reward_score, stress_start_score, anxiety_start_score, saddness_start_score, tiredness_start_score, global_mh_start_score, stress_end_score, anxiety_end_score, saddness_end_score, tiredness_end_score, global_mh_end_score, global_mh_day_score, tiempo_flow_min, tiempo_break_min, date (timestamp)
@@ -66,3 +65,4 @@ Agrega una línea con `- [ ] ` para solicitar un cambio. El agente lo implementa
 - [x] Página 4 (Micro Break): cronómetro regresivo con duración de break seleccionada
 - [x] Página 4 (Micro Break): reproducir Micro_break.wav en loop durante todo el break. Si el archivo es más corto que el tiempo, repetirlo en loop
 - [x] Página 4 (Micro Break): si cantidad_ciclos > 0, restar 1 a cantidad_ciclos, cuando quede 1 minuto reproducir Cue_flow.wav una sola vez, al terminar el cronómetro → Página 3
+- [x] Página 9 (Login): campos de correo electrónico y contraseña, botón "Iniciar sesión", link "¿No tienes cuenta? Regístrate" → Página 10
