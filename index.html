@@ -1770,6 +1770,25 @@ function finishSession() {
       intrinsic_reward_score:   r.intrinsicRewardScore   != null ? r.intrinsicRewardScore   : null,
     });
   }
+  _syncSession({
+    globalFlowScore:        r.globalFlowScore        ?? null,
+    absorptionScore:        r.absorptionScore        ?? null,
+    effortlessControlScore: r.effortlessControlScore ?? null,
+    intrinsicRewardScore:   r.intrinsicRewardScore   ?? null,
+    stress_start_score:    S.Stress_start_Score,
+    anxiety_start_score:   S.Anxiety_start_Score,
+    saddness_start_score:  S.Saddness_start_Score,
+    tiredness_start_score: S.Tiredness_start_Score,
+    global_mh_start_score: mean([S.Stress_start_Score,S.Anxiety_start_Score,S.Saddness_start_Score,S.Tiredness_start_Score]),
+    stress_end_score:      S.Stress_end_Score,
+    anxiety_end_score:     S.Anxiety_end_Score,
+    saddness_end_score:    S.Saddness_end_Score,
+    tiredness_end_score:   S.Tiredness_end_Score,
+    global_mh_end_score:   mean([S.Stress_end_Score,S.Anxiety_end_Score,S.Saddness_end_Score,S.Tiredness_end_Score]),
+    global_mh_day_score:   mean([mean([S.Stress_start_Score,S.Anxiety_start_Score,S.Saddness_start_Score,S.Tiredness_start_Score]),mean([S.Stress_end_Score,S.Anxiety_end_Score,S.Saddness_end_Score,S.Tiredness_end_Score])]),
+    focusMinutes:    S.focusAccum,
+    recoveryMinutes: S.restAccum,
+  });
   navigateTo('page-1');
 }
 
@@ -1806,6 +1825,38 @@ function renderStats() {
   ];
 
   box.innerHTML='';
+
+  // ─── PROMEDIOS DEL PERÍODO ──────────────────────────────────
+  const avgDefs=[
+    {key:'focusMinutes',           label:'Tiempo Flow',     unit:'min', dec:0},
+    {key:'recoveryMinutes',        label:'Tiempo Break',    unit:'min', dec:0},
+    {key:'globalFlowScore',        label:'Global Flow',     unit:'/7',  dec:1},
+    {key:'absorptionScore',        label:'Absorción',       unit:'/7',  dec:1},
+    {key:'effortlessControlScore', label:'Ctrl. Esfuerzo',  unit:'/7',  dec:1},
+    {key:'intrinsicRewardScore',   label:'Rec. Intrínseca', unit:'/7',  dec:1},
+    {key:'Anxiety_end_Score',      label:'Ansiedad',        unit:'/7',  dec:1},
+    {key:'Stress_end_Score',       label:'Estrés',          unit:'/7',  dec:1},
+    {key:'Saddness_end_Score',     label:'Tristeza',        unit:'/7',  dec:1},
+    {key:'Tiredness_end_Score',    label:'Cansancio',       unit:'/7',  dec:1},
+  ];
+  const avgsHdr=document.createElement('p');
+  avgsHdr.className='chart-title';
+  avgsHdr.style.marginBottom='8px';
+  avgsHdr.textContent='PROMEDIOS DEL PERÍODO';
+  box.appendChild(avgsHdr);
+  const avgsGrid=document.createElement('div');
+  avgsGrid.className='stat-grid';
+  avgsGrid.style.marginBottom='16px';
+  avgDefs.forEach(m=>{
+    const vs=data.map(s=>s[m.key]).filter(v=>v!=null&&!isNaN(+v));
+    const avg=vs.length?vs.reduce((a,b)=>a+(+b),0)/vs.length:null;
+    const card=document.createElement('div');
+    card.className='stat-card';
+    card.innerHTML=`<div class="stat-lbl">${m.label}</div><div><span class="stat-val" style="font-size:22px">${avg!=null?(m.dec===0?Math.round(avg):avg.toFixed(m.dec)):'--'}</span><span class="stat-unit">${avg!=null?' '+m.unit:''}</span></div>`;
+    avgsGrid.appendChild(card);
+  });
+  box.appendChild(avgsGrid);
+
   charts.forEach(cfg=>{
     const vals=data.map(cfg.get);
     const lbls=data.map(s=>{const d=new Date(s.date);return `${d.getDate()}/${d.getMonth()+1}`;});

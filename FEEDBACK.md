@@ -8,7 +8,6 @@ Agrega una línea con `- [ ] ` para solicitar un cambio. El agente lo implementa
 ## Pendiente
 <!-- Un ítem por línea, con "- [ ] " al inicio. Ejemplo: -->
 <!-- - [ ] En la pantalla Home, cambiar el texto del botón a "Iniciar sesión de foco" -->
-- [ ] Página 8 (Stat Report): por cada rango mostrar promedios de tiempo en flow, tiempo en break, Global Flow Score, Absorption Score, Effortless Control Score, Intrinsic Reward Score, ansiedad, estrés, tristeza y cansancio — leídos desde resultados_sesiones filtrado por user_id y rango de fecha
 - [ ] Página 8 (Stat Report): gráfico de línea mostrando evolución temporal de los valores en el rango seleccionado
 - [ ] Página 10 (Registro): opción de registro con Google OAuth y con correo + contraseña, flujo con CAPTCHA, aceptación de términos y condiciones, al confirmar crear registro en tabla usuarios y navegar a Página 1
 - [ ] Base de datos — crear tabla usuarios con campos: id (UUID PK), nombre, apellido, email (único), ubicacion, genero, tipo_sesion (enum: gratuita/pago), created_at (timestamp)
@@ -66,3 +65,4 @@ Agrega una línea con `- [ ] ` para solicitar un cambio. El agente lo implementa
 - [x] Página 7 (Stats de sesión): calcular y guardar en tabla resultados_sesiones — Global_mental_health_start_score = avg(stress/anxiety/saddness/tiredness start), Global_mental_health_end_score = avg(stress/anxiety/saddness/tiredness end), Global_mental_health_day_score = avg(start, end), y deltas absolutos por dimensión = abs(x_start - x_end)
 - [x] Página 7 (Stats de sesión): botón "Volver a Home" → Página 1
 - [x] Página 8 (Stat Report): botones de rango — Este mes, 3 meses, 6 meses, 1 año, Total
+- [x] Página 8 (Stat Report): por cada rango mostrar promedios de tiempo en flow, tiempo en break, Global Flow Score, Absorption Score, Effortless Control Score, Intrinsic Reward Score, ansiedad, estrés, tristeza y cansancio — leídos desde resultados_sesiones filtrado por user_id y rango de fecha
