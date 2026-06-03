@@ -194,8 +194,9 @@ canvas.chart{width:100%;border-radius:var(--rs);display:block;background:rgba(25
 .empty-txt{font-size:13px;line-height:1.65;max-width:230px}
 
 /* ── TOAST ── */
-#toast{position:absolute;bottom:calc(var(--tab) + 12px);left:50%;transform:translateX(-50%);background:var(--bg);border:1px solid var(--brd);color:var(--text);padding:9px 20px;border-radius:100px;font-size:13px;white-space:nowrap;pointer-events:none;z-index:200;opacity:0;transition:opacity .2s}
+#toast{position:absolute;bottom:calc(var(--tab) + 12px);left:50%;transform:translateX(-50%);background:var(--bg);border:1px solid var(--brd);color:var(--text);padding:9px 20px;border-radius:100px;font-size:13px;white-space:nowrap;pointer-events:none;z-index:200;opacity:0;transition:opacity .25s}
 #toast.show{opacity:1}
+#toast.show.fade-out{opacity:0;transition:opacity .55s}
 
 /* ── UTILS ── */
 .px{padding-left:20px;padding-right:20px}
@@ -1473,8 +1474,10 @@ function burnout(estres,life){ return (estres/100)*0.6 + lifeN(life)*0.4; }
 
 function toast(msg, duration=2200) {
   const el=document.getElementById('toast');
+  el.classList.remove('fade-out');
   el.textContent=msg; el.classList.add('show');
-  setTimeout(()=>el.classList.remove('show'),duration);
+  setTimeout(()=>el.classList.add('fade-out'), Math.max(duration-550, 300));
+  setTimeout(()=>el.classList.remove('show','fade-out'), duration);
 }
 
 function customizeMusicBtn() {
