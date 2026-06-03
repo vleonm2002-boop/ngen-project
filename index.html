@@ -513,7 +513,7 @@ canvas.chart{width:100%;border-radius:var(--rs);display:block;background:rgba(25
     <p class="text-sm text-c" style="color:rgba(255,255,255,.55)">✦ Próximamente — Contenido de bienestar</p>
   </div>
 
-  <button class="btn" style="width:100%;background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.25);margin-top:8px" onclick="T.skip(T.duration)">Saltar descanso →</button>
+  <button id="break-skip-btn" class="btn" style="width:100%;background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.25);margin-top:8px" onclick="T.skip(T.duration)">Saltar descanso →</button>
 
 </div>
 </div>
@@ -1408,6 +1408,7 @@ function startRecovery() {
 
   document.getElementById('page-6').style.background='var(--rest-bg)';
   document.getElementById('rest-cycle-lbl').textContent=`Ciclo ${S.currentCycle} de ${S.totalCycles}`;
+  document.getElementById('break-skip-btn').textContent=S.currentCycle<S.totalCycles?'Skip a Flow state':'Finalizar sesión';
 
   const dur=S.restMin*60;
   document.getElementById('rest-time').textContent=fmt(dur);
