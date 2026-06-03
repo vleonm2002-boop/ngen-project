@@ -8,7 +8,6 @@ Agrega una línea con `- [ ] ` para solicitar un cambio. El agente lo implementa
 ## Pendiente
 <!-- Un ítem por línea, con "- [ ] " al inicio. Ejemplo: -->
 <!-- - [ ] En la pantalla Home, cambiar el texto del botón a "Iniciar sesión de foco" -->
-- [ ] Página 4 (Micro Break): si cantidad_ciclos === 0, al terminar el cronómetro → Página 5
 - [ ] Página 4 (Micro Break): botón skip con label dinámico — "Skip a Flow state" si quedan ciclos, "Finalizar sesión" si no quedan
 - [ ] Página 5 (¿Responder encuesta?): pantalla con texto "¿Desea responder una encuesta sobre su experiencia en la sesión para mejorar su experiencia?" con botones Sí (→ Página 6) y No (→ Página 7)
 - [ ] Página 6 (Encuesta PFS): mostrar las siguientes 9 preguntas de forma secuencial, una a la vez, escala Likert 1–7 (1 = completamente en desacuerdo, 7 = completamente de acuerdo). Al responder cada pregunta desaparece y aparece la siguiente. Las preguntas son — (1) "Estuve absorto(a) en la tarea", (2) "Estaba muy enfocado(a) en la tarea", (3) "Toda mi atención estaba en la tarea", (4) "Sentí que podía controlar fácilmente lo que hacía", (5) "Mis acciones fluían sin esfuerzo", (6) "Había una sensación de fluidez en mis acciones", (7) "La experiencia me pareció gratificante", (8) "La experiencia se sintió satisfactoria", (9) "Me gustaría volver a tener esa experiencia"
@@ -66,3 +65,4 @@ Agrega una línea con `- [ ] ` para solicitar un cambio. El agente lo implementa
 - [x] Página 4 (Micro Break): reproducir Micro_break.wav en loop durante todo el break. Si el archivo es más corto que el tiempo, repetirlo en loop
 - [x] Página 4 (Micro Break): si cantidad_ciclos > 0, restar 1 a cantidad_ciclos, cuando quede 1 minuto reproducir Cue_flow.wav una sola vez, al terminar el cronómetro → Página 3
 - [x] Página 9 (Login): campos de correo electrónico y contraseña, botón "Iniciar sesión", link "¿No tienes cuenta? Regístrate" → Página 10
+- [x] Página 4 (Micro Break): si cantidad_ciclos === 0, al terminar el cronómetro → Página 5
