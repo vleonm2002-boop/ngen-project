@@ -8,7 +8,6 @@ Agrega una línea con `- [ ] ` para solicitar un cambio. El agente lo implementa
 ## Pendiente
 <!-- Un ítem por línea, con "- [ ] " al inicio. Ejemplo: -->
 <!-- - [ ] En la pantalla Home, cambiar el texto del botón a "Iniciar sesión de foco" -->
-- [ ] Página 3 (Flow State): cuando quede 1 minuto reproducir Cue_break.wav una sola vez
 - [ ] Página 3 (Flow State): botón "Skip a descanso" → navegar a Página 4 inmediatamente
 - [ ] Página 4 (Micro Break): cronómetro regresivo con duración de break seleccionada
 - [ ] Página 4 (Micro Break): reproducir Micro_break.wav en loop durante todo el break. Si el archivo es más corto que el tiempo, repetirlo en loop
@@ -66,3 +65,4 @@ Agrega una línea con `- [ ] ` para solicitar un cambio. El agente lo implementa
 - [x] Página 2 (Settings): reporte de bienestar inicial — 4 sliders Likert 1–7 para estrés, ansiedad, tristeza y cansancio. Guardar como Stress_start_Score, Anxiety_start_Score, Saddness_start_Score, Tiredness_start_Score
 - [x] Página 3 (Flow State): cronómetro regresivo con duración de flow seleccionada
 - [x] Página 3 (Flow State): reproducir Flow_state.wav en loop durante todo el flow state. Si el archivo es más corto que el tiempo, repetirlo en loop
+- [x] Página 3 (Flow State): cuando quede 1 minuto reproducir Cue_break.wav una sola vez
