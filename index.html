@@ -529,6 +529,27 @@ canvas.chart{width:100%;border-radius:var(--rs);display:block;background:rgba(25
   <h2 style="font-size:28px;font-weight:400;margin-bottom:4px">¿Cómo fue?</h2>
   <p class="text-sm text-muted mb-5">Cuéntanos sobre tu experiencia</p>
 
+  <!-- Session stats summary -->
+  <div class="card mb-4">
+    <p class="label-caps mb-3">Resumen de sesión</p>
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="stat-lbl">Tiempo en Flow</div>
+        <div><span class="stat-val" id="p7-focus-time">0</span><span class="stat-unit"> min</span></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-lbl">Tiempo en Break</div>
+        <div><span class="stat-val" id="p7-rest-time">0</span><span class="stat-unit"> min</span></div>
+      </div>
+    </div>
+    <div id="p7-gfs-row" style="display:none;margin-top:10px">
+      <div class="stat-card" style="text-align:center">
+        <div class="stat-lbl">Global Flow Score</div>
+        <div><span class="stat-val" id="p7-gfs-val">—</span><span class="stat-unit"> / 7</span></div>
+      </div>
+    </div>
+  </div>
+
   <!-- GFPS (condicional) -->
   <div class="card mb-4" id="gfps-section" style="display:none">
     <p class="label-caps mb-1">Predisposición al Flow — GFPS (1–5)</p>
@@ -1444,6 +1465,17 @@ function startRecovery() {
 // PAGE 7 — FEEDBACK
 // ════════════════════════════════════════════════════════════
 function initFeedback() {
+  // Session stats
+  document.getElementById('p7-focus-time').textContent = S.focusAccum;
+  document.getElementById('p7-rest-time').textContent  = S.restAccum;
+  const gfsRow = document.getElementById('p7-gfs-row');
+  if (!S.pfsSkipped && S._pfsResult) {
+    document.getElementById('p7-gfs-val').textContent = S._pfsResult.globalFlowScore.toFixed(1);
+    gfsRow.style.display = 'block';
+  } else {
+    gfsRow.style.display = 'none';
+  }
+
   // Reset after-emotions
   ['tristeza','enojo','soledad','estres'].forEach(k=>{
     S.emotAfter[k]=S.emotBefore[k];
