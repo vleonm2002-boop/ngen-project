@@ -229,6 +229,21 @@ canvas.chart{width:100%;border-radius:var(--rs);display:block;background:rgba(25
     <p class="text-xs text-muted" style="margin-top:6px;letter-spacing:.12em;text-transform:uppercase">Music for Mind's Peace</p>
   </div>
 
+  <!-- Weekly Stats -->
+  <div class="mb-5">
+    <p class="label-caps mb-3">Esta semana</p>
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="stat-lbl">Flow State</div>
+        <div class="stat-val" id="w-flow">0m</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-lbl">Descansando</div>
+        <div class="stat-val" id="w-rest">0m</div>
+      </div>
+    </div>
+  </div>
+
   <!-- Metrics -->
   <div class="metrics-grid mb-5" id="home-metrics">
     <div class="metric-cell">
@@ -1118,6 +1133,15 @@ function toast(msg, duration=2200) {
 // ════════════════════════════════════════════════════════════
 function renderHome() {
   const all=Store.all();
+
+  const _now=new Date(), _dow=_now.getDay();
+  const _ws=new Date(_now); _ws.setHours(0,0,0,0); _ws.setDate(_now.getDate()-(_dow===0?6:_dow-1));
+  const week=all.filter(s=>new Date(s.date)>=_ws);
+  const wf=week.reduce((s,x)=>s+(x.focusMinutes||0),0);
+  const wr=week.reduce((s,x)=>s+(x.recoveryMinutes||0),0);
+  document.getElementById('w-flow').textContent=wf>=60?`${Math.floor(wf/60)}h ${wf%60?wf%60+'m':''}`.trim():`${wf}m`;
+  document.getElementById('w-rest').textContent=wr>=60?`${Math.floor(wr/60)}h ${wr%60?wr%60+'m':''}`.trim():`${wr}m`;
+
   const tf=all.reduce((s,x)=>s+(x.focusMinutes||0),0);
   const tr=all.reduce((s,x)=>s+(x.recoveryMinutes||0),0);
   const bi=all.length ? mean(all.map(x=>x.burnoutIndex||0)) : null;
