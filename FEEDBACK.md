@@ -8,7 +8,6 @@ Agrega una línea con `- [ ] ` para solicitar un cambio. El agente lo implementa
 ## Pendiente
 <!-- Un ítem por línea, con "- [ ] " al inicio. Ejemplo: -->
 <!-- - [ ] En la pantalla Home, cambiar el texto del botón a "Iniciar sesión de foco" -->
-- [ ] Página 7 (Stats de sesión): reporte de bienestar de salida — 4 sliders Likert 1–7 para estrés, ansiedad, tristeza y cansancio. Guardar como Stress_end_Score, Anxiety_end_Score, Saddness_end_Score, Tiredness_end_Score
 - [ ] Página 7 (Stats de sesión): calcular y guardar en tabla resultados_sesiones — Global_mental_health_start_score = avg(stress/anxiety/saddness/tiredness start), Global_mental_health_end_score = avg(stress/anxiety/saddness/tiredness end), Global_mental_health_day_score = avg(start, end), y deltas absolutos por dimensión = abs(x_start - x_end)
 - [ ] Página 7 (Stats de sesión): botón "Volver a Home" → Página 1
 - [ ] Página 8 (Stat Report): botones de rango — Este mes, 3 meses, 6 meses, 1 año, Total
@@ -66,3 +65,4 @@ Agrega una línea con `- [ ] ` para solicitar un cambio. El agente lo implementa
 - [x] Página 6 (Encuesta PFS): mostrar las siguientes 9 preguntas de forma secuencial, una a la vez, escala Likert 1–7 (1 = completamente en desacuerdo, 7 = completamente de acuerdo). Al responder cada pregunta desaparece y aparece la siguiente. Las preguntas son — (1) "Estuve absorto(a) en la tarea", (2) "Estaba muy enfocado(a) en la tarea", (3) "Toda mi atención estaba en la tarea", (4) "Sentí que podía controlar fácilmente lo que hacía", (5) "Mis acciones fluían sin esfuerzo", (6) "Había una sensación de fluidez en mis acciones", (7) "La experiencia me pareció gratificante", (8) "La experiencia se sintió satisfactoria", (9) "Me gustaría volver a tener esa experiencia"
 - [x] Página 6 (Encuesta PFS): calcular Absorption_Score = avg(ítems 1, 2, 3), Effortless_Control_Score = avg(ítems 4, 5, 6), Intrinsic_Reward_Score = avg(ítems 7, 8, 9), Global_Flow_Score = avg(ítems 1–9). Al terminar → Página 7
 - [x] Página 7 (Stats de sesión): mostrar tiempo en flow, tiempo en break y Global Flow Score (solo si se respondió la encuesta)
+- [x] Página 7 (Stats de sesión): reporte de bienestar de salida — 4 sliders Likert 1–7 para estrés, ansiedad, tristeza y cansancio. Guardar como Stress_end_Score, Anxiety_end_Score, Saddness_end_Score, Tiredness_end_Score

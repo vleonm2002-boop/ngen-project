@@ -557,6 +557,29 @@ canvas.chart{width:100%;border-radius:var(--rs);display:block;background:rgba(25
     <div class="lk-group" id="gfps-form"></div>
   </div>
 
+  <!-- Reporte de bienestar de salida -->
+  <div class="card mb-4">
+    <p class="label-caps mb-3">Reporte de bienestar de salida</p>
+    <div class="slider-group">
+      <div class="slider-item">
+        <div class="slider-label"><span>Estrés</span><span id="sv-stress-e">4</span></div>
+        <input type="range" min="1" max="7" value="4" id="sl-stress-e" oninput="onWellbeingEnd('Stress_end_Score','sv-stress-e',this.value)">
+      </div>
+      <div class="slider-item">
+        <div class="slider-label"><span>Ansiedad</span><span id="sv-anxiety-e">4</span></div>
+        <input type="range" min="1" max="7" value="4" id="sl-anxiety-e" oninput="onWellbeingEnd('Anxiety_end_Score','sv-anxiety-e',this.value)">
+      </div>
+      <div class="slider-item">
+        <div class="slider-label"><span>Tristeza</span><span id="sv-saddness-e">4</span></div>
+        <input type="range" min="1" max="7" value="4" id="sl-saddness-e" oninput="onWellbeingEnd('Saddness_end_Score','sv-saddness-e',this.value)">
+      </div>
+      <div class="slider-item">
+        <div class="slider-label"><span>Cansancio</span><span id="sv-tiredness-e">4</span></div>
+        <input type="range" min="1" max="7" value="4" id="sl-tiredness-e" oninput="onWellbeingEnd('Tiredness_end_Score','sv-tiredness-e',this.value)">
+      </div>
+    </div>
+  </div>
+
   <!-- Re-test emocional -->
   <div class="card mb-4">
     <p class="label-caps mb-4">¿Cómo te sientes ahora?</p>
@@ -869,6 +892,10 @@ const S = {
   Anxiety_start_Score:   4,
   Saddness_start_Score:  4,
   Tiredness_start_Score: 4,
+  Stress_end_Score:      4,
+  Anxiety_end_Score:     4,
+  Saddness_end_Score:    4,
+  Tiredness_end_Score:   4,
   lifeBefore:  'luchando',
   focusMin:    25,
   restMin:     5,
@@ -1266,6 +1293,12 @@ function onWellbeingStart(key, dispId, val) {
   if(el) el.textContent=val;
 }
 
+function onWellbeingEnd(key, dispId, val) {
+  S[key]=+val;
+  const el=document.getElementById(dispId);
+  if(el) el.textContent=val;
+}
+
 function selectLife(ctx, btn) {
   const group = ctx==='before'?'#life-before-opts':' #life-after-opts';
   document.querySelectorAll(group+' .life-opt').forEach(b=>b.classList.remove('selected'));
@@ -1475,6 +1508,13 @@ function initFeedback() {
   } else {
     gfsRow.style.display = 'none';
   }
+
+  // Reset wellbeing end sliders
+  [['sl-stress-e','sv-stress-e','Stress_end_Score'],['sl-anxiety-e','sv-anxiety-e','Anxiety_end_Score'],['sl-saddness-e','sv-saddness-e','Saddness_end_Score'],['sl-tiredness-e','sv-tiredness-e','Tiredness_end_Score']].forEach(([slId,svId,k])=>{
+    const sl=document.getElementById(slId); if(sl) sl.value=4;
+    const sv=document.getElementById(svId); if(sv) sv.textContent=4;
+    S[k]=4;
+  });
 
   // Reset after-emotions
   ['tristeza','enojo','soledad','estres'].forEach(k=>{
@@ -1705,6 +1745,10 @@ function finishSession() {
     focusMinutes: S.focusAccum,
     recoveryMinutes: S.restAccum,
     burnoutIndex: r.burnoutAfter||0,
+    Stress_end_Score:      S.Stress_end_Score,
+    Anxiety_end_Score:     S.Anxiety_end_Score,
+    Saddness_end_Score:    S.Saddness_end_Score,
+    Tiredness_end_Score:   S.Tiredness_end_Score,
   });
   // Save flow scores only if not already saved in submitFlowSurvey
   if (!S._pfsResult) {
