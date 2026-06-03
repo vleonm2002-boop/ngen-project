@@ -77,7 +77,7 @@ scripts = re.findall(r'<script>(.*?)</script>', html, re.DOTALL)
 combined = '\n'.join(scripts)
 open('/tmp/ngen_validate.js', 'w').write(combined)
 " 2>/dev/null
-  if node --check /tmp/ngen_validate.js 2>> "$LOG"; then
+  if /usr/local/bin/node --check /tmp/ngen_validate.js 2>> "$LOG"; then
     log "Validación JS: OK"
     git stash drop --quiet 2>/dev/null
   else

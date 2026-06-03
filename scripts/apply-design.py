@@ -59,7 +59,7 @@ def main():
     # Check JS syntax before committing
     js_blocks = re.findall(r'<script>(.*?)</script>', patched, re.DOTALL)
     Path("/tmp/ngen_validate.js").write_text("\n".join(js_blocks))
-    result = run("node --check /tmp/ngen_validate.js")
+    result = run("/usr/local/bin/node --check /tmp/ngen_validate.js")
     if result.returncode != 0:
         print("JS syntax error — reverting.")
         HTML.write_text(original)
