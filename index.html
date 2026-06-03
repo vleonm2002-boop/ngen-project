@@ -468,7 +468,7 @@ canvas.chart{width:100%;border-radius:var(--rs);display:block;background:rgba(25
     <button class="cbtn" onclick="T.skip(T.duration)" aria-label="Siguiente ciclo">⏩</button>
   </div>
 
-  <button class="btn btn-secondary" style="width:100%" onclick="T.skip(T.duration)">Saltar Focus →</button>
+  <button class="btn btn-secondary" style="width:100%" onclick="skipToBreak()">Skip a descanso</button>
 
 </div>
 </div>
@@ -1370,6 +1370,12 @@ function toggleFlowPause() {
   flowPaused=!flowPaused;
   if (flowPaused) { T.pause(); document.getElementById('flow-pp').textContent='▶'; }
   else            { T.resume(); document.getElementById('flow-pp').textContent='⏸'; }
+}
+
+function skipToBreak() {
+  T.stop();
+  S.focusAccum+=S.focusMin;
+  startRecovery();
 }
 
 // ════════════════════════════════════════════════════════════
