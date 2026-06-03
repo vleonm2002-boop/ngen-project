@@ -137,6 +137,8 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
 .lk-btn{flex:1;aspect-ratio:1;max-width:40px;border-radius:var(--rs);border:1px solid var(--brd);background:transparent;color:var(--muted);font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;-webkit-tap-highlight-color:transparent;font-family:'Inter',sans-serif}
 .lk-btn.sel{background:var(--text);color:var(--bg);border-color:var(--text)}
 .lk-labels{display:flex;justify-content:space-between;font-size:10px;color:var(--muted)}
+@keyframes pfs-appear{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.pfs-appear{animation:pfs-appear .22s ease-out}
 
 /* ── TRACK CARDS ── */
 .track-card{display:flex;align-items:center;gap:14px;padding:16px;border-radius:var(--r);border:1px solid var(--brd);background:var(--surf);cursor:pointer;transition:all .2s;-webkit-tap-highlight-color:transparent}
@@ -661,7 +663,7 @@ canvas.chart{width:100%;border-radius:var(--rs);display:block;background:rgba(25
 </div>
 
 <!-- ══════════════════════════════════════════════
-     PAGE 11 — FLOW SURVEY (PFS) STEP 1/4
+     PAGE 11 — FLOW SURVEY (PFS) — sequential
 ══════════════════════════════════════════════ -->
 <div class="page" id="page-11">
 <div class="px pt-safe pb-safe flex col" style="flex:1;padding-top:36px;padding-bottom:24px">
@@ -671,13 +673,9 @@ canvas.chart{width:100%;border-radius:var(--rs);display:block;background:rgba(25
     <button onclick="skipFlowSurvey()" style="background:transparent;border:none;color:var(--muted);font-size:13px;cursor:pointer;font-family:'Inter',sans-serif;padding:6px 0;-webkit-tap-highlight-color:transparent">Omitir</button>
   </div>
   <p class="text-sm text-muted mb-3" style="line-height:1.6">1 = Completamente en desacuerdo &nbsp;·&nbsp; 7 = Completamente de acuerdo</p>
-  <p class="text-xs text-muted mb-4" style="text-align:right">1 / 4</p>
+  <p class="text-xs text-muted mb-2" id="pfs-progress" style="text-align:right">1 / 9</p>
 
-  <div class="lk-group mb-5" id="pfs-form-1"></div>
-
-  <div class="mt-a">
-    <button class="btn btn-primary" onclick="goSurveyStep(2)">Siguiente →</button>
-  </div>
+  <div id="pfs-question-area" style="flex:1;display:flex;flex-direction:column;justify-content:center"></div>
 
 </div>
 </div>
@@ -1524,8 +1522,31 @@ function renderPfsGroup(containerId, start, end) {
   });
 }
 
+function renderPfsQuestion(idx) {
+  document.getElementById('pfs-progress').textContent = `${idx+1} / 9`;
+  const area = document.getElementById('pfs-question-area');
+  const btns = [1,2,3,4,5,6,7].map(v =>
+    `<button class="lk-btn" onclick="selectPfsAnswer(${idx},${v})">${v}</button>`
+  ).join('');
+  area.innerHTML = `<div class="lk-item pfs-appear" style="gap:18px">
+    <p class="lk-q" style="font-size:18px;line-height:1.6;text-align:center">${PFS_ITEMS[idx]}</p>
+    <div class="lk-scale">${btns}</div>
+    <div class="lk-labels"><span>Completamente en desacuerdo</span><span>Completamente de acuerdo</span></div>
+  </div>`;
+}
+
+function selectPfsAnswer(idx, v) {
+  S.pfsAns[idx] = v;
+  if (idx + 1 < 9) {
+    renderPfsQuestion(idx + 1);
+  } else {
+    submitFlowSurvey();
+  }
+}
+
 function initFlowSurvey() {
-  renderPfsGroup('pfs-form-1',0,3);
+  S.pfsAns = new Array(9).fill(0);
+  renderPfsQuestion(0);
 }
 
 function goSurveyStep(step) {
