@@ -485,13 +485,13 @@ canvas.chart{width:100%;border-radius:var(--rs);display:block;background:rgba(25
   </div>
 
   <div class="timer-wrap">
-    <svg class="timer-svg" width="190" height="190" viewBox="0 0 190 190">
-      <circle class="t-bg" cx="95" cy="95" r="80" stroke-width="6"/>
-      <circle class="t-arc rest-arc" cx="95" cy="95" r="80" stroke-width="6"
-        stroke-dasharray="502.7" stroke-dashoffset="0" id="rest-arc"/>
+    <svg class="timer-svg" width="230" height="230" viewBox="0 0 230 230" role="timer">
+      <circle class="t-bg" cx="115" cy="115" r="100" stroke-width="8"/>
+      <circle class="t-arc rest-arc" cx="115" cy="115" r="100" stroke-width="8"
+        stroke-dasharray="628.3" stroke-dashoffset="0" id="rest-arc"/>
     </svg>
     <div class="timer-txt">
-      <div class="timer-time" id="rest-time" style="font-size:42px;color:#fff">5:00</div>
+      <div class="timer-time" id="rest-time" style="color:#fff">5:00</div>
     </div>
   </div>
 
@@ -1391,13 +1391,13 @@ function startRecovery() {
 
   const dur=S.restMin*60;
   document.getElementById('rest-time').textContent=fmt(dur);
-  arc('rest-arc',C80,1);
+  arc('rest-arc',C100,1);
 
   startBreath();
 
   T.start(dur, rem=>{
     document.getElementById('rest-time').textContent=fmt(rem);
-    arc('rest-arc',C80,rem/dur);
+    arc('rest-arc',C100,rem/dur);
     if (rem<=60 && !T.cueFired) {
       T.cueFired=true;
       if (S.currentCycle<S.totalCycles) {
