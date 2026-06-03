@@ -1745,10 +1745,21 @@ function finishSession() {
     focusMinutes: S.focusAccum,
     recoveryMinutes: S.restAccum,
     burnoutIndex: r.burnoutAfter||0,
+    Stress_start_Score:    S.Stress_start_Score,
+    Anxiety_start_Score:   S.Anxiety_start_Score,
+    Saddness_start_Score:  S.Saddness_start_Score,
+    Tiredness_start_Score: S.Tiredness_start_Score,
     Stress_end_Score:      S.Stress_end_Score,
     Anxiety_end_Score:     S.Anxiety_end_Score,
     Saddness_end_Score:    S.Saddness_end_Score,
     Tiredness_end_Score:   S.Tiredness_end_Score,
+    Global_mental_health_start_score: mean([S.Stress_start_Score, S.Anxiety_start_Score, S.Saddness_start_Score, S.Tiredness_start_Score]),
+    Global_mental_health_end_score:   mean([S.Stress_end_Score,   S.Anxiety_end_Score,   S.Saddness_end_Score,   S.Tiredness_end_Score]),
+    Global_mental_health_day_score:   mean([mean([S.Stress_start_Score, S.Anxiety_start_Score, S.Saddness_start_Score, S.Tiredness_start_Score]), mean([S.Stress_end_Score, S.Anxiety_end_Score, S.Saddness_end_Score, S.Tiredness_end_Score])]),
+    Stress_delta:    Math.abs(S.Stress_start_Score    - S.Stress_end_Score),
+    Anxiety_delta:   Math.abs(S.Anxiety_start_Score   - S.Anxiety_end_Score),
+    Saddness_delta:  Math.abs(S.Saddness_start_Score  - S.Saddness_end_Score),
+    Tiredness_delta: Math.abs(S.Tiredness_start_Score - S.Tiredness_end_Score),
   });
   // Save flow scores only if not already saved in submitFlowSurvey
   if (!S._pfsResult) {
