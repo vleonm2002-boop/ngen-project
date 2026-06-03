@@ -1029,7 +1029,10 @@ function handleLogin() {
 }
 
 // ════════════════════════════════════════════════════════════
-// REGISTRO — tabla usuarios en localStorage
+// TABLA usuarios  (ngen_usuarios)
+// Schema: id (UUID PK), nombre, apellido, email (único),
+//         ubicacion, genero, tipo_sesion (gratuita|pago),
+//         created_at (timestamp ISO)
 // ════════════════════════════════════════════════════════════
 const Usuarios = {
   KEY: 'ngen_usuarios',
