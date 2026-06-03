@@ -1,0 +1,43 @@
+name: Notificar a Benjamín
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Obtener mensaje del commit
+        id: commit
+        run: |
+          MSG=$(git log -1 --pretty=%s)
+          echo "message=$MSG" >> $GITHUB_OUTPUT
+
+      - name: Enviar email
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          secure: true
+          username: ${{ secrets.GMAIL_USERNAME }}
+          password: ${{ secrets.GMAIL_APP_PASSWORD }}
+          to: benjaleonsanchez@gmail.com
+          from: Ngen App <${{ secrets.GMAIL_USERNAME }}>
+          subject: "Ngen — nuevo cambio publicado"
+          html_body: |
+            <div style="font-family:sans-serif;max-width:480px;margin:0 auto;padding:24px">
+              <h2 style="margin:0 0 8px">Ngen — actualización</h2>
+              <p style="color:#555;margin:0 0 16px">Se publicó un cambio en la app:</p>
+              <div style="background:#f4f4f4;border-radius:8px;padding:14px 18px;font-size:15px">
+                ${{ steps.commit.outputs.message }}
+              </div>
+              <p style="margin:20px 0 0;font-size:13px;color:#888">
+                Commit por ${{ github.actor }} ·
+                <a href="https://github.com/${{ github.repository }}/commit/${{ github.sha }}">ver cambio</a>
+              </p>
+            </div>
