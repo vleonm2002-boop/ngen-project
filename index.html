@@ -1817,28 +1817,22 @@ function renderStats() {
     return;
   }
 
-  const charts=[
-    {title:'Tiempo Foco (min)', get:(s)=>s.focusMinutes||0,    color:'#e8b84b'},
-    {title:'Índice Burnout (%)',get:(s)=>Math.round((s.burnoutIndex||0)*100), color:'#f87171'},
-    {title:'Estrés',            get:(s)=>s.emotionsBefore?.estres??0,         color:'#a78bfa'},
-    {title:'Bienestar',         get:(s)=>({floreciendo:100,luchando:50,sufriendo:0})[s.lifeAfter]??50, color:'#34d399'},
+  const avgDefs=[
+    {key:'focusMinutes',           label:'Tiempo Flow',     unit:'min', dec:0, color:'#e8b84b'},
+    {key:'recoveryMinutes',        label:'Tiempo Break',    unit:'min', dec:0, color:'#60a5fa'},
+    {key:'globalFlowScore',        label:'Global Flow',     unit:'/7',  dec:1, color:'#34d399'},
+    {key:'absorptionScore',        label:'Absorción',       unit:'/7',  dec:1, color:'#a78bfa'},
+    {key:'effortlessControlScore', label:'Ctrl. Esfuerzo',  unit:'/7',  dec:1, color:'#f472b6'},
+    {key:'intrinsicRewardScore',   label:'Rec. Intrínseca', unit:'/7',  dec:1, color:'#fb923c'},
+    {key:'Anxiety_end_Score',      label:'Ansiedad',        unit:'/7',  dec:1, color:'#f87171'},
+    {key:'Stress_end_Score',       label:'Estrés',          unit:'/7',  dec:1, color:'#ef4444'},
+    {key:'Saddness_end_Score',     label:'Tristeza',        unit:'/7',  dec:1, color:'#818cf8'},
+    {key:'Tiredness_end_Score',    label:'Cansancio',       unit:'/7',  dec:1, color:'#94a3b8'},
   ];
 
   box.innerHTML='';
 
   // ─── PROMEDIOS DEL PERÍODO ──────────────────────────────────
-  const avgDefs=[
-    {key:'focusMinutes',           label:'Tiempo Flow',     unit:'min', dec:0},
-    {key:'recoveryMinutes',        label:'Tiempo Break',    unit:'min', dec:0},
-    {key:'globalFlowScore',        label:'Global Flow',     unit:'/7',  dec:1},
-    {key:'absorptionScore',        label:'Absorción',       unit:'/7',  dec:1},
-    {key:'effortlessControlScore', label:'Ctrl. Esfuerzo',  unit:'/7',  dec:1},
-    {key:'intrinsicRewardScore',   label:'Rec. Intrínseca', unit:'/7',  dec:1},
-    {key:'Anxiety_end_Score',      label:'Ansiedad',        unit:'/7',  dec:1},
-    {key:'Stress_end_Score',       label:'Estrés',          unit:'/7',  dec:1},
-    {key:'Saddness_end_Score',     label:'Tristeza',        unit:'/7',  dec:1},
-    {key:'Tiredness_end_Score',    label:'Cansancio',       unit:'/7',  dec:1},
-  ];
   const avgsHdr=document.createElement('p');
   avgsHdr.className='chart-title';
   avgsHdr.style.marginBottom='8px';
@@ -1857,57 +1851,19 @@ function renderStats() {
   });
   box.appendChild(avgsGrid);
 
-  charts.forEach(cfg=>{
-    const vals=data.map(cfg.get);
-    const lbls=data.map(s=>{const d=new Date(s.date);return `${d.getDate()}/${d.getMonth()+1}`;});
-    const sec=document.createElement('div');
-    sec.className='chart-section';
-    const title=document.createElement('p');
-    title.className='chart-title';
-    title.textContent=cfg.title;
-    const cv=document.createElement('canvas');
-    cv.className='chart'; cv.height=110;
-    sec.appendChild(title); sec.appendChild(cv);
-    box.appendChild(sec);
-    drawChart(cv,vals,lbls,cfg.color);
-  });
+  // ─── EVOLUCIÓN TEMPORAL ─────────────────────────────────────
+  const evHdr=document.createElement('div');
+  evHdr.style.cssText='border-top:1px solid var(--brd);padding-top:12px;margin-bottom:4px;';
+  const evHdrTxt=document.createElement('p');
+  evHdrTxt.className='chart-title';
+  evHdrTxt.textContent='EVOLUCIÓN TEMPORAL';
+  evHdr.appendChild(evHdrTxt);
+  box.appendChild(evHdr);
 
-  // ─── FLOW METRICS (PFS) ────────────────────────────────────
-  const flowMetrics=[
-    {key:'globalFlowScore',        label:'Global Flow Score',     color:'#e8b84b'},
-    {key:'absorptionScore',        label:'Absorción',             color:'#60a5fa'},
-    {key:'effortlessControlScore', label:'Control sin Esfuerzo',  color:'#34d399'},
-    {key:'intrinsicRewardScore',   label:'Recompensa Intrínseca', color:'#f472b6'},
-  ];
-
-  // Divider + section header
-  const fhdr=document.createElement('div');
-  fhdr.style.cssText='border-top:1px solid var(--brd);padding-top:12px;';
-  const fhdrTxt=document.createElement('p');
-  fhdrTxt.className='chart-title';
-  fhdrTxt.textContent='MÉTRICAS DE FLOW (PFS)';
-  fhdr.appendChild(fhdrTxt);
-  box.appendChild(fhdr);
-
-  // Averages grid (nulls excluded from calculation)
-  const fgrid=document.createElement('div');
-  fgrid.className='stat-grid';
-  flowMetrics.forEach(m=>{
-    const vals=data.map(s=>s[m.key]).filter(v=>v!=null);
-    const avg=vals.length?(vals.reduce((a,b)=>a+b,0)/vals.length):null;
-    const card=document.createElement('div');
-    card.className='stat-card';
-    card.innerHTML=`<div class="stat-lbl">${m.label}</div>
-      <div><span class="stat-val" style="font-size:22px">${avg!=null?avg.toFixed(1):'--'}</span><span class="stat-unit">${avg!=null?' /7':''}</span></div>`;
-    fgrid.appendChild(card);
-  });
-  box.appendChild(fgrid);
-
-  // Progress charts per metric (sessions where value is not null)
-  flowMetrics.forEach(m=>{
-    const sessions=data.filter(s=>s[m.key]!=null);
+  avgDefs.forEach(m=>{
+    const sessions=data.filter(s=>s[m.key]!=null&&!isNaN(+s[m.key]));
     if (!sessions.length) return;
-    const vals=sessions.map(s=>s[m.key]);
+    const vals=sessions.map(s=>+s[m.key]);
     const lbls=sessions.map(s=>{const d=new Date(s.date);return `${d.getDate()}/${d.getMonth()+1}`;});
     const sec=document.createElement('div');
     sec.className='chart-section';
