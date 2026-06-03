@@ -8,7 +8,6 @@ Agrega una línea con `- [ ] ` para solicitar un cambio. El agente lo implementa
 ## Pendiente
 <!-- Un ítem por línea, con "- [ ] " al inicio. Ejemplo: -->
 <!-- - [ ] En la pantalla Home, cambiar el texto del botón a "Iniciar sesión de foco" -->
-- [ ] Página 4 (Micro Break): reproducir Micro_break.wav en loop durante todo el break. Si el archivo es más corto que el tiempo, repetirlo en loop
 - [ ] Página 4 (Micro Break): si cantidad_ciclos > 0, restar 1 a cantidad_ciclos, cuando quede 1 minuto reproducir Cue_flow.wav una sola vez, al terminar el cronómetro → Página 3
 - [ ] Página 4 (Micro Break): si cantidad_ciclos === 0, al terminar el cronómetro → Página 5
 - [ ] Página 4 (Micro Break): botón skip con label dinámico — "Skip a Flow state" si quedan ciclos, "Finalizar sesión" si no quedan
@@ -66,3 +65,4 @@ Agrega una línea con `- [ ] ` para solicitar un cambio. El agente lo implementa
 - [x] Página 3 (Flow State): cuando quede 1 minuto reproducir Cue_break.wav una sola vez
 - [x] Página 3 (Flow State): botón "Skip a descanso" → navegar a Página 4 inmediatamente
 - [x] Página 4 (Micro Break): cronómetro regresivo con duración de break seleccionada
+- [x] Página 4 (Micro Break): reproducir Micro_break.wav en loop durante todo el break. Si el archivo es más corto que el tiempo, repetirlo en loop

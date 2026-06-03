@@ -963,7 +963,7 @@ const AE = {
   },
 
   async loadAll(onProg) {
-    const names = ['Sync_1','Sync_2','Sync_3','Flow_State','Recovery','cue_to_Flow_state','cue_to_recovery','Cue_break'];
+    const names = ['Sync_1','Sync_2','Sync_3','Flow_State','Recovery','Micro_break','cue_to_Flow_state','cue_to_recovery','Cue_break'];
     let n = 0;
     await Promise.all(names.map(async name => {
       try {
@@ -1383,7 +1383,7 @@ function skipToBreak() {
 // ════════════════════════════════════════════════════════════
 function startRecovery() {
   AE.stopAll();
-  AE.playLoop('Recovery');
+  AE.playLoop('Micro_break');
   navigateTo('page-6');
 
   document.getElementById('page-6').style.background='var(--rest-bg)';
