@@ -8,7 +8,6 @@ Agrega una línea con `- [ ] ` para solicitar un cambio. El agente lo implementa
 ## Pendiente
 <!-- Un ítem por línea, con "- [ ] " al inicio. Ejemplo: -->
 <!-- - [ ] En la pantalla Home, cambiar el texto del botón a "Iniciar sesión de foco" -->
-- [ ] Página 10 (Registro): opción de registro con Google OAuth y con correo + contraseña, flujo con CAPTCHA, aceptación de términos y condiciones, al confirmar crear registro en tabla usuarios y navegar a Página 1
 - [ ] Base de datos — crear tabla usuarios con campos: id (UUID PK), nombre, apellido, email (único), ubicacion, genero, tipo_sesion (enum: gratuita/pago), created_at (timestamp)
 - [ ] Base de datos — crear tabla resultados_sesiones con campos: id (UUID PK), user_id (FK → usuarios), global_flow_score, absorption_score, effortless_control_score, intrinsic_reward_score, stress_start_score, anxiety_start_score, saddness_start_score, tiredness_start_score, global_mh_start_score, stress_end_score, anxiety_end_score, saddness_end_score, tiredness_end_score, global_mh_end_score, global_mh_day_score, tiempo_flow_min, tiempo_break_min, date (timestamp)
 - [ ] Autenticación: implementar login con correo + Google OAuth, persistir sesión localmente, exponer función isLoggedIn() usada por la barra de navegación y flujos condicionales de Página 1
@@ -66,3 +65,4 @@ Agrega una línea con `- [ ] ` para solicitar un cambio. El agente lo implementa
 - [x] Página 8 (Stat Report): botones de rango — Este mes, 3 meses, 6 meses, 1 año, Total
 - [x] Página 8 (Stat Report): por cada rango mostrar promedios de tiempo en flow, tiempo en break, Global Flow Score, Absorption Score, Effortless Control Score, Intrinsic Reward Score, ansiedad, estrés, tristeza y cansancio — leídos desde resultados_sesiones filtrado por user_id y rango de fecha
 - [x] Página 8 (Stat Report): gráfico de línea mostrando evolución temporal de los valores en el rango seleccionado
+- [x] Página 10 (Registro): opción de registro con Google OAuth y con correo + contraseña, flujo con CAPTCHA, aceptación de términos y condiciones, al confirmar crear registro en tabla usuarios y navegar a Página 1

@@ -218,6 +218,13 @@ canvas.chart{width:100%;border-radius:var(--rs);display:block;background:rgba(25
 .login-field{width:100%;padding:14px 16px;background:var(--surf);border:1px solid var(--brd);border-radius:var(--r);color:var(--text);font-family:'Inter',sans-serif;font-size:15px;outline:none;transition:border-color .18s;-webkit-appearance:none}
 .login-field::placeholder{color:var(--muted)}
 .login-field:focus{border-color:var(--text)}
+.auth-divider{display:flex;align-items:center;gap:12px;color:var(--muted);font-size:13px;flex-shrink:0}
+.auth-divider::before,.auth-divider::after{content:'';flex:1;height:1px;background:var(--brd)}
+.btn-google{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:14px 20px;background:rgba(255,255,255,0.08);border:1px solid var(--brd);border-radius:var(--r);color:var(--text);font-family:'Inter',sans-serif;font-size:15px;font-weight:500;cursor:pointer;transition:background .18s;-webkit-tap-highlight-color:transparent}
+.btn-google:active{background:var(--surf2)}
+.captcha-box{background:var(--surf);border:1px solid var(--brd);border-radius:var(--rs);padding:16px;display:flex;flex-direction:column;gap:10px}
+.reg-check-row{display:flex;align-items:flex-start;gap:10px;cursor:pointer;-webkit-user-select:none;user-select:none}
+.reg-check-row input[type=checkbox]{width:18px;height:18px;min-width:18px;accent-color:var(--text);cursor:pointer;margin-top:2px}
 </style>
 </head>
 <body>
@@ -810,6 +817,63 @@ canvas.chart{width:100%;border-radius:var(--rs);display:block;background:rgba(25
 </div>
 </div>
 
+<!-- ══════════════════════════════════════════════
+     PAGE REGISTRO
+══════════════════════════════════════════════ -->
+<div class="page" id="page-registro">
+<div class="px pt-safe pb-safe flex col" style="flex:1;padding-top:40px;padding-bottom:24px;gap:18px">
+
+  <div class="flex items-c w-full">
+    <button onclick="navigateTo('page-login')" style="background:none;border:none;color:var(--text);font-size:22px;cursor:pointer;padding:0;line-height:1;-webkit-tap-highlight-color:transparent">←</button>
+    <h2 style="font-size:26px;font-weight:400;margin-left:14px">Crear cuenta</h2>
+  </div>
+
+  <button class="btn-google" onclick="toast('Próximamente',2500)">
+    <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+    Continuar con Google
+  </button>
+
+  <div class="auth-divider">o continúa con correo</div>
+
+  <div style="display:flex;flex-direction:column;gap:12px">
+    <input class="login-field" type="text"     id="reg-nombre"   placeholder="Nombre"            autocomplete="given-name" />
+    <input class="login-field" type="text"     id="reg-apellido" placeholder="Apellido"           autocomplete="family-name" />
+    <input class="login-field" type="email"    id="reg-email"    placeholder="Correo electrónico" autocomplete="email" />
+    <input class="login-field" type="password" id="reg-pass"     placeholder="Contraseña (mín. 6 caracteres)" autocomplete="new-password" />
+  </div>
+
+  <div class="captcha-box">
+    <div style="font-size:13px;color:var(--muted);margin-bottom:2px">Verificación de seguridad</div>
+    <div style="font-size:16px;font-weight:600;color:var(--text)" id="captcha-question">¿Cuánto es …?</div>
+    <input class="login-field" type="number" id="captcha-input" placeholder="Tu respuesta" oninput="checkRegForm()" style="margin-top:4px" />
+  </div>
+
+  <label class="reg-check-row">
+    <input type="checkbox" id="reg-terms" onchange="checkRegForm()" />
+    <span style="font-size:13px;color:var(--muted);line-height:1.6">Acepto los <span onclick="event.stopPropagation();showTCModal()" style="color:var(--text);text-decoration:underline;cursor:pointer">Términos y Condiciones</span> y la <span onclick="event.stopPropagation();showTCModal()" style="color:var(--text);text-decoration:underline;cursor:pointer">Política de Privacidad</span> de Ngen</span>
+  </label>
+
+  <button class="btn btn-primary" id="btn-register" disabled onclick="handleRegister()">Crear cuenta</button>
+
+  <p class="text-sm text-muted" style="text-align:center;margin-top:4px">
+    ¿Ya tienes cuenta?
+    <button onclick="navigateTo('page-login')" style="background:none;border:none;color:var(--text);font-size:13px;cursor:pointer;padding:0;font-family:'Inter',sans-serif;text-decoration:underline;-webkit-tap-highlight-color:transparent">Inicia sesión</button>
+  </p>
+
+</div>
+</div>
+
+<!-- T&C MODAL -->
+<div id="tc-modal" style="display:none;position:absolute;inset:0;background:rgba(0,0,0,.75);z-index:500;align-items:center;justify-content:center;padding:28px">
+  <div class="card" style="width:100%;max-width:340px;max-height:72vh;overflow-y:auto;display:flex;flex-direction:column;gap:12px">
+    <h3 style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400">Términos y Condiciones</h3>
+    <p style="font-size:13px;color:var(--muted);line-height:1.7">Ngen es una aplicación de bienestar mental. Al registrarte, aceptas usar la plataforma de manera responsable y en conformidad con su propósito.</p>
+    <p style="font-size:13px;color:var(--muted);line-height:1.7">Tus datos se almacenan localmente en tu dispositivo. Ngen no comparte información personal con terceros sin tu consentimiento.</p>
+    <p style="font-size:13px;color:var(--muted);line-height:1.7">Esta aplicación no reemplaza la atención médica o psicológica profesional. Si estás en crisis, contacta a un profesional de salud mental.</p>
+    <button class="btn btn-primary" onclick="document.getElementById('tc-modal').style.display='none'">Entendido</button>
+  </div>
+</div>
+
 <!-- TAB BAR -->
 <nav class="tab-bar" id="tab-bar">
   <button class="tab-item active" id="tab-home" onclick="isLoggedIn()?navigateTo('page-1'):navigateTo('page-login')">
@@ -965,6 +1029,68 @@ function handleLogin() {
 }
 
 // ════════════════════════════════════════════════════════════
+// REGISTRO — tabla usuarios en localStorage
+// ════════════════════════════════════════════════════════════
+const Usuarios = {
+  KEY: 'ngen_usuarios',
+  all()  { try { return JSON.parse(localStorage.getItem(this.KEY)||'[]'); } catch { return []; } },
+  insert(u) { const rows=this.all(); rows.push(u); localStorage.setItem(this.KEY,JSON.stringify(rows)); },
+  findByEmail(email) { return this.all().find(u=>u.email===email); }
+};
+
+let _captchaAnswer = 0;
+
+function initRegistroPage() {
+  const a = Math.floor(Math.random()*10)+1;
+  const b = Math.floor(Math.random()*10)+1;
+  _captchaAnswer = a + b;
+  document.getElementById('captcha-question').textContent = `¿Cuánto es ${a} + ${b}?`;
+  document.getElementById('captcha-input').value = '';
+  document.getElementById('reg-terms').checked = false;
+  document.getElementById('btn-register').disabled = true;
+  ['reg-nombre','reg-apellido','reg-email','reg-pass'].forEach(id=>{
+    document.getElementById(id).value = '';
+  });
+}
+
+function checkRegForm() {
+  const captchaOk = parseInt(document.getElementById('captcha-input').value,10) === _captchaAnswer;
+  const termsOk   = document.getElementById('reg-terms').checked;
+  document.getElementById('btn-register').disabled = !(captchaOk && termsOk);
+}
+
+function showTCModal() {
+  document.getElementById('tc-modal').style.display = 'flex';
+}
+
+function handleRegister() {
+  const nombre   = document.getElementById('reg-nombre').value.trim();
+  const apellido = document.getElementById('reg-apellido').value.trim();
+  const email    = document.getElementById('reg-email').value.trim().toLowerCase();
+  const pass     = document.getElementById('reg-pass').value;
+
+  if (!nombre)   { toast('Ingresa tu nombre', 2500); return; }
+  if (!apellido) { toast('Ingresa tu apellido', 2500); return; }
+  if (!email || !/^[^@]+@[^@]+\.[^@]+$/.test(email)) { toast('Correo electrónico inválido', 2500); return; }
+  if (!pass || pass.length < 6) { toast('La contraseña debe tener al menos 6 caracteres', 2500); return; }
+  if (Usuarios.findByEmail(email)) { toast('Ya existe una cuenta con ese correo', 2500); return; }
+
+  const id = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+    const r = Math.random()*16|0;
+    return (c==='x' ? r : (r&0x3|0x8)).toString(16);
+  });
+
+  Usuarios.insert({
+    id, nombre, apellido, email,
+    ubicacion: '', genero: '', tipo_sesion: 'gratuita',
+    created_at: new Date().toISOString()
+  });
+
+  localStorage.setItem('ngen_user_id', id);
+  navigateTo('page-1');
+}
+
+// ════════════════════════════════════════════════════════════
 // FLOW RESULTS TABLE  (ngen_flow_results)
 // Schema: user_id, session_number, date, global_flow_score,
 //         absorption_score, effortless_control_score, intrinsic_reward_score
@@ -1009,8 +1135,9 @@ function navigateTo(id) {
   document.querySelectorAll('.tab-item').forEach(t=>t.classList.remove('active'));
   if (TAB_MAP[id]) document.getElementById(TAB_MAP[id]).classList.add('active');
 
-  if (id==='page-1')  renderHome();
-  if (id==='page-10') renderStats();
+  if (id==='page-1')        renderHome();
+  if (id==='page-10')       renderStats();
+  if (id==='page-registro') initRegistroPage();
 }
 
 // ════════════════════════════════════════════════════════════
