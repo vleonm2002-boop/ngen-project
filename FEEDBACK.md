@@ -8,7 +8,6 @@ Agrega una línea con `- [ ] ` para solicitar un cambio. El agente lo implementa
 ## Pendiente
 <!-- Un ítem por línea, con "- [ ] " al inicio. Ejemplo: -->
 <!-- - [ ] En la pantalla Home, cambiar el texto del botón a "Iniciar sesión de foco" -->
-- [ ] Página 1 (Home): botón "Personalizar música" → pop-up "Próximamente". Si el usuario no tiene sesión iniciada, después del pop-up mostrar segundo pop-up: "¿Deseas iniciar sesión para notificarme de actualizaciones y guardar tu progreso?" con botones Sí (→ Página 9) y No (→ cerrar pop-up, quedarse en Página 1)
 - [ ] Página 2 (Settings): selector de duración total de sesión con opciones 1h, 2h, 3h, 4h, 6h, 8h
 - [ ] Página 2 (Settings): selector de ciclo con opciones 25min/5min, 40min/10min, 50min/10min
 - [ ] Página 2 (Settings): calcular y mostrar cantidad_ciclos = floor(duración_total / (flow + break)) y guardar en variable de estado local
@@ -66,3 +65,4 @@ Agrega una línea con `- [ ] ` para solicitar un cambio. El agente lo implementa
 - [x] La barra de navegación inferior debe ocultarse completamente durante una sesión activa (Páginas 3, 4, 5, 6) y reaparecer al llegar a Página 7 o Página 1
 - [x] Página 1 (Home): mostrar stats de la semana en la parte superior — tiempo en flow state y tiempo descansando — leídos desde base de datos filtrando por semana actual
 - [x] Página 1 (Home): botón "Iniciar sesión de trabajo" → navega a Página 2
+- [x] Página 1 (Home): botón "Personalizar música" → pop-up "Próximamente". Si el usuario no tiene sesión iniciada, después del pop-up mostrar segundo pop-up: "¿Deseas iniciar sesión para notificarme de actualizaciones y guardar tu progreso?" con botones Sí (→ Página 9) y No (→ cerrar pop-up, quedarse en Página 1)

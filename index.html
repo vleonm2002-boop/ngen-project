@@ -262,7 +262,7 @@ canvas.chart{width:100%;border-radius:var(--rs);display:block;background:rgba(25
 
   <!-- CTAs -->
   <button class="btn btn-primary mb-3" onclick="goSetup()">Iniciar sesión de trabajo</button>
-  <button class="btn btn-secondary mb-5" onclick="goSetup()">Actualizar mi gusto musical</button>
+  <button class="btn btn-secondary mb-5" onclick="customizeMusicBtn()">Personalizar música</button>
 
   <!-- Recent sessions -->
   <p class="label-caps mb-3">Sesiones recientes</p>
@@ -720,6 +720,17 @@ canvas.chart{width:100%;border-radius:var(--rs);display:block;background:rgba(25
 </div>
 </div>
 
+<!-- Login Prompt Modal -->
+<div id="login-prompt-modal" style="display:none;position:absolute;inset:0;background:rgba(0,0,0,.62);z-index:400;align-items:center;justify-content:center;padding:28px">
+  <div style="background:var(--bg);border:1px solid var(--brd);border-radius:var(--r);padding:24px;width:100%;max-width:320px">
+    <p class="text-sm" style="line-height:1.75;margin-bottom:20px">¿Deseas iniciar sesión para notificarme de actualizaciones y guardar tu progreso?</p>
+    <div class="flex gap-2">
+      <button class="btn btn-secondary" style="flex:1;padding:12px 8px;font-size:14px" onclick="document.getElementById('login-prompt-modal').style.display='none'">No</button>
+      <button class="btn btn-primary"   style="flex:1;padding:12px 8px;font-size:14px" onclick="document.getElementById('login-prompt-modal').style.display='none';navigateTo('page-login')">Sí</button>
+    </div>
+  </div>
+</div>
+
 <!-- Skip Flow Modal -->
 <div id="skip-modal" style="display:none;position:absolute;inset:0;background:rgba(0,0,0,.62);z-index:300;align-items:center;justify-content:center;padding:28px">
   <div style="background:var(--bg);border:1px solid var(--brd);border-radius:var(--r);padding:24px;width:100%;max-width:320px">
@@ -1126,6 +1137,16 @@ function toast(msg, duration=2200) {
   const el=document.getElementById('toast');
   el.textContent=msg; el.classList.add('show');
   setTimeout(()=>el.classList.remove('show'),duration);
+}
+
+function customizeMusicBtn() {
+  toast('Próximamente', 3000);
+  if (!isLoggedIn()) {
+    setTimeout(() => {
+      const m = document.getElementById('login-prompt-modal');
+      m.style.display = 'flex';
+    }, 3000);
+  }
 }
 
 // ════════════════════════════════════════════════════════════
