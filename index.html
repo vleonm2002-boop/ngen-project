@@ -676,12 +676,11 @@ canvas.chart{width:100%;border-radius:var(--rs);display:block;background:rgba(25
   <h2 style="font-size:28px;font-weight:400;margin-bottom:14px">Estadísticas</h2>
 
   <div class="pill-group mb-5" id="period-group">
-    <button class="pill selected" data-d="7" onclick="selectPeriod(this)">1S</button>
-    <button class="pill" data-d="30" onclick="selectPeriod(this)">1M</button>
-    <button class="pill" data-d="90" onclick="selectPeriod(this)">3M</button>
-    <button class="pill" data-d="180" onclick="selectPeriod(this)">6M</button>
-    <button class="pill" data-d="365" onclick="selectPeriod(this)">1Y</button>
-    <button class="pill" data-d="0" onclick="selectPeriod(this)">Todo</button>
+    <button class="pill selected" data-d="month" onclick="selectPeriod(this)">Este mes</button>
+    <button class="pill" data-d="90" onclick="selectPeriod(this)">3 meses</button>
+    <button class="pill" data-d="180" onclick="selectPeriod(this)">6 meses</button>
+    <button class="pill" data-d="365" onclick="selectPeriod(this)">1 año</button>
+    <button class="pill" data-d="0" onclick="selectPeriod(this)">Total</button>
   </div>
 
   <div id="stats-body" class="flex col gap-4"></div>
@@ -915,7 +914,7 @@ const S = {
   emotAfter:  { tristeza:50, enojo:50, soledad:50, estres:50 },
   lifeAfter:  'luchando',
   // stats ui
-  statsDays: 7,
+  statsDays: 'month',
   // computed result (temp)
   _result: null,
   _pfsResult: null,
@@ -1780,14 +1779,18 @@ function finishSession() {
 function selectPeriod(btn) {
   document.querySelectorAll('#period-group .pill').forEach(b=>b.classList.remove('selected'));
   btn.classList.add('selected');
-  S.statsDays=+btn.dataset.d;
+  const raw=btn.dataset.d;
+  S.statsDays = raw==='month' ? 'month' : +raw;
   renderStats();
 }
 
 function renderStats() {
   const all=Store.all();
   const days=S.statsDays;
-  const data=days===0?all:all.filter(s=>(Date.now()-new Date(s.date).getTime())/86400000<=days);
+  const now=new Date();
+  const data=days===0?all:days==='month'
+    ?all.filter(s=>{const d=new Date(s.date);return d.getFullYear()===now.getFullYear()&&d.getMonth()===now.getMonth();})
+    :all.filter(s=>(Date.now()-new Date(s.date).getTime())/86400000<=days);
   const box=document.getElementById('stats-body');
 
   if (!data.length) {
