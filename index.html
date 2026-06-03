@@ -1405,13 +1405,13 @@ const AE = {
 const T = {
   duration:0, elapsed:0, lastTs:null,
   rafId:null, running:false, paused:false,
-  cueFired:false,
+  cueFired:false, _hiddenAt:null,
   onTick:null, onDone:null,
 
   start(dur, onTick, onDone) {
     if (this.rafId) cancelAnimationFrame(this.rafId);
     this.duration=dur; this.elapsed=0; this.lastTs=performance.now();
-    this.running=true; this.paused=false; this.cueFired=false;
+    this.running=true; this.paused=false; this.cueFired=false; this._hiddenAt=null;
     this.onTick=onTick; this.onDone=onDone;
     this._loop();
   },
@@ -1434,6 +1434,21 @@ const T = {
   stop()   { this.running=false; if(this.rafId) cancelAnimationFrame(this.rafId); },
   get rem(){ return Math.max(0,this.duration-this.elapsed); },
 };
+
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) {
+    T._hiddenAt = T.running && !T.paused ? Date.now() : null;
+  } else if (T._hiddenAt !== null) {
+    const secs = (Date.now() - T._hiddenAt) / 1000;
+    T._hiddenAt = null;
+    if (T.running && !T.paused) {
+      T.elapsed = Math.min(T.elapsed + secs, T.duration);
+      T.lastTs = performance.now();
+      if (T.rem <= 0) { T.running = false; T.onDone && T.onDone(); }
+      else { T.onTick && T.onTick(T.rem); }
+    }
+  }
+});
 
 // ════════════════════════════════════════════════════════════
 // BREATHING ANIMATION

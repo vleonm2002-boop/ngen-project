@@ -8,7 +8,6 @@ Agrega una línea con `- [ ] ` para solicitar un cambio. El agente lo implementa
 ## Pendiente
 <!-- Un ítem por línea, con "- [ ] " al inicio. Ejemplo: -->
 <!-- - [ ] En la pantalla Home, cambiar el texto del botón a "Iniciar sesión de foco" -->
-- [ ] El cronómetro debe seguir corriendo si la app va a background (implementar background timer)
 ## Implementado
 
 - [x] Ícono de música en Homepage con color de fuente (`--text`)
@@ -66,3 +65,4 @@ Agrega una línea con `- [ ] ` para solicitar un cambio. El agente lo implementa
 - [x] Autenticación: implementar login con correo + Google OAuth, persistir sesión localmente, exponer función isLoggedIn() usada por la barra de navegación y flujos condicionales de Página 1
 - [x] Audio: detener todo audio activo al navegar fuera de la sesión (Página 5 en adelante). Manejar archivo no encontrado con error silencioso sin crashear la app
 - [x] Pop-ups de "Próximamente" deben tener animación fade out al desaparecer automáticamente
+- [x] El cronómetro debe seguir corriendo si la app va a background (implementar background timer)
