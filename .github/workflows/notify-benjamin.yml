@@ -3,6 +3,14 @@ name: Notificar a Benjamín
 on:
   push:
     branches: [main]
+  workflow_dispatch:
+    inputs:
+      subject:
+        description: Asunto del email
+        required: true
+      html_body:
+        description: Cuerpo HTML del email
+        required: true
 
 jobs:
   notify:
@@ -18,7 +26,8 @@ jobs:
           MSG=$(git log -1 --pretty=%s)
           echo "message=$MSG" >> $GITHUB_OUTPUT
 
-      - name: Enviar email
+      - name: Enviar email (push automático)
+        if: github.event_name == 'push'
         uses: dawidd6/action-send-mail@v3
         with:
           server_address: smtp.gmail.com
@@ -41,3 +50,17 @@ jobs:
                 <a href="https://github.com/${{ github.repository }}/commit/${{ github.sha }}">ver cambio</a>
               </p>
             </div>
+
+      - name: Enviar email (manual)
+        if: github.event_name == 'workflow_dispatch'
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          secure: true
+          username: ${{ secrets.GMAIL_USERNAME }}
+          password: ${{ secrets.GMAIL_APP_PASSWORD }}
+          to: benjaleonsanchez@gmail.com
+          from: Ngen App <${{ secrets.GMAIL_USERNAME }}>
+          subject: ${{ github.event.inputs.subject }}
+          html_body: ${{ github.event.inputs.html_body }}
