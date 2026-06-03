@@ -282,23 +282,23 @@ canvas.chart{width:100%;border-radius:var(--rs);display:block;background:rgba(25
     <h2 style="font-size:26px;font-weight:400">¿Cómo te sientes?</h2>
   </div>
 
-  <p class="label-caps mb-3">Estado emocional</p>
+  <p class="label-caps mb-3">Reporte de bienestar inicial</p>
   <div class="slider-group mb-5" id="setup-sliders">
     <div class="slider-item">
-      <div class="slider-label"><span>Tristeza</span><span id="sv-tristeza">50</span></div>
-      <input type="range" min="0" max="100" value="50" id="sl-tristeza" oninput="onSlider('before','tristeza',this.value)">
+      <div class="slider-label"><span>Estrés</span><span id="sv-stress-s">4</span></div>
+      <input type="range" min="1" max="7" value="4" id="sl-stress-s" oninput="onWellbeingStart('Stress_start_Score','sv-stress-s',this.value)">
     </div>
     <div class="slider-item">
-      <div class="slider-label"><span>Enojo</span><span id="sv-enojo">50</span></div>
-      <input type="range" min="0" max="100" value="50" id="sl-enojo" oninput="onSlider('before','enojo',this.value)">
+      <div class="slider-label"><span>Ansiedad</span><span id="sv-anxiety-s">4</span></div>
+      <input type="range" min="1" max="7" value="4" id="sl-anxiety-s" oninput="onWellbeingStart('Anxiety_start_Score','sv-anxiety-s',this.value)">
     </div>
     <div class="slider-item">
-      <div class="slider-label"><span>Soledad</span><span id="sv-soledad">50</span></div>
-      <input type="range" min="0" max="100" value="50" id="sl-soledad" oninput="onSlider('before','soledad',this.value)">
+      <div class="slider-label"><span>Tristeza</span><span id="sv-saddness-s">4</span></div>
+      <input type="range" min="1" max="7" value="4" id="sl-saddness-s" oninput="onWellbeingStart('Saddness_start_Score','sv-saddness-s',this.value)">
     </div>
     <div class="slider-item">
-      <div class="slider-label"><span>Estrés</span><span id="sv-estres">50</span></div>
-      <input type="range" min="0" max="100" value="50" id="sl-estres" oninput="onSlider('before','estres',this.value)">
+      <div class="slider-label"><span>Cansancio</span><span id="sv-tiredness-s">4</span></div>
+      <input type="range" min="1" max="7" value="4" id="sl-tiredness-s" oninput="onWellbeingStart('Tiredness_start_Score','sv-tiredness-s',this.value)">
     </div>
   </div>
 
@@ -834,6 +834,10 @@ const GFPS_ITEMS = [
 const S = {
   // setup
   emotBefore:  { tristeza:50, enojo:50, soledad:50, estres:50 },
+  Stress_start_Score:    4,
+  Anxiety_start_Score:   4,
+  Saddness_start_Score:  4,
+  Tiredness_start_Score: 4,
   lifeBefore:  'luchando',
   focusMin:    25,
   restMin:     5,
@@ -1194,10 +1198,10 @@ function renderHome() {
 
 function goSetup() {
   // reset setup UI
-  ['tristeza','enojo','soledad','estres'].forEach(k=>{
-    document.getElementById(`sl-${k}`).value=50;
-    document.getElementById(`sv-${k}`).textContent=50;
-    S.emotBefore[k]=50;
+  [['sl-stress-s','sv-stress-s','Stress_start_Score'],['sl-anxiety-s','sv-anxiety-s','Anxiety_start_Score'],['sl-saddness-s','sv-saddness-s','Saddness_start_Score'],['sl-tiredness-s','sv-tiredness-s','Tiredness_start_Score']].forEach(([slId,svId,k])=>{
+    const sl=document.getElementById(slId); if(sl) sl.value=4;
+    const sv=document.getElementById(svId); if(sv) sv.textContent=4;
+    S[k]=4;
   });
   document.querySelectorAll('#life-before-opts .life-opt').forEach(b=>b.classList.remove('selected'));
   S.lifeBefore='luchando';
@@ -1216,6 +1220,12 @@ function onSlider(ctx, key, val) {
   val=+val;
   if (ctx==='before') { S.emotBefore[key]=val; document.getElementById(`sv-${key}`).textContent=val; }
   else                { S.emotAfter[key]=val;  document.getElementById(`sv2-${key}`).textContent=val; }
+}
+
+function onWellbeingStart(key, dispId, val) {
+  S[key]=+val;
+  const el=document.getElementById(dispId);
+  if(el) el.textContent=val;
 }
 
 function selectLife(ctx, btn) {
