@@ -1123,6 +1123,58 @@ const FlowResults = {
 };
 
 // ════════════════════════════════════════════════════════════
+// TABLA resultados_sesiones  (ngen_resultados_sesiones)
+// Schema: id (UUID PK), user_id (FK → usuarios),
+//         global_flow_score, absorption_score,
+//         effortless_control_score, intrinsic_reward_score,
+//         stress_start_score, anxiety_start_score,
+//         saddness_start_score, tiredness_start_score,
+//         global_mh_start_score, stress_end_score,
+//         anxiety_end_score, saddness_end_score,
+//         tiredness_end_score, global_mh_end_score,
+//         global_mh_day_score, tiempo_flow_min,
+//         tiempo_break_min, date (timestamp ISO)
+// ════════════════════════════════════════════════════════════
+const ResultadosSesiones = {
+  KEY: 'ngen_resultados_sesiones',
+  all()  { try { return JSON.parse(localStorage.getItem(this.KEY)||'[]'); } catch { return []; } },
+  insert(record) {
+    const id = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+      const r = Math.random()*16|0;
+      return (c==='x' ? r : (r&0x3|0x8)).toString(16);
+    });
+    const rows = this.all();
+    rows.push({
+      id,
+      user_id:                    record.user_id                    ?? getUserId(),
+      global_flow_score:          record.global_flow_score          ?? null,
+      absorption_score:           record.absorption_score           ?? null,
+      effortless_control_score:   record.effortless_control_score   ?? null,
+      intrinsic_reward_score:     record.intrinsic_reward_score     ?? null,
+      stress_start_score:         record.stress_start_score         ?? null,
+      anxiety_start_score:        record.anxiety_start_score        ?? null,
+      saddness_start_score:       record.saddness_start_score       ?? null,
+      tiredness_start_score:      record.tiredness_start_score      ?? null,
+      global_mh_start_score:      record.global_mh_start_score      ?? null,
+      stress_end_score:           record.stress_end_score           ?? null,
+      anxiety_end_score:          record.anxiety_end_score          ?? null,
+      saddness_end_score:         record.saddness_end_score         ?? null,
+      tiredness_end_score:        record.tiredness_end_score        ?? null,
+      global_mh_end_score:        record.global_mh_end_score        ?? null,
+      global_mh_day_score:        record.global_mh_day_score        ?? null,
+      tiempo_flow_min:            record.tiempo_flow_min            ?? null,
+      tiempo_break_min:           record.tiempo_break_min           ?? null,
+      date:                       record.date                       ?? new Date().toISOString(),
+    });
+    localStorage.setItem(this.KEY, JSON.stringify(rows));
+  },
+  byUser(user_id) { return this.all().filter(r => r.user_id === user_id); },
+  byUserAndRange(user_id, fromDate) {
+    return this.all().filter(r => r.user_id === user_id && new Date(r.date) >= fromDate);
+  },
+};
+
+// ════════════════════════════════════════════════════════════
 // ROUTER
 // ════════════════════════════════════════════════════════════
 const SESSION_PAGES = new Set(['page-3','page-4','page-5','page-6']);
