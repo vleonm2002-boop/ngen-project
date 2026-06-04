@@ -8,7 +8,6 @@ Agrega una línea con `- [ ] ` para solicitar un cambio. El agente lo implementa
 ## Pendiente
 <!-- Un ítem por línea, con "- [ ] " al inicio. Ejemplo: -->
 <!-- - [ ] En la pantalla Home, cambiar el texto del botón a "Iniciar sesión de foco" -->
-- [ ] Cue_flow.wav and Cue_Rest.wav must play through their full duration without being interrupted
 - [ ] Change the format of every needed .wav file to .mp3
 ## Implementado
 
@@ -79,3 +78,4 @@ Agrega una línea con `- [ ] ` para solicitar un cambio. El agente lo implementa
 - [x] On the "Choose your Flow State music" page: if a sample is currently playing and the user presses play on the other file, the current sample stops immediately and the new one begins
 - [x] On the Flow State page: the audio file played on loop must be the one stored in selected_Flow_File instead of always using Flow_State.wav
 - [x] Cue_flow.wav and Cue_Rest.wav must play on a separate audio channel, simultaneously and without interrupting Flow_State.wav or Recovery.wav — both audios must play at the same time
+- [x] Cue_flow.wav and Cue_Rest.wav must play through their full duration without being interrupted

@@ -1695,7 +1695,7 @@ function startSyncMode() {
 let flowPaused=false;
 
 function startFlowState() {
-  AE.stopAll();
+  AE._stopMain();
   const flowTrack = S.selected_Flow_File ? S.selected_Flow_File.replace('.wav','') : 'Flow_State';
   AE.playLoop(flowTrack);
   navigateTo('page-5');
@@ -1741,7 +1741,7 @@ function skipToBreak() {
 // PAGE 6 — RECOVERY
 // ════════════════════════════════════════════════════════════
 function startRecovery() {
-  AE.stopAll();
+  AE._stopMain();
   AE.playLoop('Recovery');
   navigateTo('page-6');
 
