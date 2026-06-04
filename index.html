@@ -1227,7 +1227,7 @@ const AE = {
   },
 
   async loadAll(onProg) {
-    const names = ['Flow_State','Recovery','Cue_break','Cue_flow'];
+    const names = ['Flow_State','Flow_State_2','Recovery','Cue_break','Cue_flow'];
     let n = 0;
     await Promise.all(names.map(async name => {
       try {
@@ -1251,6 +1251,11 @@ const AE = {
     if (name==='Flow_State') {
       gen = (i,c) => {
         const t=i/sr, f=c===0?200:210;
+        return Math.sin(2*Math.PI*f*t)*0.22;
+      };
+    } else if (name==='Flow_State_2') {
+      gen = (i,c) => {
+        const t=i/sr, f=c===0?220:230;
         return Math.sin(2*Math.PI*f*t)*0.22;
       };
     } else if (name==='Recovery') {
