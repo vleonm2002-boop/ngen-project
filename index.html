@@ -1560,12 +1560,14 @@ function playFlowSample(file, btnId) {
   audio.play().catch(() => {});
 
   _flowSampleTO = setTimeout(() => {
+    if (_flowSampleAudio !== audio) return;
     try { audio.pause(); audio.currentTime = 0; } catch {}
     _flowSampleAudio = null;
     btn.textContent = '▶';
   }, 15000);
 
   audio.onended = () => {
+    if (_flowSampleAudio !== audio) return;
     clearTimeout(_flowSampleTO);
     _flowSampleAudio = null;
     btn.textContent = '▶';

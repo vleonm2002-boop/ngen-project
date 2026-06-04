@@ -8,7 +8,6 @@ Agrega una línea con `- [ ] ` para solicitar un cambio. El agente lo implementa
 ## Pendiente
 <!-- Un ítem por línea, con "- [ ] " al inicio. Ejemplo: -->
 <!-- - [ ] En la pantalla Home, cambiar el texto del botón a "Iniciar sesión de foco" -->
-- [ ] On the "Choose your Flow State music" page: if a sample is currently playing and the user presses play on the other file, the current sample stops immediately and the new one begins
 - [ ] On the Flow State page: the audio file played on loop must be the one stored in selected_Flow_File instead of always using Flow_State.wav
 - [ ] Cue_flow.wav and Cue_Rest.wav must play on a separate audio channel, simultaneously and without interrupting Flow_State.wav or Recovery.wav — both audios must play at the same time
 - [ ] Cue_flow.wav and Cue_Rest.wav must play through their full duration without being interrupted
@@ -79,3 +78,4 @@ Agrega una línea con `- [ ] ` para solicitar un cambio. El agente lo implementa
 - [x] Create a local state variable selected_Flow_File="" to store the flow music file chosen by the user
 - [x] Add Flow_State_2.wav as a second flow music option, preinstalled on the device the same way Flow_State.wav is
 - [x] Create a new page "Choose your Flow State music" that appears immediately before the Settings page. It shows two options: Flow_State.wav and Flow_State_2.wav, each with a play button that plays a 15-second sample. When the user selects one, it is saved to selected_Flow_File and the app navigates to the Settings page
+- [x] On the "Choose your Flow State music" page: if a sample is currently playing and the user presses play on the other file, the current sample stops immediately and the new one begins
