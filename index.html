@@ -375,43 +375,6 @@ canvas.chart{width:100%;border-radius:var(--rs);display:block;background:rgba(25
 </div>
 </div>
 
-<!-- ══════════════════════════════════════════════
-     PAGE 3 — TRACK SELECTION
-══════════════════════════════════════════════ -->
-<div class="page" id="page-3">
-<div class="px pt-safe flex col" style="flex:1;padding-top:36px;padding-bottom:20px">
-
-  <div class="flex items-c just-b w-full mb-5">
-    <button onclick="navigateTo('page-2')" class="cbtn" style="width:36px;height:36px;font-size:18px">←</button>
-    <h2 style="font-size:28px;font-weight:400">Elige tu Sync</h2>
-    <div style="width:36px"></div>
-  </div>
-  <p class="text-sm text-muted mb-4" style="margin-top:-12px">El track que inicia cada ciclo de foco</p>
-
-  <div class="flex col gap-3 mb-a">
-    <div class="track-card" id="tc-Sync_1" data-t="Sync_1" onclick="selectTrack(this)">
-      <div class="track-icon">🌊</div>
-      <div class="track-info"><div class="track-name">Sync 1 — Sereno</div><div class="track-desc">Ondas suaves · 60 BPM</div></div>
-      <button class="track-prev" id="tp-Sync_1" onclick="previewTrack(event,'Sync_1')" aria-label="Preview Sync 1">▶</button>
-    </div>
-    <div class="track-card" id="tc-Sync_2" data-t="Sync_2" onclick="selectTrack(this)">
-      <div class="track-icon">🔮</div>
-      <div class="track-info"><div class="track-name">Sync 2 — Profundo</div><div class="track-desc">Frecuencias bajas · 40 BPM</div></div>
-      <button class="track-prev" id="tp-Sync_2" onclick="previewTrack(event,'Sync_2')" aria-label="Preview Sync 2">▶</button>
-    </div>
-    <div class="track-card" id="tc-Sync_3" data-t="Sync_3" onclick="selectTrack(this)">
-      <div class="track-icon">✨</div>
-      <div class="track-info"><div class="track-name">Sync 3 — Luminoso</div><div class="track-desc">Cristalino · 80 BPM</div></div>
-      <button class="track-prev" id="tp-Sync_3" onclick="previewTrack(event,'Sync_3')" aria-label="Preview Sync 3">▶</button>
-    </div>
-  </div>
-
-  <div style="padding-top:20px">
-    <button class="btn btn-primary" id="btn-confirm-sync" disabled onclick="startSyncMode()">Confirmar y comenzar →</button>
-  </div>
-
-</div>
-</div>
 
 <!-- ══════════════════════════════════════════════
      PAGE 5 — FLOW STATE
@@ -1230,7 +1193,7 @@ const ResultadosSesiones = {
 // ════════════════════════════════════════════════════════════
 // ROUTER
 // ════════════════════════════════════════════════════════════
-const SESSION_PAGES = new Set(['page-3','page-5','page-6']);
+const SESSION_PAGES = new Set(['page-5','page-6']);
 const TAB_MAP = { 'page-1':'tab-home', 'page-10':'tab-stats', 'page-2':'tab-session' };
 
 function navigateTo(id) {
@@ -1608,7 +1571,7 @@ async function startLoading() {
   S.gfpsAns=new Array(13).fill(0);
   S.gfpsApplied=Store.needsGfps();
 
-  setTimeout(()=>{ initTrackSelect(); navigateTo('page-3'); }, 500);
+  setTimeout(()=>{ startFlowState(); }, 500);
 }
 
 // ════════════════════════════════════════════════════════════
