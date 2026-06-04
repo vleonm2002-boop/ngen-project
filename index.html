@@ -307,9 +307,9 @@ canvas.chart{width:100%;border-radius:var(--rs);display:block;background:rgba(25
           <div style="font-size:16px;font-weight:600">Flow State</div>
           <div style="font-size:12px;color:var(--muted);margin-top:3px">Original</div>
         </div>
-        <button id="flow-play-1" class="flow-play-btn cbtn" style="width:40px;height:40px;font-size:16px" onclick="playFlowSample('Flow_State.wav','flow-play-1')">▶</button>
+        <button id="flow-play-1" class="flow-play-btn cbtn" style="width:40px;height:40px;font-size:16px" onclick="playFlowSample('Flow_State.mp3','flow-play-1')">▶</button>
       </div>
-      <button class="btn btn-secondary" onclick="selectFlowMusic('Flow_State.wav')">Select</button>
+      <button class="btn btn-secondary" onclick="selectFlowMusic('Flow_State.mp3')">Select</button>
     </div>
 
     <div class="card flex col" style="gap:12px">
@@ -318,9 +318,9 @@ canvas.chart{width:100%;border-radius:var(--rs);display:block;background:rgba(25
           <div style="font-size:16px;font-weight:600">Flow State 2</div>
           <div style="font-size:12px;color:var(--muted);margin-top:3px">Alternative</div>
         </div>
-        <button id="flow-play-2" class="flow-play-btn cbtn" style="width:40px;height:40px;font-size:16px" onclick="playFlowSample('Flow_State_2.wav','flow-play-2')">▶</button>
+        <button id="flow-play-2" class="flow-play-btn cbtn" style="width:40px;height:40px;font-size:16px" onclick="playFlowSample('Flow_State_2.mp3','flow-play-2')">▶</button>
       </div>
-      <button class="btn btn-secondary" onclick="selectFlowMusic('Flow_State_2.wav')">Select</button>
+      <button class="btn btn-secondary" onclick="selectFlowMusic('Flow_State_2.mp3')">Select</button>
     </div>
 
   </div>
@@ -1272,7 +1272,7 @@ const AE = {
     let n = 0;
     await Promise.all(names.map(async name => {
       try {
-        const res = await fetch(`audio/${name}.wav`);
+        const res = await fetch(`audio/${name}.mp3`);
         if (!res.ok) throw 0;
         const ab = await res.arrayBuffer();
         this.bufs[name] = await this.ctx.decodeAudioData(ab);
@@ -1696,7 +1696,7 @@ let flowPaused=false;
 
 function startFlowState() {
   AE._stopMain();
-  const flowTrack = S.selected_Flow_File ? S.selected_Flow_File.replace('.wav','') : 'Flow_State';
+  const flowTrack = S.selected_Flow_File ? S.selected_Flow_File.replace('.mp3','') : 'Flow_State';
   AE.playLoop(flowTrack);
   navigateTo('page-5');
 
