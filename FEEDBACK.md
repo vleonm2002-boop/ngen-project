@@ -18,6 +18,7 @@ Agrega una línea con `- [ ] ` para solicitar un cambio. El agente lo implementa
 - [ ] On the Flow State page: the audio file played on loop must be the one stored in selected_Flow_File instead of always using Flow_State.wav
 - [ ] Cue_flow.wav and Cue_Rest.wav must play on a separate audio channel, simultaneously and without interrupting Flow_State.wav or Recovery.wav — both audios must play at the same time
 - [ ] Cue_flow.wav and Cue_Rest.wav must play through their full duration without being interrupted
+- [ ] Change the format of every .wav file to .mp3
 ## Implementado
 
 - [x] Ícono de música en Homepage con color de fuente (`--text`)
