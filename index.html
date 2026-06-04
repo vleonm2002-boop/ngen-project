@@ -1226,7 +1226,7 @@ const AE = {
   },
 
   async loadAll(onProg) {
-    const names = ['Sync_1','Sync_2','Sync_3','Flow_State','Recovery','Micro_break','cue_to_Flow_state','cue_to_recovery','Cue_break','Cue_flow'];
+    const names = ['Flow_State','Recovery','Micro_break','Cue_break','Cue_flow'];
     let n = 0;
     await Promise.all(names.map(async name => {
       try {
@@ -1247,13 +1247,7 @@ const AE = {
     let dur = 30;
     let gen;
 
-    if (name.startsWith('Sync')) {
-      gen = (i,c) => {
-        const t=i/sr, am=0.65+0.35*Math.sin(2*Math.PI*0.8*t);
-        const freq = name==='Sync_1'?174 : name==='Sync_2'?130 : 220;
-        return Math.sin(2*Math.PI*freq*t)*am*0.28;
-      };
-    } else if (name==='Flow_State') {
+    if (name==='Flow_State') {
       gen = (i,c) => {
         const t=i/sr, f=c===0?200:210;
         return Math.sin(2*Math.PI*f*t)*0.22;
