@@ -1696,7 +1696,8 @@ let flowPaused=false;
 
 function startFlowState() {
   AE.stopAll();
-  AE.playLoop('Flow_State');
+  const flowTrack = S.selected_Flow_File ? S.selected_Flow_File.replace('.wav','') : 'Flow_State';
+  AE.playLoop(flowTrack);
   navigateTo('page-5');
 
   const dur=S.focusMin*60;
