@@ -1298,7 +1298,7 @@ const AE = {
     let n = 0;
     await Promise.all(names.map(async name => {
       try {
-        const res = await fetch(`${name}.wav`);
+        const res = await fetch(`audio/${name}.wav`);
         if (!res.ok) throw 0;
         const ab = await res.arrayBuffer();
         this.bufs[name] = await this.ctx.decodeAudioData(ab);
