@@ -287,6 +287,47 @@ canvas.chart{width:100%;border-radius:var(--rs);display:block;background:rgba(25
 </div>
 
 <!-- ══════════════════════════════════════════════
+     PAGE 13 — FLOW MUSIC CHOICE
+══════════════════════════════════════════════ -->
+<div class="page" id="page-13">
+<div class="px pt-safe pb-safe flex col" style="flex:1;padding-top:36px;padding-bottom:20px">
+
+  <div class="flex items-c mb-5" style="gap:10px">
+    <button onclick="navigateTo('page-1')" class="cbtn" style="width:36px;height:36px;font-size:18px">←</button>
+    <h2 style="font-size:26px;font-weight:400">Choose your Flow State music</h2>
+  </div>
+
+  <p class="label-caps mb-4">Select the music for your focus sessions</p>
+
+  <div class="flex col" style="gap:16px">
+
+    <div class="card flex col" style="gap:12px">
+      <div class="flex items-c just-b">
+        <div>
+          <div style="font-size:16px;font-weight:600">Flow State</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:3px">Original</div>
+        </div>
+        <button id="flow-play-1" class="flow-play-btn cbtn" style="width:40px;height:40px;font-size:16px" onclick="playFlowSample('Flow_State.wav','flow-play-1')">▶</button>
+      </div>
+      <button class="btn btn-secondary" onclick="selectFlowMusic('Flow_State.wav')">Select</button>
+    </div>
+
+    <div class="card flex col" style="gap:12px">
+      <div class="flex items-c just-b">
+        <div>
+          <div style="font-size:16px;font-weight:600">Flow State 2</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:3px">Alternative</div>
+        </div>
+        <button id="flow-play-2" class="flow-play-btn cbtn" style="width:40px;height:40px;font-size:16px" onclick="playFlowSample('Flow_State_2.wav','flow-play-2')">▶</button>
+      </div>
+      <button class="btn btn-secondary" onclick="selectFlowMusic('Flow_State_2.wav')">Select</button>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════
      PAGE 2 — SETUP
 ══════════════════════════════════════════════ -->
 <div class="page" id="page-2">
@@ -841,7 +882,7 @@ canvas.chart{width:100%;border-radius:var(--rs);display:block;background:rgba(25
     <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
     <span>Comunidad</span>
   </button>
-  <button class="tab-item" id="tab-session" onclick="isLoggedIn()?navigateTo('page-2'):navigateTo('page-login')">
+  <button class="tab-item" id="tab-session" onclick="isLoggedIn()?navigateTo('page-13'):navigateTo('page-login')">
     <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
     <span>Sesión</span>
   </button>
@@ -1193,7 +1234,7 @@ const ResultadosSesiones = {
 // ROUTER
 // ════════════════════════════════════════════════════════════
 const SESSION_PAGES = new Set(['page-5','page-6']);
-const TAB_MAP = { 'page-1':'tab-home', 'page-10':'tab-stats', 'page-2':'tab-session' };
+const TAB_MAP = { 'page-1':'tab-home', 'page-10':'tab-stats', 'page-2':'tab-session', 'page-13':'tab-session' };
 
 function navigateTo(id) {
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
@@ -1492,6 +1533,53 @@ function goSetup() {
   document.querySelectorAll('#hours-group .pill').forEach((b,i)=>b.classList.toggle('selected',i===0));
   S.totalHours=1;
   updateSummary();
+  navigateTo('page-13');
+}
+
+// ════════════════════════════════════════════════════════════
+// PAGE 13 — FLOW MUSIC CHOICE
+// ════════════════════════════════════════════════════════════
+let _flowSampleAudio = null;
+let _flowSampleTO = null;
+
+function playFlowSample(file, btnId) {
+  if (_flowSampleAudio) {
+    _flowSampleAudio.pause();
+    _flowSampleAudio.currentTime = 0;
+    _flowSampleAudio = null;
+  }
+  clearTimeout(_flowSampleTO);
+  document.querySelectorAll('.flow-play-btn').forEach(b => { b.textContent = '▶'; });
+
+  const btn = document.getElementById(btnId);
+  if (!btn) return;
+  btn.textContent = '⏹';
+
+  const audio = new Audio(`audio/${file}`);
+  _flowSampleAudio = audio;
+  audio.play().catch(() => {});
+
+  _flowSampleTO = setTimeout(() => {
+    try { audio.pause(); audio.currentTime = 0; } catch {}
+    _flowSampleAudio = null;
+    btn.textContent = '▶';
+  }, 15000);
+
+  audio.onended = () => {
+    clearTimeout(_flowSampleTO);
+    _flowSampleAudio = null;
+    btn.textContent = '▶';
+  };
+}
+
+function selectFlowMusic(file) {
+  if (_flowSampleAudio) {
+    try { _flowSampleAudio.pause(); _flowSampleAudio.currentTime = 0; } catch {}
+    _flowSampleAudio = null;
+  }
+  clearTimeout(_flowSampleTO);
+  document.querySelectorAll('.flow-play-btn').forEach(b => { b.textContent = '▶'; });
+  S.selected_Flow_File = file;
   navigateTo('page-2');
 }
 

@@ -1,4 +1,4 @@
-const CACHE = 'ngen-v51';
+const CACHE = 'ngen-v52';
 const ASSETS = [
   './',
   './index.html',
