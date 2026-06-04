@@ -1717,7 +1717,7 @@ function startFlowState() {
     arc('flow-arc',C100,rem/dur);
     if (rem<=60 && !T.cueFired) {
       T.cueFired=true;
-      setTimeout(()=>{ T.stop(); S.focusAccum+=S.focusMin; startRecovery(); }, 0);
+      AE.playCue('Cue_break');
     }
   }, ()=>{
     S.focusAccum+=S.focusMin;
@@ -1761,7 +1761,6 @@ function startRecovery() {
     if (rem<=60 && !T.cueFired) {
       T.cueFired=true;
       if (S.currentCycle<S.totalCycles) {
-        AE.fadeOutMain(4);
         AE.playCue('Cue_flow');
       } else {
         AE.fadeOutMain(10);
