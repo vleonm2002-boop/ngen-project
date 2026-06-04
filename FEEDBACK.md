@@ -9,7 +9,7 @@ Agrega una línea con `- [ ] ` para solicitar un cambio. El agente lo implementa
 <!-- Un ítem por línea, con "- [ ] " al inicio. Ejemplo: -->
 <!-- - [ ] En la pantalla Home, cambiar el texto del botón a "Iniciar sesión de foco" -->
 - [ ] Cue_flow.wav and Cue_Rest.wav must play through their full duration without being interrupted
-- [ ] Change the format of every .wav file to .mp3
+- [ ] Change the format of every needed .wav file to .mp3
 ## Implementado
 
 - [x] Ícono de música en Homepage con color de fuente (`--text`)
