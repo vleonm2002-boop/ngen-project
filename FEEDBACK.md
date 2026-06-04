@@ -8,17 +8,17 @@ Agrega una línea con `- [ ] ` para solicitar un cambio. El agente lo implementa
 ## Pendiente
 <!-- Un ítem por línea, con "- [ ] " al inicio. Ejemplo: -->
 <!-- - [ ] En la pantalla Home, cambiar el texto del botón a "Iniciar sesión de foco" -->
-- [ ] Delete "Choose your Sync" page, now any action that taked you to this page takes you to flow state
-- [ ] Delete Transition page, now any action that taked to transition page takes you to Rest mode
-- [ ] Delete any need for cue_to_Flow_state.wav ; cue_to_recovery.wav ; Sync_1.wav ; Sync_2.wav ; Sync_3.wav
-- [ ] Delete any need for Micro_break.wav, Recovery.wav should be enought for the rest part of the loop
-- [ ] Add a new audio file option, Flow_State_2.wav
-- [ ] Create a new variable, selected_Flow_File=""
-- [ ] Before the beginning of the session add a new page "Choose your Flow state music", Giving you a choice between the files Flow_State.wav and Flow_State_2.wav. Each file shown with a play button that, when pressed, plays a 15 second sample of each files
-- [ ] In "Choose your Flow state music" page, If while playing one sample of one file, the user clicks the play button of the other file, the current audio sample stops playing to play the next one
-- [ ] In "Choose your Flow state music" page, when the user selects one music file for flow state, this one is setted as the value for for the variable, selected_Flow_File.
-- [ ] In Flow state page the music file played is going to be the one in the variable selected_Flow_State
-- [ ] Cue_Flow.wav and Cue_Rest.wav will play on top of Flow_State.wav or Recovery.wav. Meaning when cue files are cued in they wont stop Flow_State.wav or Recovery.wav
+- [ ] Delete the "Choose your Sync" page — any action that previously navigated to that page must now navigate directly to Flow State
+- [ ] Delete the Transition page — any action that previously navigated to Transition must now navigate directly to Rest/Recovery
+- [ ] Remove all references and usage of the following audio files from the codebase: cue_to_Flow_state.wav, cue_to_recovery.wav, Sync_1.wav, Sync_2.wav, Sync_3.wav
+- [ ] Remove all references and usage of Micro_break.wav — replace it with Recovery.wav in every context where it was previously played (loop during break, and any other references in the code)
+- [ ] Create a local state variable selected_Flow_File="" to store the flow music file chosen by the user
+- [ ] Add Flow_State_2.wav as a second flow music option, preinstalled on the device the same way Flow_State.wav is
+- [ ] Create a new page "Choose your Flow State music" that appears immediately before the Settings page. It shows two options: Flow_State.wav and Flow_State_2.wav, each with a play button that plays a 15-second sample. When the user selects one, it is saved to selected_Flow_File and the app navigates to the Settings page
+- [ ] On the "Choose your Flow State music" page: if a sample is currently playing and the user presses play on the other file, the current sample stops immediately and the new one begins
+- [ ] On the Flow State page: the audio file played on loop must be the one stored in selected_Flow_File instead of always using Flow_State.wav
+- [ ] Cue_flow.wav and Cue_Rest.wav must play on a separate audio channel, simultaneously and without interrupting Flow_State.wav or Recovery.wav — both audios must play at the same time
+- [ ] Cue_flow.wav and Cue_Rest.wav must play through their full duration without being interrupted
 ## Implementado
 
 - [x] Ícono de música en Homepage con color de fuente (`--text`)
