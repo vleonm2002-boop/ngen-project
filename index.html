@@ -407,37 +407,8 @@ canvas.chart{width:100%;border-radius:var(--rs);display:block;background:rgba(25
   </div>
 
   <div style="padding-top:20px">
-    <button class="btn btn-primary" id="btn-confirm-sync" disabled onclick="startSyncMode()">Confirmar y comenzar Sync →</button>
+    <button class="btn btn-primary" id="btn-confirm-sync" disabled onclick="startSyncMode()">Confirmar y comenzar →</button>
   </div>
-
-</div>
-</div>
-
-<!-- ══════════════════════════════════════════════
-     PAGE 4 — SYNC MODE
-══════════════════════════════════════════════ -->
-<div class="page" id="page-4">
-<div class="px flex col items-c" style="flex:1;padding-top:44px;padding-bottom:32px;gap:24px">
-
-  <span class="badge badge-gold">● Sync Mode</span>
-
-  <div class="timer-wrap">
-    <svg class="timer-svg" width="230" height="230" viewBox="0 0 230 230" role="timer" aria-label="Countdown">
-      <circle class="t-bg" cx="115" cy="115" r="100" stroke-width="8"/>
-      <circle class="t-arc" cx="115" cy="115" r="100" stroke-width="8"
-        stroke-dasharray="628.3" stroke-dashoffset="0" id="sync-arc"/>
-    </svg>
-    <div class="timer-txt">
-      <div class="timer-time" id="sync-time">3:00</div>
-      <div class="timer-lbl">Sincronizando</div>
-    </div>
-  </div>
-
-  <p class="text-sm text-muted text-c" style="max-width:210px;line-height:1.7">
-    Cierra los ojos.<br>Deja que la música te ancle al presente.
-  </p>
-
-  <button class="btn btn-secondary" style="margin-top:auto;width:100%" onclick="T.skip(T.duration)">Saltar Sync →</button>
 
 </div>
 </div>
@@ -1259,7 +1230,7 @@ const ResultadosSesiones = {
 // ════════════════════════════════════════════════════════════
 // ROUTER
 // ════════════════════════════════════════════════════════════
-const SESSION_PAGES = new Set(['page-3','page-4','page-5','page-6']);
+const SESSION_PAGES = new Set(['page-3','page-5','page-6']);
 const TAB_MAP = { 'page-1':'tab-home', 'page-10':'tab-stats', 'page-2':'tab-session' };
 
 function navigateTo(id) {
@@ -1661,27 +1632,10 @@ function previewTrack(e, name) {
   AE.preview(name, `tp-${name}`);
 }
 
-// ════════════════════════════════════════════════════════════
-// PAGE 4 — SYNC MODE
-// ════════════════════════════════════════════════════════════
 function startSyncMode() {
   try{AE.prevSrc&&AE.prevSrc.stop();}catch{}
   AE.stopAll();
-  AE.playLoop(S.track);
-  navigateTo('page-4');
-
-  const dur=180;
-  arc('sync-arc',C100,1);
-
-  T.start(dur, rem=>{
-    document.getElementById('sync-time').textContent=fmt(rem);
-    arc('sync-arc',C100,rem/dur);
-    if (rem<=60 && !T.cueFired) {
-      T.cueFired=true;
-      AE.fadeOutMain(5);
-      AE.playCue('cue_to_Flow_state');
-    }
-  }, ()=>startFlowState());
+  startFlowState();
 }
 
 // ════════════════════════════════════════════════════════════

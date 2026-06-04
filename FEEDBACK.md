@@ -8,7 +8,6 @@ Agrega una línea con `- [ ] ` para solicitar un cambio. El agente lo implementa
 ## Pendiente
 <!-- Un ítem por línea, con "- [ ] " al inicio. Ejemplo: -->
 <!-- - [ ] En la pantalla Home, cambiar el texto del botón a "Iniciar sesión de foco" -->
-- [ ] Delete Sync mode, now any action that taked you to Sync mode will take you to Flow State screen
 - [ ] Delete "Choose your Sync" page, now any action that taked you to this page takes you to flow state
 - [ ] Delete Transition page, now any action that taked to transition page takes you to Rest mode
 - [ ] Delete any need for cue_to_Flow_state.wav ; cue_to_recovery.wav ; Sync_1.wav ; Sync_2.wav ; Sync_3.wav
@@ -78,3 +77,4 @@ Agrega una línea con `- [ ] ` para solicitar un cambio. El agente lo implementa
 - [x] Audio: detener todo audio activo al navegar fuera de la sesión (Página 5 en adelante). Manejar archivo no encontrado con error silencioso sin crashear la app
 - [x] Pop-ups de "Próximamente" deben tener animación fade out al desaparecer automáticamente
 - [x] El cronómetro debe seguir corriendo si la app va a background (implementar background timer)
+- [x] Delete Sync mode, now any action that taked you to Sync mode will take you to Flow State screen
