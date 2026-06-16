@@ -250,7 +250,7 @@ canvas.chart{width:100%;border-radius:var(--rs);display:block;background:rgba(25
     <p class="label-caps mb-3">Esta semana</p>
     <div class="stat-grid">
       <div class="stat-card">
-        <div class="stat-lbl">Flow State</div>
+        <div class="stat-lbl">Focus</div>
         <div class="stat-val" id="w-flow">0m</div>
       </div>
       <div class="stat-card">
@@ -295,7 +295,7 @@ canvas.chart{width:100%;border-radius:var(--rs);display:block;background:rgba(25
 
   <div class="flex items-c mb-5" style="gap:10px">
     <button onclick="navigateTo('page-1')" class="cbtn" style="width:36px;height:36px;font-size:18px">←</button>
-    <h2 style="font-size:26px;font-weight:400">Choose your Flow State music</h2>
+    <h2 style="font-size:26px;font-weight:400">Choose your Focus music</h2>
   </div>
 
   <p class="label-caps mb-4">Select the music for your focus sessions</p>
@@ -305,7 +305,7 @@ canvas.chart{width:100%;border-radius:var(--rs);display:block;background:rgba(25
     <div class="card flex col" style="gap:12px">
       <div class="flex items-c just-b">
         <div>
-          <div style="font-size:16px;font-weight:600">Flow State</div>
+          <div style="font-size:16px;font-weight:600">Focus</div>
           <div style="font-size:12px;color:var(--muted);margin-top:3px">Original</div>
         </div>
         <button id="flow-play-1" class="flow-play-btn cbtn" style="width:40px;height:40px;font-size:16px" onclick="playFlowSample('Flow_State.mp3','flow-play-1')">▶</button>
@@ -316,7 +316,7 @@ canvas.chart{width:100%;border-radius:var(--rs);display:block;background:rgba(25
     <div class="card flex col" style="gap:12px">
       <div class="flex items-c just-b">
         <div>
-          <div style="font-size:16px;font-weight:600">Flow State 2</div>
+          <div style="font-size:16px;font-weight:600">Focus 2</div>
           <div style="font-size:12px;color:var(--muted);margin-top:3px">Alternative</div>
         </div>
         <button id="flow-play-2" class="flow-play-btn cbtn" style="width:40px;height:40px;font-size:16px" onclick="playFlowSample('Flow_State_2.mp3','flow-play-2')">▶</button>
@@ -425,7 +425,7 @@ canvas.chart{width:100%;border-radius:var(--rs);display:block;background:rgba(25
 <div class="px flex col items-c" style="flex:1;padding-top:36px;padding-bottom:24px;gap:18px">
 
   <div class="flex items-c just-b w-full">
-    <span class="badge badge-gold">● Flow State</span>
+    <span class="badge badge-gold">● Focus</span>
     <span class="text-sm text-muted" id="flow-cycle-lbl">Ciclo 1 de 4</span>
   </div>
 
@@ -516,7 +516,7 @@ canvas.chart{width:100%;border-radius:var(--rs);display:block;background:rgba(25
     <p class="label-caps mb-3">Resumen de sesión</p>
     <div class="stat-grid">
       <div class="stat-card">
-        <div class="stat-lbl">Tiempo en Flow</div>
+        <div class="stat-lbl">Tiempo en Focus</div>
         <div><span class="stat-val" id="p7-focus-time">0</span><span class="stat-unit"> min</span></div>
       </div>
       <div class="stat-card">
@@ -524,19 +524,7 @@ canvas.chart{width:100%;border-radius:var(--rs);display:block;background:rgba(25
         <div><span class="stat-val" id="p7-rest-time">0</span><span class="stat-unit"> min</span></div>
       </div>
     </div>
-    <div id="p7-gfs-row" style="display:none;margin-top:10px">
-      <div class="stat-card" style="text-align:center">
-        <div class="stat-lbl">Global Flow Score</div>
-        <div><span class="stat-val" id="p7-gfs-val">—</span><span class="stat-unit"> / 7</span></div>
-      </div>
     </div>
-  </div>
-
-  <!-- GFPS (condicional) -->
-  <div class="card mb-4" id="gfps-section" style="display:none">
-    <p class="label-caps mb-1">Predisposición al Flow — GFPS (1–5)</p>
-    <p class="text-xs text-muted mb-4">Evaluación periódica (una vez al mes)</p>
-    <div class="lk-group" id="gfps-form"></div>
   </div>
 
   <!-- Reporte de bienestar de salida -->
@@ -623,10 +611,6 @@ canvas.chart{width:100%;border-radius:var(--rs);display:block;background:rgba(25
       <div><span class="stat-val" id="end-rest">0</span><span class="stat-unit"> min</span></div>
     </div>
     <div class="stat-card">
-      <div class="stat-lbl">Score Flow (PFS)</div>
-      <div><span class="stat-val" id="end-pfs">--</span><span class="stat-unit"> /7</span></div>
-    </div>
-    <div class="stat-card">
       <div class="stat-lbl">Burnout Evitado</div>
       <div><span class="stat-val" id="end-burnout">--</span></div>
     </div>
@@ -670,84 +654,16 @@ canvas.chart{width:100%;border-radius:var(--rs);display:block;background:rgba(25
 </div>
 </div>
 
-<!-- ══════════════════════════════════════════════
-     PAGE 12 — PRE-SURVEY PROMPT
-══════════════════════════════════════════════ -->
-<div class="page" id="page-12">
-<div class="px pt-safe pb-safe flex col" style="flex:1;padding-top:48px;padding-bottom:32px;align-items:center;text-align:center">
-
-  <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px">
-    <h2 style="font-size:24px;font-weight:400;line-height:1.4">¿Desea responder una encuesta sobre su experiencia en la sesión para mejorar su experiencia?</h2>
-  </div>
-
-  <div class="flex col gap-3 w-full" style="padding-top:24px">
-    <button class="btn btn-primary" onclick="goToFlowSurvey()">Sí</button>
-    <button class="btn btn-secondary" onclick="skipPreSurvey()">No</button>
-  </div>
 
 </div>
-</div>
 
-<!-- ══════════════════════════════════════════════
-     PAGE 11 — FLOW SURVEY (PFS) — sequential
-══════════════════════════════════════════════ -->
-<div class="page" id="page-11">
-<div class="px pt-safe pb-safe flex col" style="flex:1;padding-top:36px;padding-bottom:24px">
-
-  <div class="flex items-c just-b w-full mb-3">
-    <h2 style="font-size:26px;font-weight:400">¿Cómo fue tu flow?</h2>
-    <button onclick="skipFlowSurvey()" style="background:transparent;border:none;color:var(--muted);font-size:13px;cursor:pointer;font-family:'Inter',sans-serif;padding:6px 0;-webkit-tap-highlight-color:transparent">Omitir</button>
-  </div>
-  <p class="text-sm text-muted mb-3" style="line-height:1.6">1 = Completamente en desacuerdo &nbsp;·&nbsp; 7 = Completamente de acuerdo</p>
-  <p class="text-xs text-muted mb-2" id="pfs-progress" style="text-align:right">1 / 9</p>
-
-  <div id="pfs-question-area" style="flex:1;display:flex;flex-direction:column;justify-content:center"></div>
 
 </div>
-</div>
 
-<!-- ══════════════════════════════════════════════
-     PAGE 11b — FLOW SURVEY (PFS) STEP 2/4
-══════════════════════════════════════════════ -->
-<div class="page" id="page-11b">
-<div class="px pt-safe pb-safe flex col" style="flex:1;padding-top:36px;padding-bottom:24px">
-
-  <div class="flex items-c just-b w-full mb-3">
-    <h2 style="font-size:26px;font-weight:400">¿Cómo fue tu flow?</h2>
-    <button onclick="skipFlowSurvey()" style="background:transparent;border:none;color:var(--muted);font-size:13px;cursor:pointer;font-family:'Inter',sans-serif;padding:6px 0;-webkit-tap-highlight-color:transparent">Omitir</button>
-  </div>
-  <p class="text-sm text-muted mb-3" style="line-height:1.6">1 = Completamente en desacuerdo &nbsp;·&nbsp; 7 = Completamente de acuerdo</p>
-  <p class="text-xs text-muted mb-4" style="text-align:right">2 / 4</p>
-
-  <div class="lk-group mb-5" id="pfs-form-2"></div>
-
-  <div class="mt-a">
-    <button class="btn btn-primary" onclick="goSurveyStep(3)">Siguiente →</button>
-  </div>
 
 </div>
-</div>
 
-<!-- ══════════════════════════════════════════════
-     PAGE 11c — FLOW SURVEY (PFS) STEP 3/4
-══════════════════════════════════════════════ -->
-<div class="page" id="page-11c">
-<div class="px pt-safe pb-safe flex col" style="flex:1;padding-top:36px;padding-bottom:24px">
 
-  <div class="flex items-c just-b w-full mb-3">
-    <h2 style="font-size:26px;font-weight:400">¿Cómo fue tu flow?</h2>
-    <button onclick="skipFlowSurvey()" style="background:transparent;border:none;color:var(--muted);font-size:13px;cursor:pointer;font-family:'Inter',sans-serif;padding:6px 0;-webkit-tap-highlight-color:transparent">Omitir</button>
-  </div>
-  <p class="text-sm text-muted mb-3" style="line-height:1.6">1 = Completamente en desacuerdo &nbsp;·&nbsp; 7 = Completamente de acuerdo</p>
-  <p class="text-xs text-muted mb-4" style="text-align:right">3 / 4</p>
-
-  <div class="lk-group mb-5" id="pfs-form-3"></div>
-
-  <div class="mt-a">
-    <button class="btn btn-primary" onclick="submitFlowSurvey()">Siguiente →</button>
-  </div>
-
-</div>
 </div>
 
 <!-- Login Prompt Modal -->
@@ -761,15 +677,7 @@ canvas.chart{width:100%;border-radius:var(--rs);display:block;background:rgba(25
   </div>
 </div>
 
-<!-- Skip Flow Modal -->
-<div id="skip-modal" style="display:none;position:absolute;inset:0;background:rgba(0,0,0,.62);z-index:300;align-items:center;justify-content:center;padding:28px">
-  <div style="background:var(--bg);border:1px solid var(--brd);border-radius:var(--r);padding:24px;width:100%;max-width:320px">
-    <p class="text-sm" style="line-height:1.75;margin-bottom:20px">Si saltas esta opción no podremos evaluar tu progreso, ni podremos personalizar tu experiencia para tu beneficio. ¿Deseas omitir de todas formas?</p>
-    <div class="flex gap-2">
-      <button class="btn btn-secondary" style="flex:1;padding:12px 8px;font-size:14px" onclick="confirmSkipFlow()">Omitir</button>
-      <button class="btn btn-primary"   style="flex:1;padding:12px 8px;font-size:14px" onclick="cancelSkipFlow()">Responder</button>
-    </div>
-  </div>
+
 </div>
 
 <!-- ══════════════════════════════════════════════
@@ -933,18 +841,6 @@ const TIPS = [
   'La música en modo menor puede inducir introspección productiva, no tristeza.',
 ];
 
-const PFS_ITEMS = [
-  'Estuve absorto(a) en la tarea',
-  'Estaba muy enfocado(a) en la tarea',
-  'Toda mi atención estaba en la tarea',
-  'Sentí que podía controlar fácilmente lo que hacía',
-  'Mis acciones fluían sin esfuerzo',
-  'Había una sensación de fluidez en mis acciones',
-  'La experiencia me pareció gratificante',
-  'La experiencia se sintió satisfactoria',
-  'Me gustaría volver a tener esa experiencia',
-];
-
 const GFPS_ITEMS = [
   { q:'Disfruto de tareas desafiantes que requieren mucha concentración.', rev:false },
   { q:'Cuando me enfoco en una tarea, tiendo a olvidar mi entorno.',      rev:false },
@@ -987,8 +883,6 @@ const S = {
   focusAccum:      0,
   restAccum:       0,
   // feedback
-  pfsSkipped: false,
-  pfsAns:  new Array(9).fill(0),
   gfpsAns: new Array(13).fill(0),
   gfpsApplied: false,
   emotAfter:  { tristeza:50, enojo:50, soledad:50, estres:50 },
@@ -997,7 +891,6 @@ const S = {
   statsDays: 'month',
   // computed result (temp)
   _result: null,
-  _pfsResult: null,
 };
 
 // ════════════════════════════════════════════════════════════
@@ -1115,30 +1008,6 @@ async function handleRegister() {
 // Schema: user_id, session_number, date, global_flow_score,
 //         absorption_score, effortless_control_score, intrinsic_reward_score
 // ════════════════════════════════════════════════════════════
-const FlowResults = {
-  KEY: 'ngen_flow_results',
-  all()  { try { return JSON.parse(localStorage.getItem(this.KEY)||'[]'); } catch { return []; } },
-  save(record) {
-    const rows = this.all();
-    rows.push(record);
-    localStorage.setItem(this.KEY, JSON.stringify(rows));
-  },
-  insert({ global_flow_score=null, absorption_score=null,
-           effortless_control_score=null, intrinsic_reward_score=null } = {}) {
-    const rows = this.all();
-    const session_number = rows.length + 1;
-    this.save({
-      user_id:                getUserId(),
-      session_number,
-      date:                   new Date().toISOString(),
-      global_flow_score:      global_flow_score      !== undefined ? global_flow_score      : null,
-      absorption_score:       absorption_score       !== undefined ? absorption_score       : null,
-      effortless_control_score: effortless_control_score !== undefined ? effortless_control_score : null,
-      intrinsic_reward_score: intrinsic_reward_score !== undefined ? intrinsic_reward_score : null,
-    });
-  },
-};
-
 // ════════════════════════════════════════════════════════════
 // TABLA resultados_sesiones  (ngen_resultados_sesiones)
 // Schema: id (UUID PK), user_id (FK → usuarios),
@@ -1616,7 +1485,6 @@ async function startLoading() {
   clearInterval(tipTO);
 
   S.currentCycle=1; S.focusAccum=0; S.restAccum=0;
-  S.pfsSkipped=false; S.pfsAns=new Array(9).fill(0); S._pfsResult=null;
   S.gfpsAns=new Array(13).fill(0);
   S.gfpsApplied=Store.needsGfps();
 
@@ -1736,8 +1604,8 @@ function startRecovery() {
       startFlowState();
     } else {
       AE.stopAll();
-      S.pfsSkipped=false; S.pfsAns=new Array(9).fill(0); S._pfsResult=null;
-      navigateTo('page-12');
+      navigateTo('page-7');
+      initFeedback();
     }
   });
 }
@@ -1749,13 +1617,6 @@ function initFeedback() {
   // Session stats
   document.getElementById('p7-focus-time').textContent = S.focusAccum;
   document.getElementById('p7-rest-time').textContent  = S.restAccum;
-  const gfsRow = document.getElementById('p7-gfs-row');
-  if (!S.pfsSkipped && S._pfsResult) {
-    document.getElementById('p7-gfs-val').textContent = S._pfsResult.globalFlowScore.toFixed(1);
-    gfsRow.style.display = 'block';
-  } else {
-    gfsRow.style.display = 'none';
-  }
 
   // Reset wellbeing end sliders
   [['sl-stress-e','sv-stress-e','Stress_end_Score'],['sl-anxiety-e','sv-anxiety-e','Anxiety_end_Score'],['sl-saddness-e','sv-saddness-e','Saddness_end_Score'],['sl-tiredness-e','sv-tiredness-e','Tiredness_end_Score']].forEach(([slId,svId,k])=>{
@@ -1804,148 +1665,18 @@ function setLikert(btn) {
   const {p,i,v}=btn.dataset;
   btn.closest('.lk-scale').querySelectorAll('.lk-btn').forEach(b=>b.classList.remove('sel'));
   btn.classList.add('sel');
-  if (p==='pfs')  S.pfsAns[+i]=+v;
   if (p==='gfps') S.gfpsAns[+i]=+v;
 }
 
-// ════════════════════════════════════════════════════════════
-// PAGE 12 — PRE-SURVEY PROMPT
-// ════════════════════════════════════════════════════════════
-function goToFlowSurvey() {
-  navigateTo('page-11');
-  initFlowSurvey();
-}
-
-function skipPreSurvey() {
-  S.pfsSkipped=true;
-  navigateTo('page-7');
-  initFeedback();
-}
-
-// ════════════════════════════════════════════════════════════
-// PAGE 11 — FLOW SURVEY
-// ════════════════════════════════════════════════════════════
-function renderPfsGroup(containerId, start, end) {
-  const c=document.getElementById(containerId);
-  c.innerHTML='';
-  PFS_ITEMS.slice(start,end).forEach((q,idx)=>{
-    const i=start+idx;
-    const btns=[1,2,3,4,5,6,7].map(v=>
-      `<button class="lk-btn${S.pfsAns[i]===v?' sel':''}" data-p="pfs" data-i="${i}" data-v="${v}" onclick="setLikert(this)">${v}</button>`
-    ).join('');
-    const d=document.createElement('div');
-    d.className='lk-item';
-    d.innerHTML=`<p class="lk-q">${q}</p>
-      <div class="lk-scale">${btns}</div>
-      <div class="lk-labels"><span>Completamente en desacuerdo</span><span>Completamente de acuerdo</span></div>`;
-    c.appendChild(d);
-  });
-}
-
-function renderPfsQuestion(idx) {
-  document.getElementById('pfs-progress').textContent = `${idx+1} / 9`;
-  const area = document.getElementById('pfs-question-area');
-  const btns = [1,2,3,4,5,6,7].map(v =>
-    `<button class="lk-btn" onclick="selectPfsAnswer(${idx},${v})">${v}</button>`
-  ).join('');
-  area.innerHTML = `<div class="lk-item pfs-appear" style="gap:18px">
-    <p class="lk-q" style="font-size:18px;line-height:1.6;text-align:center">${PFS_ITEMS[idx]}</p>
-    <div class="lk-scale">${btns}</div>
-    <div class="lk-labels"><span>Completamente en desacuerdo</span><span>Completamente de acuerdo</span></div>
-  </div>`;
-}
-
-function selectPfsAnswer(idx, v) {
-  S.pfsAns[idx] = v;
-  if (idx + 1 < 9) {
-    renderPfsQuestion(idx + 1);
-  } else {
-    submitFlowSurvey();
-  }
-}
-
-function initFlowSurvey() {
-  S.pfsAns = new Array(9).fill(0);
-  renderPfsQuestion(0);
-}
-
-function goSurveyStep(step) {
-  if (step===2) { navigateTo('page-11b'); renderPfsGroup('pfs-form-2',3,6); }
-  else          { navigateTo('page-11c'); renderPfsGroup('pfs-form-3',6,9); }
-}
-
-function skipFlowSurvey() {
-  const m=document.getElementById('skip-modal');
-  m.style.display='flex';
-}
-
-function confirmSkipFlow() {
-  document.getElementById('skip-modal').style.display='none';
-  S.pfsSkipped=true;
-  navigateTo('page-7');
-  initFeedback();
-}
-
-function cancelSkipFlow() {
-  document.getElementById('skip-modal').style.display='none';
-}
-
-function submitFlowSurvey() {
-  const pfsVals = S.pfsAns.filter(v=>v>0);
-  const pfsAvg  = pfsVals.length ? mean(pfsVals) : null;
-  const sub     = idxs => { const v=idxs.map(i=>S.pfsAns[i]).filter(x=>x>0); return v.length?mean(v):null; };
-  S._pfsResult  = {
-    globalFlowScore:        pfsAvg,
-    absorptionScore:        sub([0,1,2]),
-    effortlessControlScore: sub([3,4,5]),
-    intrinsicRewardScore:   sub([6,7,8]),
-  };
-  FlowResults.insert({
-    global_flow_score:        S._pfsResult.globalFlowScore,
-    absorption_score:         S._pfsResult.absorptionScore,
-    effortless_control_score: S._pfsResult.effortlessControlScore,
-    intrinsic_reward_score:   S._pfsResult.intrinsicRewardScore,
-  });
-  navigateTo('page-7');
-  initFeedback();
-}
 
 // ════════════════════════════════════════════════════════════
 // PAGE 8 — SESSION END
 // ════════════════════════════════════════════════════════════
 function showResults() {
-  const pfsVals=S.pfsSkipped?[]:S.pfsAns.filter(v=>v>0);
-  const pfsAvg=S.pfsSkipped?null:(pfsVals.length?mean(pfsVals):0);
-
-  const subMean=idxs=>{
-    if(S.pfsSkipped) return null;
-    const v=idxs.map(i=>S.pfsAns[i]).filter(x=>x>0);
-    return v.length?mean(v):null;
-  };
-  const absorptionScore       =S._pfsResult ? S._pfsResult.absorptionScore        : subMean([0,1,2]);
-  const effortlessControlScore=S._pfsResult ? S._pfsResult.effortlessControlScore : subMean([3,4,5]);
-  const intrinsicRewardScore  =S._pfsResult ? S._pfsResult.intrinsicRewardScore   : subMean([6,7,8]);
-  const globalFlowScore       =S._pfsResult ? S._pfsResult.globalFlowScore        : pfsAvg;
-
-  let gfpsAvg=0;
-  if (S.gfpsApplied) {
-    const scored=S.gfpsAns.map((v,i)=>{
-      if (v===0) return 3;
-      return GFPS_ITEMS[i].rev?(6-v):v;
-    });
-    gfpsAvg=mean(scored);
-  }
-
-  const bBefore=burnout(S.emotBefore.estres, S.lifeBefore);
-  const bAfter =burnout(S.emotAfter.estres,  S.lifeAfter);
-  const bSaved =Math.max(0, bBefore-bAfter);
-
-  S._result={pfsAvg,globalFlowScore,absorptionScore,effortlessControlScore,intrinsicRewardScore,gfpsAvg,burnoutAfter:bAfter,burnoutEvitado:bSaved};
-
+  S._result={};
   document.getElementById('end-cycles-lbl').textContent=`${S.currentCycle} ciclo${S.currentCycle>1?'s':''} completados`;
   document.getElementById('end-focus').textContent=S.focusAccum;
   document.getElementById('end-rest').textContent=S.restAccum;
-  document.getElementById('end-pfs').textContent=pfsAvg>0?pfsAvg.toFixed(1):'--';
   document.getElementById('end-burnout').textContent=`${Math.round(bSaved*100)}%`;
 
   if (S.gfpsApplied && gfpsAvg>0) {
@@ -1981,12 +1712,6 @@ function finishSession() {
     emotionsAfter:  {...S.emotAfter},
     lifeBefore: S.lifeBefore,
     lifeAfter:  S.lifeAfter,
-    pfs:  [...S.pfsAns],
-    pfsAvg: r.pfsAvg!=null?r.pfsAvg:null,
-    globalFlowScore: r.globalFlowScore!=null?r.globalFlowScore:null,
-    absorptionScore: r.absorptionScore!=null?r.absorptionScore:null,
-    effortlessControlScore: r.effortlessControlScore!=null?r.effortlessControlScore:null,
-    intrinsicRewardScore: r.intrinsicRewardScore!=null?r.intrinsicRewardScore:null,
     gfps: [...S.gfpsAns],
     gfpsAvg: r.gfpsAvg||0,
     gfpsApplied: S.gfpsApplied,
@@ -2009,20 +1734,7 @@ function finishSession() {
     Saddness_delta:  Math.abs(S.Saddness_start_Score  - S.Saddness_end_Score),
     Tiredness_delta: Math.abs(S.Tiredness_start_Score - S.Tiredness_end_Score),
   });
-  // Save flow scores only if not already saved in submitFlowSurvey
-  if (!S._pfsResult) {
-    FlowResults.insert({
-      global_flow_score:        r.globalFlowScore        != null ? r.globalFlowScore        : null,
-      absorption_score:         r.absorptionScore        != null ? r.absorptionScore        : null,
-      effortless_control_score: r.effortlessControlScore != null ? r.effortlessControlScore : null,
-      intrinsic_reward_score:   r.intrinsicRewardScore   != null ? r.intrinsicRewardScore   : null,
-    });
-  }
   _syncSession({
-    globalFlowScore:        r.globalFlowScore        ?? null,
-    absorptionScore:        r.absorptionScore        ?? null,
-    effortlessControlScore: r.effortlessControlScore ?? null,
-    intrinsicRewardScore:   r.intrinsicRewardScore   ?? null,
     stress_start_score:    S.Stress_start_Score,
     anxiety_start_score:   S.Anxiety_start_Score,
     saddness_start_score:  S.Saddness_start_Score,
@@ -2066,12 +1778,8 @@ function renderStats() {
   }
 
   const avgDefs=[
-    {key:'focusMinutes',           label:'Tiempo Flow',     unit:'min', dec:0, color:'#e8b84b'},
+    {key:'focusMinutes',           label:'Tiempo Focus',     unit:'min', dec:0, color:'#e8b84b'},
     {key:'recoveryMinutes',        label:'Tiempo Break',    unit:'min', dec:0, color:'#60a5fa'},
-    {key:'globalFlowScore',        label:'Global Flow',     unit:'/7',  dec:1, color:'#34d399'},
-    {key:'absorptionScore',        label:'Absorción',       unit:'/7',  dec:1, color:'#a78bfa'},
-    {key:'effortlessControlScore', label:'Ctrl. Esfuerzo',  unit:'/7',  dec:1, color:'#f472b6'},
-    {key:'intrinsicRewardScore',   label:'Rec. Intrínseca', unit:'/7',  dec:1, color:'#fb923c'},
     {key:'Anxiety_end_Score',      label:'Ansiedad',        unit:'/7',  dec:1, color:'#f87171'},
     {key:'Stress_end_Score',       label:'Estrés',          unit:'/7',  dec:1, color:'#ef4444'},
     {key:'Saddness_end_Score',     label:'Tristeza',        unit:'/7',  dec:1, color:'#818cf8'},
