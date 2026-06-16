@@ -1576,7 +1576,7 @@ function startRecovery() {
 
   document.getElementById('page-6').style.background='var(--rest-bg)';
   document.getElementById('rest-cycle-lbl').textContent=`Ciclo ${S.currentCycle} de ${S.totalCycles}`;
-  document.getElementById('break-skip-btn').textContent=S.currentCycle<S.totalCycles?'Skip a Flow state':'Finalizar sesión';
+  document.getElementById('break-skip-btn').textContent=S.currentCycle<S.totalCycles?'Skip a Focus':'Finalizar sesión';
 
   const dur=S.restMin*60;
   document.getElementById('rest-time').textContent=fmt(dur);
