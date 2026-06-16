@@ -865,22 +865,35 @@ canvas.chart{width:100%;border-radius:var(--rs);display:block;background:rgba(25
 // ════════════════════════════════════════════════════════════
 const _SB_URL = 'https://fppldtjsrrvywskktmfb.supabase.co';
 const _SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZwcGxkdGpzcnJ2eXdza2t0bWZiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA1MTI0MDksImV4cCI6MjA5NjA4ODQwOX0.pulqtIf4gc9fUAj2ZqJelQl4EPihuvu15JBcbiXM12c';
-const sb = window.supabase.createClient(_SB_URL, _SB_KEY);
-let _sbSession = null;
+let sb = null, _sbSession = null;
 
-sb.auth.onAuthStateChange((event, session) => {
-  _sbSession = session;
-  if (event === 'SIGNED_IN') {
-    if (session?.user) _ensureProfile(session.user);
+try {
+  sb = window.supabase.createClient(_SB_URL, _SB_KEY);
+
+  sb.auth.onAuthStateChange((event, session) => {
+    _sbSession = session;
+    if (event === 'SIGNED_IN') {
+      if (session?.user) _ensureProfile(session.user);
+      const cur = document.querySelector('.page.active')?.id;
+      if (!cur || cur === 'page-login' || cur === 'page-registro') navigateTo('page-1');
+    } else if (event === 'SIGNED_OUT') {
+      navigateTo('page-login');
+    }
+  });
+
+  sb.auth.getSession().then(({ data }) => {
+    _sbSession = data.session;
     const cur = document.querySelector('.page.active')?.id;
-    if (cur === 'page-login' || cur === 'page-registro') navigateTo('page-1');
-  } else if (event === 'SIGNED_OUT') {
-    navigateTo('page-login');
-  }
-});
-sb.auth.getSession().then(({ data }) => { _sbSession = data.session; });
+    if (cur === 'page-9' || !cur) {
+      navigateTo(_sbSession ? 'page-1' : 'page-login');
+    }
+  });
+} catch(e) {
+  console.warn('Supabase init failed', e);
+}
 
 async function _ensureProfile(user) {
+  if (!sb) return;
   const { data } = await sb.from('usuarios').select('id').eq('id', user.id).maybeSingle();
   if (!data) {
     const meta = user.user_metadata || {};
@@ -1134,6 +1147,7 @@ const ResultadosSesiones = {
 // ROUTER
 // ════════════════════════════════════════════════════════════
 const SESSION_PAGES = new Set(['page-5','page-6']);
+const NO_TAB_PAGES  = new Set(['page-5','page-6','page-9','page-login','page-registro']);
 const TAB_MAP = { 'page-1':'tab-home', 'page-10':'tab-stats', 'page-profile':'tab-profile' };
 
 function navigateTo(id) {
@@ -1141,7 +1155,7 @@ function navigateTo(id) {
   document.getElementById(id).classList.add('active');
 
   const tb = document.getElementById('tab-bar');
-  tb.classList.toggle('hidden', SESSION_PAGES.has(id));
+  tb.classList.toggle('hidden', NO_TAB_PAGES.has(id));
 
   document.querySelectorAll('.tab-item').forEach(t=>t.classList.remove('active'));
   if (TAB_MAP[id]) document.getElementById(TAB_MAP[id]).classList.add('active');
@@ -1934,7 +1948,8 @@ function renderProfile() {
 }
 
 async function handleLogout() {
-  await sb.auth.signOut();
+  if (sb) await sb.auth.signOut();
+  _sbSession = null;
   navigateTo('page-login');
 }
 
@@ -2006,7 +2021,15 @@ function drawChart(cv, vals, lbls, color) {
 // ════════════════════════════════════════════════════════════
 document.addEventListener('DOMContentLoaded',()=>{
   updateSummary();
-  navigateTo(isLoggedIn() ? 'page-1' : 'page-login');
+  if (!sb) {
+    navigateTo('page-login');
+  } else {
+    navigateTo('page-9');
+    setTimeout(()=>{
+      const cur = document.querySelector('.page.active')?.id;
+      if (cur === 'page-9') navigateTo(_sbSession ? 'page-1' : 'page-login');
+    }, 2500);
+  }
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('sw.js').catch(()=>{});
   }
