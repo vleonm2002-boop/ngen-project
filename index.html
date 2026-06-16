@@ -637,19 +637,89 @@ canvas.chart{width:100%;border-radius:var(--rs);display:block;background:rgba(25
      PAGE 10 — STATISTICS
 ══════════════════════════════════════════════ -->
 <div class="page" id="page-10">
-<div class="px pt-safe pb-safe flex col" style="flex:1;padding-top:36px;padding-bottom:16px">
+<div class="px pt-safe pb-safe flex col" style="flex:1;padding-top:36px;padding-bottom:16px;overflow-y:auto">
 
-  <h2 style="font-size:28px;font-weight:400;margin-bottom:14px">Estadísticas</h2>
+  <h2 style="font-size:28px;font-weight:400;margin-bottom:16px">Estadísticas</h2>
 
-  <div class="pill-group mb-5" id="period-group">
-    <button class="pill selected" data-d="month" onclick="selectPeriod(this)">Este mes</button>
-    <button class="pill" data-d="90" onclick="selectPeriod(this)">3 meses</button>
-    <button class="pill" data-d="180" onclick="selectPeriod(this)">6 meses</button>
-    <button class="pill" data-d="365" onclick="selectPeriod(this)">1 año</button>
-    <button class="pill" data-d="0" onclick="selectPeriod(this)">Total</button>
+  <!-- Hero: Focus + Break time -->
+  <div class="stat-grid mb-4">
+    <div class="stat-card" style="text-align:center;padding:20px 12px">
+      <div class="stat-lbl mb-1">Tiempo en Focus</div>
+      <div style="font-size:32px;font-weight:600;color:var(--gold)" id="stats-focus-total">--</div>
+      <div class="stat-unit" style="font-size:12px">min</div>
+    </div>
+    <div class="stat-card" style="text-align:center;padding:20px 12px">
+      <div class="stat-lbl mb-1">Tiempo en Break</div>
+      <div style="font-size:32px;font-weight:600;color:#60a5fa" id="stats-break-total">--</div>
+      <div class="stat-unit" style="font-size:12px">min</div>
+    </div>
+  </div>
+
+  <div class="pill-group mb-4" id="period-group">
+    <button class="pill selected" data-d="week"  onclick="selectPeriod(this)">Semana</button>
+    <button class="pill" data-d="month" onclick="selectPeriod(this)">Mes</button>
+    <button class="pill" data-d="90"   onclick="selectPeriod(this)">3 meses</button>
+    <button class="pill" data-d="0"    onclick="selectPeriod(this)">Total</button>
   </div>
 
   <div id="stats-body" class="flex col gap-4"></div>
+
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     PAGE PROFILE
+══════════════════════════════════════════════ -->
+<div class="page" id="page-profile">
+<div class="px pt-safe pb-safe flex col" style="flex:1;padding-top:40px;padding-bottom:24px;gap:20px">
+
+  <!-- Logged-in view -->
+  <div id="profile-logged-in">
+    <!-- Avatar + info -->
+    <div style="display:flex;align-items:center;gap:16px;margin-bottom:24px">
+      <div id="profile-avatar" style="width:60px;height:60px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:600;color:#1f3015;flex-shrink:0">?</div>
+      <div>
+        <div id="profile-name" style="font-size:18px;font-weight:600">—</div>
+        <div id="profile-email" style="font-size:13px;color:var(--muted);margin-top:2px">—</div>
+        <div id="profile-plan-badge" style="display:inline-block;margin-top:6px;padding:2px 10px;border-radius:100px;font-size:11px;font-weight:600;background:var(--surf2);color:var(--muted);letter-spacing:.06em">GRATUITO</div>
+      </div>
+    </div>
+
+    <!-- Plan upgrade -->
+    <p class="label-caps mb-3">Actualizar plan</p>
+    <div class="flex col gap-3 mb-5">
+      <div class="card" style="cursor:pointer" onclick="toast('Próximamente',3000)">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <div style="font-size:15px;font-weight:600">Premium</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:2px">Música personalizada · Estadísticas avanzadas</div>
+          </div>
+          <div style="font-size:13px;color:var(--gold);font-weight:600">Próximamente →</div>
+        </div>
+      </div>
+      <div class="card" style="cursor:pointer" onclick="toast('Próximamente',3000)">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <div style="font-size:15px;font-weight:600">Business</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:2px">Equipos · Dashboard organizacional</div>
+          </div>
+          <div style="font-size:13px;color:var(--gold);font-weight:600">Próximamente →</div>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn btn-secondary" style="color:#f87171;border-color:#f8717144" onclick="handleLogout()">Cerrar sesión</button>
+  </div>
+
+  <!-- Logged-out view -->
+  <div id="profile-logged-out" style="display:none;flex:1;display:none;flex-direction:column;align-items:center;justify-content:center;gap:20px;text-align:center">
+    <div style="font-size:48px">👤</div>
+    <div>
+      <div style="font-size:18px;font-weight:500;margin-bottom:6px">No hay sesión activa</div>
+      <div style="font-size:14px;color:var(--muted)">Inicia sesión para ver tu perfil y guardar tu progreso</div>
+    </div>
+    <button class="btn btn-primary" style="width:100%" onclick="navigateTo('page-login')">Iniciar sesión</button>
+  </div>
 
 </div>
 </div>
@@ -765,21 +835,21 @@ canvas.chart{width:100%;border-radius:var(--rs);display:block;background:rgba(25
 
 <!-- TAB BAR -->
 <nav class="tab-bar" id="tab-bar">
-  <button class="tab-item active" id="tab-home" onclick="isLoggedIn()?navigateTo('page-1'):navigateTo('page-login')">
+  <button class="tab-item active" id="tab-home" onclick="navigateTo('page-1')">
     <svg viewBox="0 0 24 24"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H5a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg>
     <span>Inicio</span>
   </button>
-  <button class="tab-item" id="tab-stats" onclick="isLoggedIn()?navigateTo('page-10'):navigateTo('page-login')">
-    <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+  <button class="tab-item" id="tab-stats" onclick="navigateTo('page-10')">
+    <svg viewBox="0 0 24 24"><rect x="3" y="12" width="4" height="9"/><rect x="10" y="7" width="4" height="14"/><rect x="17" y="3" width="4" height="18"/></svg>
     <span>Stats</span>
   </button>
-  <button class="tab-item" onclick="isLoggedIn()?toast('Próximamente',3000):navigateTo('page-login')">
+  <button class="tab-item" id="tab-profile" onclick="navigateTo('page-profile')">
+    <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    <span>Perfil</span>
+  </button>
+  <button class="tab-item" id="tab-community" onclick="toast('Próximamente',3000)">
     <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
     <span>Comunidad</span>
-  </button>
-  <button class="tab-item" id="tab-session" onclick="isLoggedIn()?navigateTo('page-13'):navigateTo('page-login')">
-    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
-    <span>Sesión</span>
   </button>
 </nav>
 
@@ -888,7 +958,7 @@ const S = {
   emotAfter:  { tristeza:50, enojo:50, soledad:50, estres:50 },
   lifeAfter:  'luchando',
   // stats ui
-  statsDays: 'month',
+  statsDays: 'week',
   // computed result (temp)
   _result: null,
 };
@@ -1064,7 +1134,7 @@ const ResultadosSesiones = {
 // ROUTER
 // ════════════════════════════════════════════════════════════
 const SESSION_PAGES = new Set(['page-5','page-6']);
-const TAB_MAP = { 'page-1':'tab-home', 'page-10':'tab-stats', 'page-2':'tab-session', 'page-13':'tab-session' };
+const TAB_MAP = { 'page-1':'tab-home', 'page-10':'tab-stats', 'page-profile':'tab-profile' };
 
 function navigateTo(id) {
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
@@ -1080,6 +1150,7 @@ function navigateTo(id) {
 
   if (id==='page-1')        renderHome();
   if (id==='page-10')       renderStats();
+  if (id==='page-profile')  renderProfile();
   if (id==='page-registro') initRegistroPage();
 }
 
@@ -1759,7 +1830,7 @@ function selectPeriod(btn) {
   document.querySelectorAll('#period-group .pill').forEach(b=>b.classList.remove('selected'));
   btn.classList.add('selected');
   const raw=btn.dataset.d;
-  S.statsDays = raw==='month' ? 'month' : +raw;
+  S.statsDays = raw==='week' ? 'week' : raw==='month' ? 'month' : +raw;
   renderStats();
 }
 
@@ -1767,10 +1838,17 @@ function renderStats() {
   const all=Store.all();
   const days=S.statsDays;
   const now=new Date();
-  const data=days===0?all:days==='month'
-    ?all.filter(s=>{const d=new Date(s.date);return d.getFullYear()===now.getFullYear()&&d.getMonth()===now.getMonth();})
+  const data=days===0?all
+    :days==='week'?all.filter(s=>{const d=new Date(s.date);const wd=new Date(now);wd.setDate(wd.getDate()-wd.getDay());wd.setHours(0,0,0,0);return d>=wd;})
+    :days==='month'?all.filter(s=>{const d=new Date(s.date);return d.getFullYear()===now.getFullYear()&&d.getMonth()===now.getMonth();})
     :all.filter(s=>(Date.now()-new Date(s.date).getTime())/86400000<=days);
   const box=document.getElementById('stats-body');
+
+  // Update hero numbers
+  const totalFocus = data.reduce((a,s)=>a+(+s.focusMinutes||0),0);
+  const totalBreak  = data.reduce((a,s)=>a+(+s.recoveryMinutes||0),0);
+  document.getElementById('stats-focus-total').textContent = totalFocus||'--';
+  document.getElementById('stats-break-total').textContent  = totalBreak||'--';
 
   if (!data.length) {
     box.innerHTML=`<div class="empty"><div class="empty-icon">📊</div><p class="empty-txt">Completa tu primera sesión para ver estadísticas aquí.</p></div>`;
@@ -1832,6 +1910,32 @@ function renderStats() {
     box.appendChild(sec);
     drawChart(cv,vals,lbls,m.color);
   });
+}
+
+// ════════════════════════════════════════════════════════════
+// PAGE PROFILE
+// ════════════════════════════════════════════════════════════
+function renderProfile() {
+  const loggedIn = isLoggedIn();
+  document.getElementById('profile-logged-in').style.display  = loggedIn ? 'block' : 'none';
+  document.getElementById('profile-logged-out').style.display = loggedIn ? 'none'  : 'flex';
+
+  if (!loggedIn) return;
+
+  const user = _sbSession?.user;
+  const meta = user?.user_metadata || {};
+  const name = meta.full_name || meta.name || user?.email?.split('@')[0] || '—';
+  const email = user?.email || '—';
+  const initials = name.split(' ').map(w=>w[0]?.toUpperCase()||'').slice(0,2).join('');
+
+  document.getElementById('profile-avatar').textContent = initials || '?';
+  document.getElementById('profile-name').textContent   = name;
+  document.getElementById('profile-email').textContent  = email;
+}
+
+async function handleLogout() {
+  await sb.auth.signOut();
+  navigateTo('page-login');
 }
 
 function drawChart(cv, vals, lbls, color) {
