@@ -1047,7 +1047,9 @@ async function handleLogin() {
 }
 
 function handleGoogleLogin() {
-  sb.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: window.location.origin + window.location.pathname } });
+  const prod = 'https://ngen-project.vercel.app/';
+  const redirectTo = window.location.hostname === 'localhost' ? window.location.origin + '/' : prod;
+  sb.auth.signInWithOAuth({ provider: 'google', options: { redirectTo } });
 }
 
 // ════════════════════════════════════════════════════════════
