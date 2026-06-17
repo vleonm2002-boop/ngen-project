@@ -795,20 +795,32 @@ canvas.chart{width:100%;border-radius:var(--rs);display:block;background:rgba(25
 // ════════════════════════════════════════════════════════════
 const _SB_URL = 'https://fppldtjsrrvywskktmfb.supabase.co';
 const _SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZwcGxkdGpzcnJ2eXdza2t0bWZiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA1MTI0MDksImV4cCI6MjA5NjA4ODQwOX0.pulqtIf4gc9fUAj2ZqJelQl4EPihuvu15JBcbiXM12c';
-const sb = window.supabase.createClient(_SB_URL, _SB_KEY);
 let _sbSession = null;
-
-sb.auth.onAuthStateChange((event, session) => {
-  _sbSession = session;
-  if (event === 'SIGNED_IN') {
-    if (session?.user) _ensureProfile(session.user);
-    const cur = document.querySelector('.page.active')?.id;
-    if (cur === 'page-login' || cur === 'page-registro') navigateTo('page-1');
-  } else if (event === 'SIGNED_OUT') {
-    navigateTo('page-login');
-  }
-});
-sb.auth.getSession().then(({ data }) => { _sbSession = data.session; });
+let sb;
+try {
+  sb = window.supabase.createClient(_SB_URL, _SB_KEY);
+  sb.auth.onAuthStateChange((event, session) => {
+    _sbSession = session;
+    if (event === 'SIGNED_IN') {
+      if (session?.user) _ensureProfile(session.user);
+      const cur = document.querySelector('.page.active')?.id;
+      if (cur === 'page-login' || cur === 'page-registro') navigateTo('page-1');
+    } else if (event === 'SIGNED_OUT') {
+      navigateTo('page-login');
+    }
+  });
+  sb.auth.getSession().then(({ data }) => { _sbSession = data.session; });
+} catch(e) {
+  const _noop = () => Promise.resolve({ data: {}, error: null });
+  sb = {
+    auth: {
+      onAuthStateChange: () => ({ data: { subscription: { unsubscribe: ()=>{} } } }),
+      getSession: _noop, signInWithPassword: _noop,
+      signInWithOAuth: _noop, signUp: _noop, signOut: _noop,
+    },
+    from: () => ({ select: () => ({ eq: () => ({ maybeSingle: _noop }) }), insert: _noop, upsert: _noop, update: () => ({ eq: _noop }) })
+  };
+}
 
 async function _ensureProfile(user) {
   const { data } = await sb.from('usuarios').select('id').eq('id', user.id).maybeSingle();
