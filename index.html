@@ -654,6 +654,18 @@ canvas.chart{width:100%;border-radius:var(--rs);display:block;background:rgba(25
 </div>
 </div>
 
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
 <!-- Login Prompt Modal -->
 <div id="login-prompt-modal" style="display:none;position:absolute;inset:0;background:rgba(0,0,0,.62);z-index:400;align-items:center;justify-content:center;padding:28px">
   <div style="background:var(--bg);border:1px solid var(--brd);border-radius:var(--r);padding:24px;width:100%;max-width:320px">
@@ -663,6 +675,10 @@ canvas.chart{width:100%;border-radius:var(--rs);display:block;background:rgba(25
       <button class="btn btn-primary"   style="flex:1;padding:12px 8px;font-size:14px" onclick="document.getElementById('login-prompt-modal').style.display='none';navigateTo('page-login')">Sí</button>
     </div>
   </div>
+</div>
+
+
+</div>
 
 <!-- ══════════════════════════════════════════════
      PAGE LOGIN
@@ -748,44 +764,6 @@ canvas.chart{width:100%;border-radius:var(--rs);display:block;background:rgba(25
 </div>
 
 <!-- TAB BAR -->
-
-<!-- ══════════════════════════════════════════════
-     PAGE PERFIL
-══════════════════════════════════════════════ -->
-<div class="page" id="page-perfil">
-<div class="px pt-safe pb-safe flex col" style="flex:1;padding-top:40px;padding-bottom:24px;gap:20px">
-
-  <h2 style="font-size:28px;font-weight:400">Perfil</h2>
-
-  <!-- Avatar + info -->
-  <div class="card" style="display:flex;flex-direction:column;align-items:center;gap:14px;padding:28px 20px">
-    <div id="perfil-avatar" style="width:72px;height:72px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:600;color:#1a1a1a;flex-shrink:0"></div>
-    <div style="text-align:center">
-      <p id="perfil-nombre" style="font-size:18px;font-weight:500;margin-bottom:2px"></p>
-      <p id="perfil-email" style="font-size:13px;color:var(--muted)"></p>
-    </div>
-  </div>
-
-  <!-- Plan -->
-  <div class="card">
-    <p class="label-caps mb-3">Plan actual</p>
-    <div style="display:flex;align-items:center;justify-content:space-between">
-      <div>
-        <p id="perfil-plan" style="font-size:16px;font-weight:500;margin-bottom:2px">Gratuito</p>
-        <p style="font-size:12px;color:var(--muted)">Acceso básico a Ngen</p>
-      </div>
-      <button id="perfil-upgrade-btn" class="btn btn-primary" style="padding:10px 16px;font-size:13px;width:auto" onclick="handleUpgrade()">Mejorar plan</button>
-    </div>
-  </div>
-
-  <!-- Sign out -->
-  <div class="mt-a">
-    <button class="btn btn-secondary" style="width:100%" onclick="handleSignOut()">Cerrar sesión</button>
-  </div>
-
-</div>
-</div>
-
 <nav class="tab-bar" id="tab-bar">
   <button class="tab-item active" id="tab-home" onclick="isLoggedIn()?navigateTo('page-1'):navigateTo('page-login')">
     <svg viewBox="0 0 24 24"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H5a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg>
@@ -799,9 +777,9 @@ canvas.chart{width:100%;border-radius:var(--rs);display:block;background:rgba(25
     <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
     <span>Comunidad</span>
   </button>
-  <button class="tab-item" id="tab-perfil" onclick="isLoggedIn()?navigateTo('page-perfil'):navigateTo('page-login')">
-    <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-    <span>Perfil</span>
+  <button class="tab-item" id="tab-session" onclick="isLoggedIn()?navigateTo('page-13'):navigateTo('page-login')">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+    <span>Sesión</span>
   </button>
 </nav>
 
@@ -1086,7 +1064,7 @@ const ResultadosSesiones = {
 // ROUTER
 // ════════════════════════════════════════════════════════════
 const SESSION_PAGES = new Set(['page-5','page-6']);
-const TAB_MAP = { 'page-1':'tab-home', 'page-10':'tab-stats', 'page-perfil':'tab-perfil' };
+const TAB_MAP = { 'page-1':'tab-home', 'page-10':'tab-stats', 'page-2':'tab-session', 'page-13':'tab-session' };
 
 function navigateTo(id) {
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
@@ -1102,7 +1080,6 @@ function navigateTo(id) {
 
   if (id==='page-1')        renderHome();
   if (id==='page-10')       renderStats();
-  if (id==='page-perfil')   renderPerfil();
   if (id==='page-registro') initRegistroPage();
 }
 
@@ -1800,36 +1777,46 @@ function renderStats() {
     return;
   }
 
-  const metrics=[
-    {key:'focusMinutes',    label:'Tiempo en Focus', unit:'min', color:'#e8b84b'},
-    {key:'recoveryMinutes', label:'Tiempo en Descanso', unit:'min', color:'#60a5fa'},
+  const avgDefs=[
+    {key:'focusMinutes',           label:'Tiempo Focus',     unit:'min', dec:0, color:'#e8b84b'},
+    {key:'recoveryMinutes',        label:'Tiempo Break',    unit:'min', dec:0, color:'#60a5fa'},
+    {key:'Anxiety_end_Score',      label:'Ansiedad',        unit:'/7',  dec:1, color:'#f87171'},
+    {key:'Stress_end_Score',       label:'Estrés',          unit:'/7',  dec:1, color:'#ef4444'},
+    {key:'Saddness_end_Score',     label:'Tristeza',        unit:'/7',  dec:1, color:'#818cf8'},
+    {key:'Tiredness_end_Score',    label:'Cansancio',       unit:'/7',  dec:1, color:'#94a3b8'},
   ];
 
   box.innerHTML='';
 
-  // ─── TOTALES DEL PERÍODO ────────────────────────────────────
-  const totalsGrid=document.createElement('div');
-  totalsGrid.className='stat-grid';
-  totalsGrid.style.marginBottom='20px';
-  metrics.forEach(m=>{
+  // ─── PROMEDIOS DEL PERÍODO ──────────────────────────────────
+  const avgsHdr=document.createElement('p');
+  avgsHdr.className='chart-title';
+  avgsHdr.style.marginBottom='8px';
+  avgsHdr.textContent='PROMEDIOS DEL PERÍODO';
+  box.appendChild(avgsHdr);
+  const avgsGrid=document.createElement('div');
+  avgsGrid.className='stat-grid';
+  avgsGrid.style.marginBottom='16px';
+  avgDefs.forEach(m=>{
     const vs=data.map(s=>s[m.key]).filter(v=>v!=null&&!isNaN(+v));
-    const total=vs.reduce((a,b)=>a+(+b),0);
+    const avg=vs.length?vs.reduce((a,b)=>a+(+b),0)/vs.length:null;
     const card=document.createElement('div');
     card.className='stat-card';
-    card.style.textAlign='center';
-    card.innerHTML=`<div class="stat-lbl">${m.label}</div><div><span class="stat-val" style="font-size:28px">${Math.round(total)}</span><span class="stat-unit"> ${m.unit}</span></div>`;
-    totalsGrid.appendChild(card);
+    card.innerHTML=`<div class="stat-lbl">${m.label}</div><div><span class="stat-val" style="font-size:22px">${avg!=null?(m.dec===0?Math.round(avg):avg.toFixed(m.dec)):'--'}</span><span class="stat-unit">${avg!=null?' '+m.unit:''}</span></div>`;
+    avgsGrid.appendChild(card);
   });
-  box.appendChild(totalsGrid);
+  box.appendChild(avgsGrid);
 
   // ─── EVOLUCIÓN TEMPORAL ─────────────────────────────────────
-  const evHdr=document.createElement('p');
-  evHdr.className='chart-title';
-  evHdr.style.cssText='border-top:1px solid var(--brd);padding-top:14px;margin-bottom:4px;';
-  evHdr.textContent='EVOLUCIÓN TEMPORAL';
+  const evHdr=document.createElement('div');
+  evHdr.style.cssText='border-top:1px solid var(--brd);padding-top:12px;margin-bottom:4px;';
+  const evHdrTxt=document.createElement('p');
+  evHdrTxt.className='chart-title';
+  evHdrTxt.textContent='EVOLUCIÓN TEMPORAL';
+  evHdr.appendChild(evHdrTxt);
   box.appendChild(evHdr);
 
-  metrics.forEach(m=>{
+  avgDefs.forEach(m=>{
     const sessions=data.filter(s=>s[m.key]!=null&&!isNaN(+s[m.key]));
     if (!sessions.length) return;
     const vals=sessions.map(s=>+s[m.key]);
@@ -1845,39 +1832,6 @@ function renderStats() {
     box.appendChild(sec);
     drawChart(cv,vals,lbls,m.color);
   });
-}
-
-// ════════════════════════════════════════════════════════════
-// PAGE PERFIL
-// ════════════════════════════════════════════════════════════
-async function renderPerfil() {
-  const user = _sbSession?.user;
-  if (!user) return;
-
-  const initials = (() => {
-    const meta = user.user_metadata || {};
-    const name = meta.full_name || meta.name || user.email || '';
-    return name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2) || '?';
-  })();
-  document.getElementById('perfil-avatar').textContent = initials;
-  document.getElementById('perfil-email').textContent = user.email || '';
-
-  const { data: profile } = await sb.from('usuarios').select('nombre,apellido,tipo_sesion').eq('id', user.id).maybeSingle();
-  const nombre = profile ? `${profile.nombre || ''} ${profile.apellido || ''}`.trim() : (user.user_metadata?.full_name || user.email);
-  document.getElementById('perfil-nombre').textContent = nombre;
-
-  const plan = profile?.tipo_sesion || 'gratuita';
-  document.getElementById('perfil-plan').textContent = plan === 'pago' ? 'Premium' : 'Gratuito';
-  document.getElementById('perfil-upgrade-btn').style.display = plan === 'pago' ? 'none' : '';
-}
-
-function handleUpgrade() {
-  toast('Próximamente — planes Premium', 3000);
-}
-
-async function handleSignOut() {
-  await sb.auth.signOut();
-  navigateTo('page-login');
 }
 
 function drawChart(cv, vals, lbls, color) {
