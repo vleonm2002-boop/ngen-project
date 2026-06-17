@@ -651,6 +651,20 @@ canvas.chart{width:100%;border-radius:var(--rs);display:block;background:rgba(25
 
   <div id="stats-body" class="flex col gap-4"></div>
 
+</div>
+</div>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+</div>
 
 <!-- Login Prompt Modal -->
 <div id="login-prompt-modal" style="display:none;position:absolute;inset:0;background:rgba(0,0,0,.62);z-index:400;align-items:center;justify-content:center;padding:28px">
@@ -752,71 +766,58 @@ canvas.chart{width:100%;border-radius:var(--rs);display:block;background:rgba(25
 <!-- TAB BAR -->
 
 <!-- ══════════════════════════════════════════════
-     PAGE PROFILE
+     PAGE PERFIL
 ══════════════════════════════════════════════ -->
-<div class="page" id="page-profile">
-<div class="px pt-safe pb-safe flex col" style="flex:1;padding-top:40px;padding-bottom:24px;gap:0;overflow-y:auto">
+<div class="page" id="page-perfil">
+<div class="px pt-safe pb-safe flex col" style="flex:1;padding-top:40px;padding-bottom:24px;gap:20px">
 
-  <h2 style="font-size:28px;font-weight:400;margin-bottom:24px">Perfil</h2>
+  <h2 style="font-size:28px;font-weight:400">Perfil</h2>
 
-  <!-- Logged-in view -->
-  <div id="profile-logged-in" style="display:flex;flex-direction:column;gap:20px">
-    <div style="display:flex;align-items:center;gap:16px">
-      <div id="profile-avatar" style="width:60px;height:60px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:600;color:#1f3015;flex-shrink:0">?</div>
+  <!-- Avatar + info -->
+  <div class="card" style="display:flex;flex-direction:column;align-items:center;gap:14px;padding:28px 20px">
+    <div id="perfil-avatar" style="width:72px;height:72px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:600;color:#1a1a1a;flex-shrink:0"></div>
+    <div style="text-align:center">
+      <p id="perfil-nombre" style="font-size:18px;font-weight:500;margin-bottom:2px"></p>
+      <p id="perfil-email" style="font-size:13px;color:var(--muted)"></p>
+    </div>
+  </div>
+
+  <!-- Plan -->
+  <div class="card">
+    <p class="label-caps mb-3">Plan actual</p>
+    <div style="display:flex;align-items:center;justify-content:space-between">
       <div>
-        <div id="profile-name" style="font-size:18px;font-weight:600">—</div>
-        <div id="profile-email" style="font-size:13px;color:var(--muted);margin-top:2px">—</div>
-        <div style="display:inline-block;margin-top:6px;padding:2px 10px;border-radius:100px;font-size:11px;font-weight:600;background:var(--surf2);color:var(--muted);letter-spacing:.06em">GRATUITO</div>
+        <p id="perfil-plan" style="font-size:16px;font-weight:500;margin-bottom:2px">Gratuito</p>
+        <p style="font-size:12px;color:var(--muted)">Acceso básico a Ngen</p>
       </div>
+      <button id="perfil-upgrade-btn" class="btn btn-primary" style="padding:10px 16px;font-size:13px;width:auto" onclick="handleUpgrade()">Mejorar plan</button>
     </div>
-
-    <p class="label-caps">Actualizar plan</p>
-    <div class="card" style="cursor:pointer" onclick="toast('Próximamente',3000)">
-      <div style="display:flex;justify-content:space-between;align-items:center">
-        <div><div style="font-size:15px;font-weight:600">Premium</div><div style="font-size:12px;color:var(--muted);margin-top:2px">Música personalizada · Estadísticas avanzadas</div></div>
-        <div style="font-size:13px;color:var(--gold);font-weight:600">→</div>
-      </div>
-    </div>
-    <div class="card" style="cursor:pointer" onclick="toast('Próximamente',3000)">
-      <div style="display:flex;justify-content:space-between;align-items:center">
-        <div><div style="font-size:15px;font-weight:600">Business</div><div style="font-size:12px;color:var(--muted);margin-top:2px">Equipos · Dashboard organizacional</div></div>
-        <div style="font-size:13px;color:var(--gold);font-weight:600">→</div>
-      </div>
-    </div>
-
-    <button class="btn btn-secondary" style="color:#f87171;border-color:#f8717144;margin-top:8px" onclick="handleLogout()">Cerrar sesión</button>
   </div>
 
-  <!-- Logged-out view -->
-  <div id="profile-logged-out" style="display:none;flex:1;flex-direction:column;align-items:center;justify-content:center;gap:20px;text-align:center;padding-top:60px">
-    <div style="font-size:48px">👤</div>
-    <div>
-      <div style="font-size:18px;font-weight:500;margin-bottom:6px">No hay sesión activa</div>
-      <div style="font-size:14px;color:var(--muted)">Inicia sesión para ver tu perfil</div>
-    </div>
-    <button class="btn btn-primary" style="width:100%" onclick="navigateTo('page-login')">Iniciar sesión</button>
+  <!-- Sign out -->
+  <div class="mt-a">
+    <button class="btn btn-secondary" style="width:100%" onclick="handleSignOut()">Cerrar sesión</button>
   </div>
 
 </div>
 </div>
 
-<!-- TAB BAR -->
 <nav class="tab-bar" id="tab-bar">
-  <button class="tab-item" id="tab-home" onclick="navigateTo('page-1')">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H5a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg>
+  <button class="tab-item active" id="tab-home" onclick="isLoggedIn()?navigateTo('page-1'):navigateTo('page-login')">
+    <svg viewBox="0 0 24 24"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H5a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg>
     <span>Inicio</span>
   </button>
-  <button class="tab-item" id="tab-stats" onclick="navigateTo('page-10')">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="12" width="4" height="9"/><rect x="10" y="7" width="4" height="14"/><rect x="17" y="3" width="4" height="18"/></svg>
+  <button class="tab-item" id="tab-stats" onclick="isLoggedIn()?navigateTo('page-10'):navigateTo('page-login')">
+    <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
     <span>Stats</span>
   </button>
-  <button class="tab-item" id="tab-profile" onclick="navigateTo('page-profile')">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-    <span>Perfil</span>
-  </button>
-  <button class="tab-item" id="tab-community" onclick="toast('Próximamente',3000)">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+  <button class="tab-item" onclick="isLoggedIn()?toast('Próximamente',3000):navigateTo('page-login')">
+    <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
     <span>Comunidad</span>
+  </button>
+  <button class="tab-item" id="tab-perfil" onclick="isLoggedIn()?navigateTo('page-perfil'):navigateTo('page-login')">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+    <span>Perfil</span>
   </button>
 </nav>
 
@@ -832,28 +833,22 @@ canvas.chart{width:100%;border-radius:var(--rs);display:block;background:rgba(25
 // ════════════════════════════════════════════════════════════
 const _SB_URL = 'https://fppldtjsrrvywskktmfb.supabase.co';
 const _SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZwcGxkdGpzcnJ2eXdza2t0bWZiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA1MTI0MDksImV4cCI6MjA5NjA4ODQwOX0.pulqtIf4gc9fUAj2ZqJelQl4EPihuvu15JBcbiXM12c';
-let sb = null, _sbSession = null;
-try {
-  sb = window.supabase.createClient(_SB_URL, _SB_KEY);
-  sb.auth.onAuthStateChange((event, session) => {
-    _sbSession = session;
-    if (event === 'SIGNED_IN') {
-      if (session?.user) _ensureProfile(session.user);
-      const cur = document.querySelector('.page.active')?.id;
-      if (cur === 'page-login' || cur === 'page-registro') navigateTo('page-1');
-    } else if (event === 'SIGNED_OUT') {
-      navigateTo('page-login');
-    }
-  });
-  sb.auth.getSession().then(({ data }) => {
-    _sbSession = data.session;
+const sb = window.supabase.createClient(_SB_URL, _SB_KEY);
+let _sbSession = null;
+
+sb.auth.onAuthStateChange((event, session) => {
+  _sbSession = session;
+  if (event === 'SIGNED_IN') {
+    if (session?.user) _ensureProfile(session.user);
     const cur = document.querySelector('.page.active')?.id;
-    if (cur === 'page-9') navigateTo(_sbSession ? 'page-1' : 'page-login');
-  });
-} catch(e) { console.warn('Supabase init failed', e); }
+    if (cur === 'page-login' || cur === 'page-registro') navigateTo('page-1');
+  } else if (event === 'SIGNED_OUT') {
+    navigateTo('page-login');
+  }
+});
+sb.auth.getSession().then(({ data }) => { _sbSession = data.session; });
 
 async function _ensureProfile(user) {
-  if (!sb) return;
   const { data } = await sb.from('usuarios').select('id').eq('id', user.id).maybeSingle();
   if (!data) {
     const meta = user.user_metadata || {};
@@ -931,7 +926,7 @@ const S = {
   emotAfter:  { tristeza:50, enojo:50, soledad:50, estres:50 },
   lifeAfter:  'luchando',
   // stats ui
-  statsDays: 'week',
+  statsDays: 'month',
   // computed result (temp)
   _result: null,
 };
@@ -1107,25 +1102,23 @@ const ResultadosSesiones = {
 // ROUTER
 // ════════════════════════════════════════════════════════════
 const SESSION_PAGES = new Set(['page-5','page-6']);
-const NO_TAB_PAGES  = new Set(['page-5','page-6','page-9','page-login','page-registro']);
-const TAB_MAP = { 'page-1':'tab-home', 'page-10':'tab-stats', 'page-profile':'tab-profile' };
+const TAB_MAP = { 'page-1':'tab-home', 'page-10':'tab-stats', 'page-perfil':'tab-perfil' };
 
 function navigateTo(id) {
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 
   const tb = document.getElementById('tab-bar');
-  tb.classList.toggle('hidden', NO_TAB_PAGES.has(id));
+  tb.classList.toggle('hidden', SESSION_PAGES.has(id));
 
   document.querySelectorAll('.tab-item').forEach(t=>t.classList.remove('active'));
   if (TAB_MAP[id]) document.getElementById(TAB_MAP[id]).classList.add('active');
 
   if (!SESSION_PAGES.has(id) && AE.ctx) AE.stopAll();
 
-  if (id==='page-profile') renderProfile();
-
   if (id==='page-1')        renderHome();
   if (id==='page-10')       renderStats();
+  if (id==='page-perfil')   renderPerfil();
   if (id==='page-registro') initRegistroPage();
 }
 
@@ -1805,7 +1798,7 @@ function selectPeriod(btn) {
   document.querySelectorAll('#period-group .pill').forEach(b=>b.classList.remove('selected'));
   btn.classList.add('selected');
   const raw=btn.dataset.d;
-  S.statsDays = raw==='week' ? 'week' : raw==='month' ? 'month' : +raw;
+  S.statsDays = raw==='month' ? 'month' : +raw;
   renderStats();
 }
 
@@ -1813,17 +1806,9 @@ function renderStats() {
   const all=Store.all();
   const days=S.statsDays;
   const now=new Date();
-  const data=days===0?all
-    :days==='week'?all.filter(s=>{const d=new Date(s.date);const wd=new Date(now);wd.setDate(wd.getDate()-wd.getDay());wd.setHours(0,0,0,0);return d>=wd;})
-    :days==='month'?all.filter(s=>{const d=new Date(s.date);return d.getFullYear()===now.getFullYear()&&d.getMonth()===now.getMonth();})
+  const data=days===0?all:days==='month'
+    ?all.filter(s=>{const d=new Date(s.date);return d.getFullYear()===now.getFullYear()&&d.getMonth()===now.getMonth();})
     :all.filter(s=>(Date.now()-new Date(s.date).getTime())/86400000<=days);
-
-  const totalFocus=data.reduce((a,s)=>a+(+s.focusMinutes||0),0);
-  const totalBreak=data.reduce((a,s)=>a+(+s.recoveryMinutes||0),0);
-  const elF=document.getElementById('stats-focus-total');
-  const elB=document.getElementById('stats-break-total');
-  if(elF) elF.textContent=totalFocus||'--';
-  if(elB) elB.textContent=totalBreak||'--';
   const box=document.getElementById('stats-body');
 
   if (!data.length) {
@@ -1831,46 +1816,36 @@ function renderStats() {
     return;
   }
 
-  const avgDefs=[
-    {key:'focusMinutes',           label:'Tiempo Focus',     unit:'min', dec:0, color:'#e8b84b'},
-    {key:'recoveryMinutes',        label:'Tiempo Break',    unit:'min', dec:0, color:'#60a5fa'},
-    {key:'Anxiety_end_Score',      label:'Ansiedad',        unit:'/7',  dec:1, color:'#f87171'},
-    {key:'Stress_end_Score',       label:'Estrés',          unit:'/7',  dec:1, color:'#ef4444'},
-    {key:'Saddness_end_Score',     label:'Tristeza',        unit:'/7',  dec:1, color:'#818cf8'},
-    {key:'Tiredness_end_Score',    label:'Cansancio',       unit:'/7',  dec:1, color:'#94a3b8'},
+  const metrics=[
+    {key:'focusMinutes',    label:'Tiempo en Focus', unit:'min', color:'#e8b84b'},
+    {key:'recoveryMinutes', label:'Tiempo en Descanso', unit:'min', color:'#60a5fa'},
   ];
 
   box.innerHTML='';
 
-  // ─── PROMEDIOS DEL PERÍODO ──────────────────────────────────
-  const avgsHdr=document.createElement('p');
-  avgsHdr.className='chart-title';
-  avgsHdr.style.marginBottom='8px';
-  avgsHdr.textContent='PROMEDIOS DEL PERÍODO';
-  box.appendChild(avgsHdr);
-  const avgsGrid=document.createElement('div');
-  avgsGrid.className='stat-grid';
-  avgsGrid.style.marginBottom='16px';
-  avgDefs.forEach(m=>{
+  // ─── TOTALES DEL PERÍODO ────────────────────────────────────
+  const totalsGrid=document.createElement('div');
+  totalsGrid.className='stat-grid';
+  totalsGrid.style.marginBottom='20px';
+  metrics.forEach(m=>{
     const vs=data.map(s=>s[m.key]).filter(v=>v!=null&&!isNaN(+v));
-    const avg=vs.length?vs.reduce((a,b)=>a+(+b),0)/vs.length:null;
+    const total=vs.reduce((a,b)=>a+(+b),0);
     const card=document.createElement('div');
     card.className='stat-card';
-    card.innerHTML=`<div class="stat-lbl">${m.label}</div><div><span class="stat-val" style="font-size:22px">${avg!=null?(m.dec===0?Math.round(avg):avg.toFixed(m.dec)):'--'}</span><span class="stat-unit">${avg!=null?' '+m.unit:''}</span></div>`;
-    avgsGrid.appendChild(card);
+    card.style.textAlign='center';
+    card.innerHTML=`<div class="stat-lbl">${m.label}</div><div><span class="stat-val" style="font-size:28px">${Math.round(total)}</span><span class="stat-unit"> ${m.unit}</span></div>`;
+    totalsGrid.appendChild(card);
   });
-  box.appendChild(avgsGrid);
+  box.appendChild(totalsGrid);
 
   // ─── EVOLUCIÓN TEMPORAL ─────────────────────────────────────
-  const evHdr=document.createElement('div');
-  evHdr.style.cssText='border-top:1px solid var(--brd);padding-top:12px;margin-bottom:4px;';
-  const evHdrTxt=document.createElement('p');
-  evHdrTxt.className='chart-title';
-  evHdrTxt.textContent='EVOLUCIÓN TEMPORAL';
-  evHdr.appendChild(evHdrTxt);
+  const evHdr=document.createElement('p');
+  evHdr.className='chart-title';
+  evHdr.style.cssText='border-top:1px solid var(--brd);padding-top:14px;margin-bottom:4px;';
+  evHdr.textContent='EVOLUCIÓN TEMPORAL';
   box.appendChild(evHdr);
 
-  avgDefs.forEach(m=>{
+  metrics.forEach(m=>{
     const sessions=data.filter(s=>s[m.key]!=null&&!isNaN(+s[m.key]));
     if (!sessions.length) return;
     const vals=sessions.map(s=>+s[m.key]);
@@ -1889,25 +1864,35 @@ function renderStats() {
 }
 
 // ════════════════════════════════════════════════════════════
-// PAGE PROFILE
+// PAGE PERFIL
 // ════════════════════════════════════════════════════════════
-function renderProfile() {
-  const loggedIn = isLoggedIn();
-  document.getElementById('profile-logged-in').style.display  = loggedIn ? 'flex' : 'none';
-  document.getElementById('profile-logged-out').style.display = loggedIn ? 'none' : 'flex';
-  if (!loggedIn) return;
+async function renderPerfil() {
   const user = _sbSession?.user;
-  const meta = user?.user_metadata || {};
-  const name = meta.full_name || meta.name || user?.email?.split('@')[0] || '—';
-  const initials = name.split(' ').map(w=>w[0]?.toUpperCase()||'').slice(0,2).join('') || '?';
-  document.getElementById('profile-avatar').textContent = initials;
-  document.getElementById('profile-name').textContent   = name;
-  document.getElementById('profile-email').textContent  = user?.email || '—';
+  if (!user) return;
+
+  const initials = (() => {
+    const meta = user.user_metadata || {};
+    const name = meta.full_name || meta.name || user.email || '';
+    return name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2) || '?';
+  })();
+  document.getElementById('perfil-avatar').textContent = initials;
+  document.getElementById('perfil-email').textContent = user.email || '';
+
+  const { data: profile } = await sb.from('usuarios').select('nombre,apellido,tipo_sesion').eq('id', user.id).maybeSingle();
+  const nombre = profile ? `${profile.nombre || ''} ${profile.apellido || ''}`.trim() : (user.user_metadata?.full_name || user.email);
+  document.getElementById('perfil-nombre').textContent = nombre;
+
+  const plan = profile?.tipo_sesion || 'gratuita';
+  document.getElementById('perfil-plan').textContent = plan === 'pago' ? 'Premium' : 'Gratuito';
+  document.getElementById('perfil-upgrade-btn').style.display = plan === 'pago' ? 'none' : '';
 }
 
-async function handleLogout() {
-  if (sb) await sb.auth.signOut();
-  _sbSession = null;
+function handleUpgrade() {
+  toast('Próximamente — planes Premium', 3000);
+}
+
+async function handleSignOut() {
+  await sb.auth.signOut();
   navigateTo('page-login');
 }
 
@@ -1979,8 +1964,7 @@ function drawChart(cv, vals, lbls, color) {
 // ════════════════════════════════════════════════════════════
 document.addEventListener('DOMContentLoaded',()=>{
   updateSummary();
-  if (!sb) { navigateTo('page-login'); }
-  else { navigateTo('page-9'); setTimeout(()=>{ if(document.querySelector('.page.active')?.id==='page-9') navigateTo(_sbSession?'page-1':'page-login'); }, 2500); }
+  navigateTo(isLoggedIn() ? 'page-1' : 'page-login');
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('sw.js').catch(()=>{});
   }
